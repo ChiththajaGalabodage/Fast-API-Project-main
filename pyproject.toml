@@ -1,0 +1,26 @@
+[project]
+name = "fapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "dotenv>=0.9.9",
+    "faker>=40.23.0",
+    "fastapi>=0.138.0",
+    "httpx>=0.28.1",
+    "openai>=2.43.0",
+    "pydantic[email]>=2.13.4",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+    "uvicorn>=0.49.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[pytest]
+python_files = "test_*.py, *_test.py, generated_tests.py"
