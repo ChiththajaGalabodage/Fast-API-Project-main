@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version-file: ".python-version"
 
       - name: Install uv (fast Python package installer)
         run: |
@@ -70,8 +70,7 @@ jobs:
           echo "$DIFF" > /tmp/diff.txt
           mkdir -p reports
           # Run selector with the diff, enabling self-healing and running medium-priority tests
-          uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal --csv-out reports/test_results.csv
-
+         uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal
       - name: Archive generated tests and reports
         if: always()
         uses: actions/upload-artifact@v4
