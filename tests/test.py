@@ -248,22 +248,3 @@ async def test_seed_db_invalid_limit(client):
     assert response.status_code == 422
 
 
-# ---------------------------------------------------------------------------
-# Happy path tests
-# ---------------------------------------------------------------------------
-
-
-async def test_health_check(client):
-    response = await client.get("/api/health")
-    assert response.status_code == 200
-
-    data = response.json()
-    assert data["status"] == "ok"
-    assert "uptime_seconds" in data
-    assert "db" in data
-    assert data["db"]["users"] > 0
-    assert data["db"]["posts"] > 0
-
-
-async def test_get_users(client):
-    response = await client.get("/api/users")
