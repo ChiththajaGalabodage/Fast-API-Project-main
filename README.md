@@ -65,4 +65,4 @@ The API will be available at `http://localhost:8000`. You can access the interac
 
 ## License
 
-This project is open-source and available under the MIT License.
+## This project is open-source and available under the MIT License.
