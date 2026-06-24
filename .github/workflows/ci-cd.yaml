@@ -1,107 +1,109 @@
+
+මේ file එක download කරලා copy කරන්නත් පුළුවන්: [ci-cd.yaml](sandbox:/mnt/data/ci-cd.yaml)
+
+```yaml
 name: CI/CD Pipeline for LLM-CTF Framework
 
 on:
-push:
-branches: ["main", "master"]
-pull_request:
-branches: ["main", "master"]
-workflow_dispatch:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+  workflow_dispatch:
 
 jobs:
-test-and-generate:
-runs-on: ubuntu-latest
+  test-and-generate:
+    runs-on: ubuntu-latest
 
-```
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
-    with:
-      fetch-depth: 0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version-file: ".python-version"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
 
-  - name: Install uv
-    run: |
-      pip install uv
+      - name: Install uv
+        run: |
+          pip install uv
 
-  - name: Install dependencies with uv
-    run: |
-      uv sync --frozen
+      - name: Install dependencies with uv
+        run: |
+          uv sync --frozen
 
-  - name: Run normal tests
-    run: |
-      uv run pytest tests/test.py -q --cov=main --cov-report=term-missing --cov-report=xml
+      - name: Run normal tests
+        run: |
+          uv run pytest tests/test.py -q --cov=main --cov-report=term-missing --cov-report=xml
 
-  - name: Start FastAPI server
-    run: |
-      uv run uvicorn main:app --host 0.0.0.0 --port 8000 &
+      - name: Start FastAPI server
+        run: |
+          uv run uvicorn main:app --host 0.0.0.0 --port 8000 &
 
-      for i in {1..30}; do
-        if curl -s -f http://localhost:8000/api/health > /dev/null; then
-          echo "Server is up!"
-          exit 0
-        fi
-        echo "Waiting for server..."
-        sleep 2
-      done
+          for i in {1..30}; do
+            if curl -s -f http://localhost:8000/api/health > /dev/null; then
+              echo "Server is up!"
+              exit 0
+            fi
+            echo "Waiting for server..."
+            sleep 2
+          done
 
-      echo "Server failed to start"
-      exit 1
+          echo "Server failed to start"
+          exit 1
 
-  - name: Run test generator
-    env:
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
-    run: |
-      if [ -z "$OPENROUTER_API_KEY" ]; then
-        echo "OPENROUTER_API_KEY secret is missing"
-        exit 1
-      fi
+      - name: Run test generator
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "OPENROUTER_API_KEY secret is missing"
+            exit 1
+          fi
 
-      uv run python tests_generated/generator.py
+          uv run python tests_generated/generator.py
 
-  - name: Run test selector
-    env:
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
-    run: |
-      if [ "${{ github.event_name }}" = "pull_request" ]; then
-        git fetch origin ${{ github.base_ref }}
-        DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
-      else
-        if git rev-parse HEAD~1 >/dev/null 2>&1; then
-          DIFF=$(git diff HEAD~1..HEAD)
-        else
-          DIFF=$(git show --format= --unified=0 HEAD)
-        fi
-      fi
+      - name: Run test selector
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin ${{ github.base_ref }}
+            DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
+          else
+            if git rev-parse HEAD~1 >/dev/null 2>&1; then
+              DIFF=$(git diff HEAD~1..HEAD)
+            else
+              DIFF=$(git show --format= --unified=0 HEAD)
+            fi
+          fi
 
-      echo "$DIFF" > /tmp/diff.txt
-      mkdir -p reports
+          echo "$DIFF" > /tmp/diff.txt
+          mkdir -p reports
 
-      uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal
+          uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal
 
-  - name: Archive generated tests and reports
-    if: always()
-    uses: actions/upload-artifact@v4
-    with:
-      name: llm-ctf-artifacts
-      path: |
-        reports/
-        .coverage
-        coverage.xml
-        htmlcov/
-        test_results.xml
-        *.log
-      retention-days: 7
+      - name: Archive generated tests and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-ctf-artifacts
+          path: |
+            reports/
+            .coverage
+            coverage.xml
+            htmlcov/
+            test_results.xml
+            *.log
+          retention-days: 7
 
-  - name: Optional comparison evaluation
-    if: false
-    env:
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-    run: |
-      echo "Comparison script not implemented yet."
-```
+      - name: Optional comparison evaluation
+        if: false
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          echo "Comparison script not implemented yet."
