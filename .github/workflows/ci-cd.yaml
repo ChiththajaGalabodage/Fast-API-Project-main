@@ -1,4 +1,8 @@
-﻿name: CI/CD Pipeline for LLM-CTF Framework
+
+මේ file එක download කරලා copy කරන්නත් පුළුවන්: [ci-cd.yaml](sandbox:/mnt/data/ci-cd.yaml)
+
+```yaml
+name: CI/CD Pipeline for LLM-CTF Framework
 
 on:
   push:
