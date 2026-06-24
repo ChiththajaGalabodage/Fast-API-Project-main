@@ -1,106 +1,149 @@
-﻿name: CI/CD Pipeline for LLM-CTF Framework
-
+name: CI/CD Pipeline
 on:
-  push:
-    branches: ["main", "master"]
   pull_request:
-    branches: ["main", "master"]
+    branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
-
+permissions:
+  contents: read
+  packages: write
 jobs:
-  test-and-generate:
+  API-CI:
+    name: API CI
     runs-on: ubuntu-latest
-
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
     steps:
-      - name: Checkout repository
+      - name: Checkout code changes
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version-file: ".python-version"
+          python-version: "3.14"
 
-      - name: Install uv
-        run: |
-          pip install uv
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      - name: Install dependencies with uv
-        run: |
-          uv sync --frozen
+      - name: Install dependencies
+        run: uv sync --frozen
 
-      - name: Run normal tests
+      - name: Start API server
         run: |
-          uv run pytest tests/test.py -q --cov=main --cov-report=term-missing --cov-report=xml
+          # Make sure the venv exists and is synced before we background anything.
+          uv run python -c "print('venv ready')"
 
-      - name: Start FastAPI server
-        run: |
-          uv run uvicorn main:app --host 0.0.0.0 --port 8000 &
+          # Run uvicorn directly from the venv (NOT via `uv run`) so there is no
+          # long-lived `uv` parent process holding a lock on the uv cache.
+          nohup .venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+          echo $! > server.pid
 
           for i in {1..30}; do
             if curl -s -f http://localhost:8000/api/health > /dev/null; then
               echo "Server is up!"
-              exit 0
+              break
             fi
             echo "Waiting for server..."
             sleep 2
           done
 
-          echo "Server failed to start"
-          exit 1
-
-      - name: Run test generator
+      - name: Run test generator (LLM-driven test creation)
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
         run: |
-          if [ -z "$OPENROUTER_API_KEY" ]; then
-            echo "OPENROUTER_API_KEY secret is missing"
-            exit 1
-          fi
-
+          # The generator fetches OpenAPI spec, calls LLM, writes tests, and runs pytest with coverage
           uv run python tests_generated/generator.py
 
-      - name: Run test selector
+      - name: Upload Test Generator Results Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: generator-test-results
+          path: reports/generated_test_results.csv
+          retention-days: 7
+
+      - name: Run all tests
+        run: uv run pytest tests/test.py tests_generated/generated_test.py -v --csv=test-results.csv --csv-columns=id,status,duration,message
+
+      - name: Upload Test Results Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-test-results
+          path: test-results.csv
+          retention-days: 7
+
+      - name: Run test selector with self-healing (predictive test selection)
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
         run: |
+          # Get diff from the last commit (or against origin/main for PRs)
           if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # For PRs, diff against the base branch
             git fetch origin ${{ github.base_ref }}
             DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
           else
-            if git rev-parse HEAD~1 >/dev/null 2>&1; then
-              DIFF=$(git diff HEAD~1..HEAD)
-            else
-              DIFF=$(git show --format= --unified=0 HEAD)
-            fi
+            # For push, diff against the previous commit
+            DIFF=$(git diff HEAD~1)
           fi
-
+          # Write diff to a temporary file
           echo "$DIFF" > /tmp/diff.txt
           mkdir -p reports
+          # Run selector with the diff, enabling self-healing and running medium-priority tests
+          uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal --csv-out reports/test_results.csv
 
-          uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal
+      - name: Upload Test Selector Results Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selector-test-results
+          path: reports/test_results.csv
+          retention-days: 7
 
-      - name: Run comparison evaluation
+      - name: Generate traditional vs agentic comparison report
         if: always()
         run: |
-          mkdir -p reports
-          uv run python scripts/compare_methods.py
-
-      - name: Archive generated tests and reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: llm-ctf-artifacts
-          path: |
-            reports/
+          uv run python tests_selecter/comparison_report.py \
+            test-results.csv \
+            reports/test_results.csv \
             reports/comparison_report.csv
-            reports/comparison_report.md
-            .coverage
-            coverage.xml
-            htmlcov/
-            test_results.xml
-            *.log
+
+      - name: Upload Comparison Report Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: comparison-report
+          path: reports/comparison_report.csv
           retention-days: 7
+
+      - name: Upload server log (for debugging)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-server-log
+          path: server.log
+          retention-days: 7
+
+      - name: Stop API server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill "$(cat server.pid)" 2>/dev/null || true
+            sleep 1
+          fi
+          # Belt-and-suspenders: catch anything matching by name too.
+          pkill -9 -f "uvicorn main:app" 2>/dev/null || true
+          sleep 1
+
+      - name: Debug - check for lingering uv/uvicorn processes
+        if: always()
+        run: ps aux | grep -E "uv|uvicorn" | grep -v grep || echo "none found"

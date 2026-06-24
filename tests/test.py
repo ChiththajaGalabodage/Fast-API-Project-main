@@ -246,5 +246,3 @@ async def test_seed_db_invalid_limit(client):
     payload = {"num_users": 1001}
     response = await client.post("/api/seed", json=payload)
     assert response.status_code == 422
-
-# fix
