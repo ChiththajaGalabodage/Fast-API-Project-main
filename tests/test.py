@@ -246,3 +246,203 @@ async def test_seed_db_invalid_limit(client):
     payload = {"num_users": 1001}
     response = await client.post("/api/seed", json=payload)
     assert response.status_code == 422
+
+
+# ---------------------------------------------------------------------------
+# Additional failure-path / negative test cases
+# These tests help prove defect detection ability in the research experiment.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "query",
+    [
+        "page=0&limit=20",      # page must be >= 1
+        "page=-1&limit=20",     # negative page is invalid
+        "page=1&limit=0",       # limit must be >= 1
+        "page=1&limit=-5",      # negative limit is invalid
+    ],
+)
+async def test_get_users_paginated_invalid_values(client, query):
+    """
+    The pagination endpoint should reject invalid page/limit values.
+    If this test fails, it means pagination validation is weak.
+    """
+    response = await client.get(f"/api/users/paginated?{query}")
+    assert response.status_code == 422
+
+
+async def test_get_user_id_must_be_integer(client):
+    """
+    User ID should be an integer.
+    Non-numeric user IDs should be rejected by FastAPI validation.
+    """
+    response = await client.get("/api/users/abc")
+    assert response.status_code == 422
+
+
+@pytest.mark.parametrize(
+    "payload, expected_field",
+    [
+        ({"title": "Missing user", "content": "Content"}, "user_id"),
+        ({"user_id": 1, "content": "Missing title"}, "title"),
+        ({"user_id": 1, "title": "Missing content"}, "content"),
+    ],
+)
+async def test_create_post_missing_required_fields(client, payload, expected_field):
+    """
+    Creating a post without required fields should fail.
+    This proves that request body validation works correctly.
+    """
+    response = await client.post("/api/posts", json=payload)
+    assert response.status_code == 422
+
+    errors = response.json()["detail"]
+    assert any(expected_field in error["loc"] for error in errors)
+
+
+async def test_create_post_invalid_user_id_type(client):
+    """
+    user_id must be a valid integer.
+    A string value should be rejected.
+    """
+    payload = {
+        "user_id": "invalid_id",
+        "title": "Invalid User ID",
+        "content": "This should fail",
+    }
+
+    response = await client.post("/api/posts", json=payload)
+    assert response.status_code == 422
+
+
+async def test_update_post_blank_title_should_fail(client):
+    """
+    Updating a post with a blank title should not be allowed.
+    If this test fails, the update endpoint has weaker validation than create endpoint.
+    """
+    create_payload = {
+        "user_id": 1,
+        "title": "Original Title",
+        "content": "Original content",
+    }
+    create_resp = await client.post("/api/posts", json=create_payload)
+    post_id = create_resp.json()["id"]
+
+    update_payload = {
+        "title": "   ",
+        "content": "Updated content",
+    }
+
+    response = await client.put(f"/api/posts/{post_id}", json=update_payload)
+    assert response.status_code == 422
+
+
+async def test_update_post_content_too_long_should_fail(client):
+    """
+    Updating a post with content longer than allowed limit should fail.
+    This checks whether validation is applied during update also.
+    """
+    create_payload = {
+        "user_id": 1,
+        "title": "Original Title",
+        "content": "Original content",
+    }
+    create_resp = await client.post("/api/posts", json=create_payload)
+    post_id = create_resp.json()["id"]
+
+    update_payload = {
+        "title": "Valid Updated Title",
+        "content": "a" * 5001,
+    }
+
+    response = await client.put(f"/api/posts/{post_id}", json=update_payload)
+    assert response.status_code == 422
+
+
+async def test_update_post_id_must_be_integer(client):
+    """
+    Post ID should be an integer when updating.
+    """
+    payload = {
+        "title": "Updated Title",
+        "content": "Updated content",
+    }
+
+    response = await client.put("/api/posts/abc", json=payload)
+    assert response.status_code == 422
+
+
+async def test_delete_post_id_must_be_integer(client):
+    """
+    Post ID should be an integer when deleting.
+    """
+    response = await client.delete("/api/posts/abc")
+    assert response.status_code == 422
+
+
+async def test_delete_post_twice_second_attempt_should_fail(client):
+    """
+    After deleting a post, deleting the same post again should return 404.
+    This proves that deleted records are not still treated as active records.
+    """
+    create_payload = {
+        "user_id": 1,
+        "title": "Delete Twice",
+        "content": "This post will be deleted twice",
+    }
+
+    create_resp = await client.post("/api/posts", json=create_payload)
+    post_id = create_resp.json()["id"]
+
+    first_delete = await client.delete(f"/api/posts/{post_id}")
+    assert first_delete.status_code == 200
+
+    second_delete = await client.delete(f"/api/posts/{post_id}")
+    assert second_delete.status_code == 404
+    assert "Post not found" in second_delete.json()["detail"]
+
+
+async def test_deleted_post_cannot_be_updated(client):
+    """
+    A deleted post should not be updatable.
+    This checks data consistency after delete operations.
+    """
+    create_payload = {
+        "user_id": 1,
+        "title": "Deleted Update Test",
+        "content": "This post will be deleted first",
+    }
+
+    create_resp = await client.post("/api/posts", json=create_payload)
+    post_id = create_resp.json()["id"]
+
+    delete_resp = await client.delete(f"/api/posts/{post_id}")
+    assert delete_resp.status_code == 200
+
+    update_payload = {
+        "title": "Should Not Update",
+        "content": "This update should fail",
+    }
+
+    update_resp = await client.put(f"/api/posts/{post_id}", json=update_payload)
+    assert update_resp.status_code == 404
+    assert "Post not found" in update_resp.json()["detail"]
+
+
+async def test_invalid_seed_request_should_not_change_database(client):
+    """
+    Invalid seed requests should fail and should not change the current database state.
+    This proves that failed operations do not corrupt the test data.
+    """
+    before_resp = await client.get("/api/metrics/db-size")
+    before_counts = before_resp.json()
+
+    invalid_payload = {"num_users": 0}
+    response = await client.post("/api/seed", json=invalid_payload)
+    assert response.status_code == 422
+
+    after_resp = await client.get("/api/metrics/db-size")
+    after_counts = after_resp.json()
+
+    assert after_counts == before_counts
