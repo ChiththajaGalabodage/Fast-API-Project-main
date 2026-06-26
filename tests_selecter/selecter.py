@@ -17,16 +17,19 @@ from openai import OpenAI
 # ---------------------------------------------------------------------------
 load_dotenv()
 
-if not os.getenv("OPENROUTER_API_KEY"):
-    print("❌ ERROR: OpenRouter API key missing (expected 'OPENROUTER_API_KEY')")
-    sys.exit(1)
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+if not OPENROUTER_API_KEY:
+    print("OPENROUTER_API_KEY is not set; LLM test selection will be skipped.")
 
 MODEL_NAME = os.getenv("GEMINI_MODEL", "google/gemini-2.5-flash")
-print(f"🧠 Using OpenRouter Gemini model: {MODEL_NAME}")
+if OPENROUTER_API_KEY:
+    print(f"Using OpenRouter Gemini model: {MODEL_NAME}")
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+client = (
+    OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
+    if OPENROUTER_API_KEY
+    else None
 )
 
 
@@ -273,9 +276,9 @@ def _write_csv(path: Optional[str], rows: List[Dict[str, str]]) -> None:
             writer.writeheader()
             for row in rows:
                 writer.writerow(row)
-        print(f"📄 Wrote CSV report to {path} ({len(rows)} row(s))")
+        print(f"Wrote CSV report to {path} ({len(rows)} row(s))")
     except Exception as e:
-        print(f"⚠️  Could not write CSV report to {path}: {e}")
+        print(f"Could not write CSV report to {path}: {e}")
 
 
 # ---------------------------------------------------------------------------
@@ -298,6 +301,11 @@ async def main():
         "for the tests that were actually selected and run",
     )
     args = parser.parse_args()
+
+    if client is None:
+        print("OPENROUTER_API_KEY is not set; skipping LLM test selection.")
+        _write_csv(args.csv_out, [])
+        return
 
     # Obtain diff
     if args.diff:

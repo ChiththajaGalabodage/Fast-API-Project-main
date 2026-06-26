@@ -214,9 +214,7 @@ async def test_put_api_posts_post_id(client: AsyncClient):
     response = await client.put(
         f"/api/posts/{post_id}", json={"title": "   ", "content": "valid"}
     )
-    assert response.status_code == 200
-    updated = response.json()["post"]
-    assert updated["title"] == "   "  # exactly as sent
+    assert response.status_code == 422
 
     # Title too long → 422
     response = await client.put(

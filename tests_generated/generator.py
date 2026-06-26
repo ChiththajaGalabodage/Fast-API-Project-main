@@ -1,5 +1,6 @@
 import ast
 import asyncio
+import csv
 import json
 import os
 import re
@@ -17,21 +18,24 @@ from openai import OpenAI  # Use OpenRouter via OpenAI-compatible SDK
 load_dotenv()
 
 # OpenRouter utilizes its own API key structure
-if not os.getenv("OPENROUTER_API_KEY"):
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+if not OPENROUTER_API_KEY:
     print(
-        "❌ ERROR: No OpenRouter API key found in .env (expected 'OPENROUTER_API_KEY')"
+        "OPENROUTER_API_KEY is not set; LLM test generation will be skipped."
     )
-    sys.exit(1)
 
 # Use OpenRouter's identifier for Gemini models
 # Valid options include: "google/gemini-2.5-flash" or "google/gemini-2.5-pro"
 MODEL_NAME = os.getenv("GEMINI_MODEL", "google/gemini-2.5-flash")
-print(f"🧠 Using OpenRouter Gemini model: {MODEL_NAME}")
+if OPENROUTER_API_KEY:
+    print(f"Using OpenRouter Gemini model: {MODEL_NAME}")
 
 # Initialize OpenAI client pointed directly to OpenRouter's endpoint
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+client = (
+    OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
+    if OPENROUTER_API_KEY
+    else None
 )
 
 SERVER_URL = "http://localhost:8000"
@@ -41,6 +45,15 @@ SERVER_URL = "http://localhost:8000"
 # around ~1100). Keep this comfortably under that ceiling — override via
 # the MAX_TOKENS env var once you add credits and want richer test bodies.
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1000"))
+
+
+def write_empty_csv(path: str) -> None:
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f, fieldnames=["id", "status", "duration", "message"]
+        )
+        writer.writeheader()
 
 
 # ---------------------------------------------------------------------------
@@ -312,6 +325,15 @@ async def generate_test(prompt, retries: int = 1):
 # Step 4 – Write generated tests to file and run them
 # ---------------------------------------------------------------------------
 async def main():
+    if client is None:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        csv_path = os.path.join(
+            script_dir, "..", "reports", "generated_test_results.csv"
+        )
+        print("OPENROUTER_API_KEY is not set; skipping LLM test generation.")
+        write_empty_csv(csv_path)
+        return
+
     print("📡 Fetching OpenAPI spec...")
     spec = await fetch_openapi()
     print(f"✅ Found {len(spec['paths'])} endpoints.")
@@ -347,7 +369,7 @@ async def main():
 
     # Dynamically locate the script's directory (tests_generated/)
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-    OUTPUT_PATH = os.path.join(SCRIPT_DIR, "generated_tests.py")
+    OUTPUT_PATH = os.path.join(SCRIPT_DIR, "generated_test.py")
 
     header = (
         "import pytest\n\n"
@@ -401,6 +423,7 @@ async def main():
         text=True,
     )
     print(f"📄 Wrote CSV report to {CSV_PATH}")
+    sys.exit(result.returncode)
 
 
 # ---------------------------------------------------------------------------
