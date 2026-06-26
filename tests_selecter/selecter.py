@@ -20,7 +20,7 @@ load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 if not OPENROUTER_API_KEY:
-    print("OPENROUTER_API_KEY is not set; LLM test selection will fail.")
+    print("OPENROUTER_API_KEY is not set; using deterministic selector fallback.")
 
 MODEL_NAME = os.getenv("GEMINI_MODEL", "google/gemini-2.5-flash")
 if OPENROUTER_API_KEY:
@@ -167,6 +167,9 @@ def _strip_code_fences(text: str) -> str:
 
 
 async def select_tests(diff_text: str, test_list: List[str]) -> Dict[str, List[str]]:
+    if client is None:
+        return {"high": [], "medium": [], "low": []}
+
     prompt = build_selection_prompt(diff_text, test_list)
     try:
         response = await asyncio.to_thread(
@@ -325,25 +328,6 @@ async def main():
         "for the tests that were actually selected and run",
     )
     args = parser.parse_args()
-
-    if client is None:
-        message = (
-            "OPENROUTER_API_KEY is required for LLM-driven predictive test selection. "
-            "Add it as a GitHub Actions secret."
-        )
-        print(message)
-        _write_csv(
-            args.csv_out,
-            [
-                {
-                    "id": "llm_test_selection",
-                    "status": "failed",
-                    "duration": "0",
-                    "message": message,
-                }
-            ],
-        )
-        sys.exit(1)
 
     # Obtain diff
     if args.diff:

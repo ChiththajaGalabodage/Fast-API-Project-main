@@ -1,2 +1,14 @@
 id,status,duration,message
-llm_test_generation,failed,0,OPENROUTER_API_KEY is required for LLM-driven test generation. Add it as a GitHub Actions secret.
+tests_generated/generated_test.py::test_get_api_health,passed,0.003222299999833922,
+tests_generated/generated_test.py::test_post_api_reset,passed,0.635324099999707,
+tests_generated/generated_test.py::test_post_api_seed,passed,0.02516970000033325,
+tests_generated/generated_test.py::test_post_api_error_injection,passed,0.010315400000763475,
+tests_generated/generated_test.py::test_get_api_users,passed,0.0723111000006611,
+tests_generated/generated_test.py::test_get_api_users_paginated,passed,0.13056330000108574,
+tests_generated/generated_test.py::test_get_api_users_user_id,passed,0.12825309999971068,
+tests_generated/generated_test.py::test_post_api_posts,passed,0.2203085999990435,
+tests_generated/generated_test.py::test_put_api_posts_post_id,passed,0.4122477999990224,
+tests_generated/generated_test.py::test_delete_api_posts_post_id,passed,0.24386989999948128,
+tests_generated/generated_test.py::test_get_api_slow_data,passed,1.5371319000005315,
+tests_generated/generated_test.py::test_get_api_large_payload,passed,0.22570450000057463,
+tests_generated/generated_test.py::test_get_api_metrics_db_size,passed,0.0021980000001349254,
