@@ -20,7 +20,7 @@ load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 if not OPENROUTER_API_KEY:
-    print("OPENROUTER_API_KEY is not set; LLM test selection will be skipped.")
+    print("OPENROUTER_API_KEY is not set; LLM test selection will fail.")
 
 MODEL_NAME = os.getenv("GEMINI_MODEL", "google/gemini-2.5-flash")
 if OPENROUTER_API_KEY:
@@ -34,7 +34,7 @@ client = (
 
 
 # ---------------------------------------------------------------------------
-# Step 1 – Get code diff
+# Step 1 - Get code diff
 # ---------------------------------------------------------------------------
 def get_git_diff(commit: str = "HEAD") -> str:
     """Run git diff and return the unified diff as string."""
@@ -48,7 +48,7 @@ def get_git_diff(commit: str = "HEAD") -> str:
         )
         return result.stdout
     except subprocess.CalledProcessError:
-        print("⚠️  Could not run git diff. Ensure you are in a git repo.")
+        print("Could not run git diff. Ensure you are in a git repo.")
         return ""
 
 
@@ -58,7 +58,7 @@ def read_diff_file(path: str) -> str:
         with open(path, "r", encoding="utf-8") as f:
             return f.read()
     except Exception as e:
-        print(f"⚠️  Could not read diff file {path}: {e}")
+        print(f"Could not read diff file {path}: {e}")
         return ""
 
 
@@ -88,7 +88,7 @@ def parse_diff(diff_text: str) -> Dict[str, List[int]]:
 
 
 # ---------------------------------------------------------------------------
-# Step 2 – Collect existing tests
+# Step 2 - Collect existing tests
 # ---------------------------------------------------------------------------
 def collect_tests() -> List[str]:
     try:
@@ -105,7 +105,7 @@ def collect_tests() -> List[str]:
             ],
             capture_output=True,
             text=True,
-            encoding="utf-8",  # 👈 Prevents the UnicodeDecodeError
+            encoding="utf-8",
         )
         tests = []
         for line in result.stdout.splitlines():
@@ -118,7 +118,7 @@ def collect_tests() -> List[str]:
 
 
 # ---------------------------------------------------------------------------
-# Step 3 – Build LLM prompt for test selection
+# Step 3 - Build LLM prompt for test selection
 # ---------------------------------------------------------------------------
 def build_selection_prompt(diff_text: str, test_list: List[str]) -> str:
     # Truncate diff if too long
@@ -191,12 +191,12 @@ async def select_tests(diff_text: str, test_list: List[str]) -> Dict[str, List[s
             "low": data.get("low", []),
         }
     except Exception as e:
-        print(f"⚠️  Selection LLM call failed: {e}")
+        print(f"Selection LLM call failed: {e}")
         return {"high": [], "medium": [], "low": []}
 
 
 # ---------------------------------------------------------------------------
-# Step 4 – Self-healing: suggest fix for a failed test
+# Step 4 - Self-healing: suggest fix for a failed test
 # ---------------------------------------------------------------------------
 async def suggest_fix(test_id: str, error_output: str) -> Optional[str]:
     """Ask LLM to fix the test function based on error."""
@@ -204,7 +204,7 @@ async def suggest_fix(test_id: str, error_output: str) -> Optional[str]:
     test_func = test_id.split("::")[1] if "::" in test_id else None
 
     if not os.path.exists(test_file):
-        print(f"⚠️  Test file {test_file} not found.")
+        print(f"Test file {test_file} not found.")
         return None
 
     # Read the test file content
@@ -212,11 +212,11 @@ async def suggest_fix(test_id: str, error_output: str) -> Optional[str]:
         with open(test_file, "r", encoding="utf-8") as f:
             content = f.read()
     except Exception as e:
-        print(f"⚠️  Could not read {test_file}: {e}")
+        print(f"Could not read {test_file}: {e}")
         return None
 
     # We'll send the whole file (truncated) rather than try to isolate the function
-    content_preview = content[:4000] + ("…" if len(content) > 4000 else "")
+    content_preview = content[:4000] + ("..." if len(content) > 4000 else "")
 
     prompt = f"""The test {test_id} failed with this error:
 ```
@@ -250,7 +250,7 @@ Return only the corrected function code (the whole function), no markdown fences
         fixed = _strip_code_fences(fixed)
         return fixed
     except Exception as e:
-        print(f"⚠️  Self-heal LLM call failed: {e}")
+        print(f"Self-heal LLM call failed: {e}")
         return None
 
 
@@ -281,8 +281,32 @@ def _write_csv(path: Optional[str], rows: List[Dict[str, str]]) -> None:
         print(f"Could not write CSV report to {path}: {e}")
 
 
+def fallback_selected_tests(diff_text: str, tests: List[str], limit: int = 8) -> List[str]:
+    """Pick a deterministic impacted subset when the LLM returns no runnable tests."""
+    lowered_diff = diff_text.lower()
+    keywords = []
+    if "post" in lowered_diff or "updatepostrequest" in lowered_diff:
+        keywords.extend(["post", "posts"])
+    if "user" in lowered_diff or "pagination" in lowered_diff:
+        keywords.extend(["user", "paginated"])
+    if "seed" in lowered_diff or "reset" in lowered_diff:
+        keywords.extend(["seed", "reset"])
+    if "health" in lowered_diff or "metrics" in lowered_diff:
+        keywords.extend(["health", "metrics"])
+
+    selected: List[str] = []
+    for test_id in tests:
+        test_name = test_id.lower()
+        if keywords and any(keyword in test_name for keyword in keywords):
+            selected.append(test_id)
+        if len(selected) >= limit:
+            return selected
+
+    return tests[: min(limit, len(tests))]
+
+
 # ---------------------------------------------------------------------------
-# Step 5 – Main driver
+# Step 5 - Main driver
 # ---------------------------------------------------------------------------
 async def main():
     parser = argparse.ArgumentParser(description="TestSelectAgent")
@@ -303,9 +327,23 @@ async def main():
     args = parser.parse_args()
 
     if client is None:
-        print("OPENROUTER_API_KEY is not set; skipping LLM test selection.")
-        _write_csv(args.csv_out, [])
-        return
+        message = (
+            "OPENROUTER_API_KEY is required for LLM-driven predictive test selection. "
+            "Add it as a GitHub Actions secret."
+        )
+        print(message)
+        _write_csv(
+            args.csv_out,
+            [
+                {
+                    "id": "llm_test_selection",
+                    "status": "failed",
+                    "duration": "0",
+                    "message": message,
+                }
+            ],
+        )
+        sys.exit(1)
 
     # Obtain diff
     if args.diff:
@@ -314,37 +352,37 @@ async def main():
         diff_text = get_git_diff(commit=args.commit)
 
     if not diff_text:
-        print("❌ No changes detected. Exiting.")
+        print("No changes detected. Exiting.")
         _write_csv(args.csv_out, [])
         return
 
-    print("📝 Analysing code changes…")
+    print("Analysing code changes...")
     changed_files = parse_diff(diff_text)
     if changed_files:
-        print("📄 Changed files:")
+        print("Changed files:")
         for f, lines in changed_files.items():
             preview = lines[:5]
-            suffix = "…" if len(lines) > 5 else ""
+            suffix = "..." if len(lines) > 5 else ""
             print(f"   {f} (lines {preview}{suffix})")
     else:
-        print("⚠️  Could not parse diff line numbers (will still use full diff).")
+        print("Could not parse diff line numbers (will still use full diff).")
 
     # Collect tests
     tests = collect_tests()
     if not tests:
-        print("❌ No tests found. Are you in the correct directory?")
+        print("No tests found. Are you in the correct directory?")
         _write_csv(args.csv_out, [])
         return
-    print(f"📋 Found {len(tests)} tests.")
+    print(f"Found {len(tests)} tests.")
 
     # Select tests
-    print("🧠 Asking LLM to select relevant tests…")
+    print("Asking LLM to select relevant tests...")
     selection = await select_tests(diff_text, tests)
     high = selection.get("high", [])
     medium = selection.get("medium", [])
     low = selection.get("low", [])
 
-    print("\n🎯 Selected tests:")
+    print("\nSelected tests:")
     print(f"   HIGH ({len(high)}):")
     for t in high:
         print(f"     - {t}")
@@ -360,14 +398,13 @@ async def main():
     if args.run_medium:
         to_run.extend(medium)
     if not to_run:
-        print("✅ No tests selected for execution. Exiting.")
-        _write_csv(args.csv_out, [])
-        return
+        print("LLM selected no runnable tests; using deterministic impacted fallback.")
+        to_run = fallback_selected_tests(diff_text, tests)
 
-    print(f"\n🧪 Running {len(to_run)} tests…")
+    print(f"\nRunning {len(to_run)} tests...")
     csv_rows: List[Dict[str, str]] = []
     for test_id in to_run:
-        print(f"\n▶️  {test_id}")
+        print(f"\n{test_id}")
         start = time.monotonic()
         result = subprocess.run(
             ["pytest", test_id, "-v", "--tb=short", "--no-header"],
@@ -377,7 +414,7 @@ async def main():
         duration = round(time.monotonic() - start, 3)
 
         if result.returncode == 0:
-            print("   ✅ PASSED")
+            print("   PASSED")
             csv_rows.append(
                 {
                     "id": test_id,
@@ -387,22 +424,22 @@ async def main():
                 }
             )
         else:
-            print("   ❌ FAILED")
+            print("   FAILED")
             failure_message = (result.stdout + "\n" + result.stderr).strip()
             if not args.no_heal:
-                print("   🔧 Attempting self-heal…")
+                print("   Attempting self-heal...")
                 fixed = await suggest_fix(test_id, failure_message)
                 if fixed:
-                    print("   💡 Suggested fix (review and apply):")
+                    print("   Suggested fix (review and apply):")
                     print("   " + "\n   ".join(fixed.splitlines()))
-                    print(f"   ℹ️  Replace the old function in {test_id.split('::')[0]}")
+                    print(f"   Replace the old function in {test_id.split('::')[0]}")
                     failure_message = (
                         f"{failure_message[:500]} | self-heal suggestion generated"
                     )
                 else:
-                    print("   ⚠️  Could not auto-heal. Please fix manually.")
+                    print("   Could not auto-heal. Please fix manually.")
             else:
-                print("   ℹ️  Self-heal disabled by --no-heal.")
+                print("   Self-heal disabled by --no-heal.")
 
             # Keep the CSV message field short and single-line for readability.
             short_message = " ".join(failure_message.split())[:300]
@@ -416,7 +453,7 @@ async def main():
             )
 
     _write_csv(args.csv_out, csv_rows)
-    print("\n✅ Test selection and execution complete.")
+    print("\nTest selection and execution complete.")
 
 
 if __name__ == "__main__":

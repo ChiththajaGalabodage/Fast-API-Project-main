@@ -6,16 +6,16 @@ from typing import Dict, List
 # ---------------------------------------------------------------------------
 # Comparison Report Generator
 #
-# Compares the "traditional" run (full suite, every test executed — i.e.
+# Compares the "traditional" run (full suite, every test executed - i.e.
 # test-results.csv from `pytest tests/ tests_generated/`) against the
-# "agentic" run (LLM-selected subset — reports/test_results.csv from
+# "agentic" run (LLM-selected subset - reports/test_results.csv from
 # selecter.py) and writes a single comparison CSV summarizing the delta.
 # ---------------------------------------------------------------------------
 
 
 def read_csv_rows(path: str) -> List[Dict[str, str]]:
     if not os.path.exists(path):
-        print(f"⚠️  File not found: {path} (treating as empty)")
+        print(f"File not found: {path} (treating as empty)")
         return []
     with open(path, encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
@@ -90,7 +90,7 @@ def write_comparison_csv(path: str, rows: List[Dict[str, str]]) -> None:
         writer.writeheader()
         for row in rows:
             writer.writerow(row)
-    print(f"📄 Wrote comparison report to {path}")
+    print(f"Wrote comparison report to {path}")
 
 
 def main():
@@ -98,8 +98,8 @@ def main():
     agentic_path = sys.argv[2] if len(sys.argv) > 2 else "reports/test_results.csv"
     output_path = sys.argv[3] if len(sys.argv) > 3 else "reports/comparison_report.csv"
 
-    print(f"📊 Traditional run (full suite): {traditional_path}")
-    print(f"📊 Agentic run (predictive selection): {agentic_path}")
+    print(f"Traditional run (full suite): {traditional_path}")
+    print(f"Agentic run (predictive selection): {agentic_path}")
 
     traditional_rows = read_csv_rows(traditional_path)
     agentic_rows = read_csv_rows(agentic_path)

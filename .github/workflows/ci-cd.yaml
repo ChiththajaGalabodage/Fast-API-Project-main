@@ -71,6 +71,7 @@ jobs:
           retention-days: 7
 
       - name: Run all tests
+        if: always()
         run: uv run pytest tests/test.py tests_generated/generated_test.py -v --csv=test-results.csv --csv-columns=id,status,duration,message
 
       - name: Upload Test Results Artifact
@@ -82,6 +83,7 @@ jobs:
           retention-days: 7
 
       - name: Run test selector with self-healing (predictive test selection)
+        if: always()
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
