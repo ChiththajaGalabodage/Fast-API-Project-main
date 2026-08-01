@@ -63,6 +63,22 @@ uvicorn main:app --reload
 
 The API will be available at `http://localhost:8000`. You can access the interactive Swagger documentation at `http://localhost:8000/docs`.
 
+## Continuous-testing research prototype
+
+The repository also implements an LLM-enhanced continuous-testing framework:
+
+- Test generation from OpenAPI operations and live sample responses.
+- Diff-aware predictive selection of a fixed 16-test impacted sample.
+- Guarded autonomous repair of stale failed test functions, with structural
+  AST checks, two reruns, final-batch validation, verified rollback, and audit
+  artifacts.
+- Timed traditional-versus-agentic comparison reports and 18 thesis-ready
+  visualizations in `visualizations/output/`.
+
+The current application inventory has 78 tests (65 handwritten and 13
+generated), plus 28 separate tests that validate the self-healing engine. See
+`tests_selecter/README.md` for the full workflow and safety boundaries.
+
 ## License
 
 This project is open-source and available under the MIT License.

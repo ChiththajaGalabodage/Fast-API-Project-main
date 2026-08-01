@@ -1,6 +1,8 @@
 metric,traditional,agentic,delta,pct_change
-Total tests executed,46,8,-38,-82.6%
-Tests passed,46,8,-38,-82.6%
+Total tests executed,78,16,-62,-79.5%
+Tests passed,78,16,-62,-79.5%
 Tests failed,0,0,0,n/a
-Total execution time (s),7.405,22.608,15.203,205.3%
-Tests skipped by predictive selection,-,-,-,82.6%
+Total execution time (s),63.77,14.278,-49.492,-77.6%
+Process exit code,0,0,0,n/a
+Summed test call duration (s),11.161,1.174,-9.987,-89.5%
+Tests skipped by predictive selection,-,-,-,79.5%

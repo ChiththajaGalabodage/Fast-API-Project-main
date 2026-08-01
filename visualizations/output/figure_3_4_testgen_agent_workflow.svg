@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="413.28pt" height="266.544pt" viewBox="0 0 413.28 266.544" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-07-21T21:42:23.987224</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 266.544 
+L 413.28 266.544 
+L 413.28 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 108.198011 82.2672 
+Q 112.226309 82.2672 114.577556 82.2672 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 109.777556 79.8672 
+L 114.577556 82.2672 
+L 109.777556 84.6672 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 204.620411 82.2672 
+Q 208.648709 82.2672 210.999956 82.2672 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 206.199956 79.8672 
+L 210.999956 82.2672 
+L 206.199956 84.6672 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 301.042811 82.2672 
+Q 305.071109 82.2672 307.422356 82.2672 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 302.622356 79.8672 
+L 307.422356 82.2672 
+L 302.622356 84.6672 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 352.140665 107.020436 
+Q 362.519853 129.445943 352.845675 150.349488 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 357.039742 147.001384 
+L 352.845675 150.349488 
+L 352.683631 144.985372 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 305.081989 176.62608 
+Q 301.053691 176.62608 298.702444 176.62608 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 303.502444 179.02608 
+L 298.702444 176.62608 
+L 303.502444 174.22608 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 208.659589 176.62608 
+Q 204.631291 176.62608 202.280044 176.62608 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 207.080044 179.02608 
+L 202.280044 176.62608 
+L 207.080044 174.22608 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 112.237189 176.62608 
+Q 108.208891 176.62608 105.857644 176.62608 
+" clip-path="url(#p7df6226930)" style="fill: none; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+    <path d="M 110.657644 179.02608 
+L 105.857644 176.62608 
+L 110.657644 174.22608 
+z
+" clip-path="url(#p7df6226930)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 24.24096 105.729408 
+L 99.77184 105.729408 
+Q 107.00352 105.729408 107.00352 101.138976 
+L 107.00352 63.395424 
+Q 107.00352 58.804992 99.77184 58.804992 
+L 24.24096 58.804992 
+Q 17.00928 58.804992 17.00928 63.395424 
+L 17.00928 101.138976 
+Q 17.00928 105.729408 24.24096 105.729408 
+z
+" clip-path="url(#p7df6226930)" style="fill: #e8f6f3; stroke: #2a9d8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 120.66336 105.729408 
+L 196.19424 105.729408 
+Q 203.42592 105.729408 203.42592 101.138976 
+L 203.42592 63.395424 
+Q 203.42592 58.804992 196.19424 58.804992 
+L 120.66336 58.804992 
+Q 113.43168 58.804992 113.43168 63.395424 
+L 113.43168 101.138976 
+Q 113.43168 105.729408 120.66336 105.729408 
+z
+" clip-path="url(#p7df6226930)" style="fill: #eaf2f8; stroke: #2f6b9a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 217.08576 105.729408 
+L 292.61664 105.729408 
+Q 299.84832 105.729408 299.84832 101.138976 
+L 299.84832 63.395424 
+Q 299.84832 58.804992 292.61664 58.804992 
+L 217.08576 58.804992 
+Q 209.85408 58.804992 209.85408 63.395424 
+L 209.85408 101.138976 
+Q 209.85408 105.729408 217.08576 105.729408 
+z
+" clip-path="url(#p7df6226930)" style="fill: #fff6d9; stroke: #e9c46a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 313.50816 105.729408 
+L 389.03904 105.729408 
+Q 396.27072 105.729408 396.27072 101.138976 
+L 396.27072 63.395424 
+Q 396.27072 58.804992 389.03904 58.804992 
+L 313.50816 58.804992 
+Q 306.27648 58.804992 306.27648 63.395424 
+L 306.27648 101.138976 
+Q 306.27648 105.729408 313.50816 105.729408 
+z
+" clip-path="url(#p7df6226930)" style="fill: #eaf2f8; stroke: #2f6b9a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 313.50816 200.088288 
+L 389.03904 200.088288 
+Q 396.27072 200.088288 396.27072 195.497856 
+L 396.27072 157.754304 
+Q 396.27072 153.163872 389.03904 153.163872 
+L 313.50816 153.163872 
+Q 306.27648 153.163872 306.27648 157.754304 
+L 306.27648 195.497856 
+Q 306.27648 200.088288 313.50816 200.088288 
+z
+" clip-path="url(#p7df6226930)" style="fill: #fff6d9; stroke: #e9c46a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 217.08576 200.088288 
+L 292.61664 200.088288 
+Q 299.84832 200.088288 299.84832 195.497856 
+L 299.84832 157.754304 
+Q 299.84832 153.163872 292.61664 153.163872 
+L 217.08576 153.163872 
+Q 209.85408 153.163872 209.85408 157.754304 
+L 209.85408 195.497856 
+Q 209.85408 200.088288 217.08576 200.088288 
+z
+" clip-path="url(#p7df6226930)" style="fill: #e8f6f3; stroke: #2a9d8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 120.66336 200.088288 
+L 196.19424 200.088288 
+Q 203.42592 200.088288 203.42592 195.497856 
+L 203.42592 157.754304 
+Q 203.42592 153.163872 196.19424 153.163872 
+L 120.66336 153.163872 
+Q 113.43168 153.163872 113.43168 157.754304 
+L 113.43168 195.497856 
+Q 113.43168 200.088288 120.66336 200.088288 
+z
+" clip-path="url(#p7df6226930)" style="fill: #f5f7f9; stroke: #17324d; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 24.24096 200.088288 
+L 99.77184 200.088288 
+Q 107.00352 200.088288 107.00352 195.497856 
+L 107.00352 157.754304 
+Q 107.00352 153.163872 99.77184 153.163872 
+L 24.24096 153.163872 
+Q 17.00928 153.163872 17.00928 157.754304 
+L 17.00928 195.497856 
+Q 17.00928 200.088288 24.24096 200.088288 
+z
+" clip-path="url(#p7df6226930)" style="fill: #fdede8; stroke: #e76f51; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #17324d" x="13.7952" y="22.900095" transform="rotate(-0 13.7952 22.900095)">TestGenAgent workflow</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(59.9814 75.764798)">1</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(34.896712 84.079702)">Fetch OpenAPI</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(40.409775 92.40068)">specification</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(156.4038 75.837698)">2</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(131.317847 84.006802)">Enumerate API</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(140.2038 92.32778)">operations</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(252.8262 71.753147)">3</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(232.232583 80.074125)">Build sample</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(234.557536 88.243228)">request and</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(239.846583 96.412331)">response</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(349.2486 71.745553)">4</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(333.950358 79.914656)">Construct</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(319.662717 88.235634)">constrained pytest</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(338.295248 96.419925)">prompt</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(349.2486 170.272516)">5</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(320.233514 178.441619)">Generate code via</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(342.047827 186.610722)">LLM</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(252.8262 170.113047)">6</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(226.950497 178.434025)">Strip fences and</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(219.070083 186.755003)">validate Python AST</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(156.4038 170.264922)">7</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(127.458323 178.434025)">Write test module</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(126.709073 186.603128)">and execute pytest</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(59.9814 170.264922)">8</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(26.010759 178.434025)">Export coverage and</text>
+    <text style="font-weight: 700; font-size: 8.1px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(41.559595 186.618316)">CSV results</text>
+   </g>
+   <g id="text_10">
+    <text style="font-style: italic; font-size: 8.5px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #5d6d7e" x="13.7952" y="252.574259" transform="rotate(-0 13.7952 252.574259)">If no API key is configured, the module executes the committed generated-test fallback.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p7df6226930">
+   <rect x="5.76" y="5.76" width="401.76" height="255.024"/>
+  </clipPath>
+ </defs>
+</svg>

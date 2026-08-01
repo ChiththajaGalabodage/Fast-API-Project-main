@@ -47,6 +47,26 @@ SERVER_URL = "http://localhost:8000"
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1000"))
 
 
+def sanitized_pytest_env() -> dict[str, str]:
+    """Do not expose LLM or CI credentials to generated test code."""
+    env = os.environ.copy()
+    secret_markers = (
+        "API_KEY",
+        "TOKEN",
+        "SECRET",
+        "PASSWORD",
+        "PRIVATE_KEY",
+        "CREDENTIAL",
+    )
+    for key in list(env):
+        upper_key = key.upper()
+        if upper_key.startswith(("GITHUB_", "ACTIONS_", "RUNNER_")) or any(
+            marker in upper_key for marker in secret_markers
+        ):
+            env.pop(key, None)
+    return env
+
+
 def write_csv(path: str, rows: list[dict[str, str]]) -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as f:
@@ -69,19 +89,29 @@ def run_committed_generated_tests(reason: str) -> int:
     csv_path = generated_results_path()
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)
     print(f"{reason} Running committed generated tests instead.")
-    result = subprocess.run(
-        [
-            "pytest",
-            output_path,
-            "--cov=main",
-            "--cov-report=term-missing",
-            "--tb=short",
-            f"--csv={csv_path}",
-            "--csv-columns=id,status,duration,message",
-        ],
-        capture_output=False,
-        text=True,
-    )
+    try:
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pytest",
+                output_path,
+                "--cov=main",
+                "--cov-report=term-missing",
+                "--tb=short",
+                "-p",
+                "no:cacheprovider",
+                f"--csv={csv_path}",
+                "--csv-columns=id,status,duration,message",
+            ],
+            capture_output=False,
+            text=True,
+            env=sanitized_pytest_env(),
+            timeout=300,
+        )
+    except subprocess.TimeoutExpired:
+        print("Committed generated-test fallback timed out after 300 seconds.")
+        return 124
     print(f"Wrote CSV report to {csv_path}")
     return result.returncode
 
@@ -259,6 +289,8 @@ Write a **single** pytest-asyncio test function that:
 - For DELETE: test deletion, then 404 on second attempt, if applicable.
 - Asserts status codes, and asserts response structure using ONLY the keys shown in the Real Live Response above (if provided) - do not invent field names.
 - Contains NO comments and NO explanatory prose - only executable code. Every line must be a statement, not a note.
+- Uses only relative API paths beginning with `/` through the provided `client` fixture.
+- Contains no imports, decorators, skips/xfails, filesystem/process/environment access, external URLs, dynamic execution, or nested functions/classes.
 
 Name the function: `test_{method}_api_{path.replace("/", "_").strip("_")}`
 
@@ -294,6 +326,370 @@ def _is_valid_python(code: str) -> bool:
         return False
 
 
+def _is_statically_truthy_assertion(node: ast.AST) -> bool:
+    """Evaluate only literal-only assertion forms; never execute generated code."""
+    try:
+        if isinstance(node, ast.Constant):
+            return bool(node.value)
+        if isinstance(node, (ast.List, ast.Tuple, ast.Set)):
+            return bool(node.elts)
+        if isinstance(node, ast.Dict):
+            return bool(node.keys)
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
+            return not bool(ast.literal_eval(node.operand))
+        if isinstance(node, ast.Compare) and len(node.ops) == len(node.comparators) == 1:
+            if ast.dump(node.left, include_attributes=False) == ast.dump(
+                node.comparators[0], include_attributes=False
+            ) and isinstance(node.ops[0], (ast.Eq, ast.Is, ast.LtE, ast.GtE)):
+                return True
+            left = ast.literal_eval(node.left)
+            right = ast.literal_eval(node.comparators[0])
+            operator = node.ops[0]
+            if isinstance(operator, ast.Eq):
+                return left == right
+            if isinstance(operator, ast.NotEq):
+                return left != right
+            if isinstance(operator, ast.Is):
+                return left is right
+            if isinstance(operator, ast.IsNot):
+                return left is not right
+            if isinstance(operator, ast.In):
+                return left in right
+            if isinstance(operator, ast.NotIn):
+                return left not in right
+            if isinstance(operator, ast.Lt):
+                return left < right
+            if isinstance(operator, ast.LtE):
+                return left <= right
+            if isinstance(operator, ast.Gt):
+                return left > right
+            if isinstance(operator, ast.GtE):
+                return left >= right
+    except (TypeError, ValueError, SyntaxError):
+        return False
+    return False
+
+
+def _bound_names(target: ast.AST) -> set[str]:
+    if isinstance(target, ast.Name):
+        return {target.id}
+    if isinstance(target, (ast.Tuple, ast.List)):
+        names: set[str] = set()
+        for item in target.elts:
+            names.update(_bound_names(item))
+        return names
+    return set()
+
+
+def _is_client_request_call(node: ast.AST) -> bool:
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "client"
+        and node.func.attr in {"get", "post", "put", "patch", "delete", "request"}
+    )
+
+
+def _is_direct_client_response(node: ast.AST) -> bool:
+    """Return True only when an expression is exactly a fixture request result."""
+    value = node.value if isinstance(node, ast.Await) else node
+    return _is_client_request_call(value)
+
+
+def _is_http_status_comparison(node: ast.AST, derived_names: set[str]) -> bool:
+    if not isinstance(node, ast.Compare) or len(node.ops) != 1 or len(node.comparators) != 1:
+        return False
+    left = node.left
+    if not (
+        isinstance(left, ast.Attribute)
+        and left.attr == "status_code"
+        and isinstance(left.value, ast.Name)
+        and left.value.id in derived_names
+    ):
+        return False
+    right = node.comparators[0]
+    if isinstance(node.ops[0], ast.Eq):
+        return (
+            isinstance(right, ast.Constant)
+            and isinstance(right.value, int)
+            and 100 <= right.value <= 499
+        )
+    if isinstance(node.ops[0], ast.In) and isinstance(right, (ast.Tuple, ast.List, ast.Set)):
+        values = [item.value for item in right.elts if isinstance(item, ast.Constant)]
+        return len(values) == len(right.elts) and bool(values) and all(
+            isinstance(value, int) and 100 <= value <= 499 for value in values
+        )
+    return False
+
+
+def _generated_test_validation_error(code: str) -> Optional[str]:
+    """Return a deterministic safety-policy error, or None for an allowed test."""
+    try:
+        module = ast.parse(code)
+    except SyntaxError as error:
+        return f"syntax error: {error}"
+
+    if len(module.body) != 1 or not isinstance(module.body[0], ast.AsyncFunctionDef):
+        return "output must contain exactly one async test function"
+    function = module.body[0]
+    if not function.name.startswith("test_"):
+        return "function name must start with test_"
+    if function.decorator_list:
+        return "generated functions may not add decorators"
+    args = function.args
+    if (
+        args.posonlyargs
+        or len(args.args) != 1
+        or args.args[0].arg != "client"
+        or args.vararg
+        or args.kwarg
+        or args.kwonlyargs
+        or args.defaults
+        or args.kw_defaults
+        or args.args[0].annotation is not None
+        or function.returns is not None
+        or function.type_comment is not None
+        or getattr(function, "type_params", [])
+    ):
+        return "generated function signature must be exactly (client)"
+    if not any(isinstance(node, ast.Assert) for node in ast.walk(function)):
+        return "generated tests must contain an assertion"
+
+    forbidden_nodes = (
+        ast.Import,
+        ast.ImportFrom,
+        ast.ClassDef,
+        ast.Global,
+        ast.Nonlocal,
+        ast.Lambda,
+        ast.Yield,
+        ast.YieldFrom,
+        ast.Delete,
+        ast.NamedExpr,
+        ast.AugAssign,
+        ast.IfExp,
+        ast.Return,
+        ast.Break,
+        ast.Continue,
+        ast.If,
+        ast.For,
+        ast.AsyncFor,
+        ast.While,
+        ast.Try,
+        ast.TryStar,
+        ast.Match,
+        ast.With,
+        ast.AsyncWith,
+    )
+    forbidden_names = {
+        "AsyncClient",
+        "Client",
+        "aiohttp",
+        "httpx",
+        "os",
+        "pathlib",
+        "pytest",
+        "requests",
+        "shutil",
+        "socket",
+        "subprocess",
+        "urllib",
+        "open",
+        "eval",
+        "exec",
+        "compile",
+        "__import__",
+        "input",
+        "breakpoint",
+        "getattr",
+        "setattr",
+        "delattr",
+        "globals",
+        "locals",
+        "vars",
+        "exit",
+        "quit",
+        "any",
+        "all",
+    }
+    forbidden_calls = {
+        "eval",
+        "exec",
+        "compile",
+        "open",
+        "__import__",
+        "input",
+        "breakpoint",
+        "getattr",
+        "setattr",
+        "delattr",
+        "globals",
+        "locals",
+        "vars",
+        "exit",
+        "quit",
+    }
+    forbidden_attributes = {
+        "system",
+        "popen",
+        "Popen",
+        "run",
+        "call",
+        "check_call",
+        "check_output",
+        "unlink",
+        "rmdir",
+        "rmtree",
+        "write_text",
+        "write_bytes",
+        "read_text",
+        "read_bytes",
+        "chmod",
+        "chown",
+        "remove",
+        "write",
+        "writelines",
+        "read",
+        "readline",
+        "readlines",
+        "send",
+        "connect",
+        "clear",
+        "pop",
+        "popitem",
+        "setdefault",
+        "update",
+        "append",
+        "extend",
+        "insert",
+        "sort",
+        "reverse",
+    }
+
+    relative_client_calls = 0
+    for node in ast.walk(function):
+        if isinstance(node, forbidden_nodes):
+            return f"forbidden construct: {type(node).__name__}"
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node is not function:
+            return "nested functions are forbidden"
+        if isinstance(node, ast.Name) and (
+            node.id.startswith("__") or node.id in forbidden_names
+        ):
+            return f"forbidden name: {node.id}"
+        if (
+            isinstance(node, ast.Name)
+            and node.id == "client"
+            and isinstance(node.ctx, ast.Store)
+        ):
+            return "the provided client fixture may not be reassigned"
+        if isinstance(node, ast.Attribute) and (
+            node.attr.startswith("_") or node.attr in forbidden_attributes
+        ):
+            return f"forbidden attribute: {node.attr}"
+        if isinstance(node, (ast.Attribute, ast.Subscript)) and isinstance(
+            node.ctx, ast.Store
+        ):
+            return "mutation of attributes or response containers is forbidden"
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name) and node.func.id in forbidden_calls:
+                return f"forbidden call: {node.func.id}"
+            if isinstance(node.func, ast.Attribute) and node.func.attr in forbidden_attributes:
+                return f"forbidden call: {node.func.attr}"
+            if (
+                isinstance(node.func, ast.Attribute)
+                and isinstance(node.func.value, ast.Name)
+                and node.func.value.id == "client"
+                and node.func.attr in {"get", "post", "put", "patch", "delete", "request"}
+            ):
+                relative_client_calls += 1
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            value = node.value.strip()
+            if "://" in value or value.startswith("//"):
+                return "external URLs are forbidden"
+            if value.startswith("/") and not value.startswith("/api/"):
+                return "requests must target a relative /api/ path"
+        if isinstance(node, ast.Assert) and _is_statically_truthy_assertion(node.test):
+            return "trivially true assertions are forbidden"
+
+    if relative_client_calls == 0:
+        return "generated tests must call the provided client fixture"
+    # Track response provenance in source order.  Using the final set of derived
+    # names would let an assertion over fabricated data be "validated" by a real
+    # request that only occurs later in the function.
+    derived_names: set[str] = set()
+    direct_response_names: set[str] = set()
+    request_seen = False
+    has_status_assertion = False
+    for statement in function.body:
+        assigned_names: set[str] = set()
+        assigned_value: ast.AST | None = None
+        if isinstance(statement, ast.Assign):
+            for target in statement.targets:
+                assigned_names.update(_bound_names(target))
+            assigned_value = statement.value
+        elif isinstance(statement, ast.AnnAssign) and statement.value is not None:
+            assigned_names = _bound_names(statement.target)
+            assigned_value = statement.value
+
+        if assigned_value is not None and assigned_names:
+            value_names = {
+                child.id
+                for child in ast.walk(assigned_value)
+                if isinstance(child, ast.Name) and isinstance(child.ctx, ast.Load)
+            }
+            from_client = any(
+                _is_client_request_call(child) for child in ast.walk(assigned_value)
+            )
+            direct_response = _is_direct_client_response(assigned_value)
+            remains_derived = from_client or bool(
+                value_names.intersection(derived_names)
+            )
+            derived_names.difference_update(assigned_names)
+            direct_response_names.difference_update(assigned_names)
+            if remains_derived:
+                derived_names.update(assigned_names)
+            if direct_response:
+                direct_response_names.update(assigned_names)
+            request_seen = request_seen or from_client
+        else:
+            request_seen = request_seen or any(
+                _is_client_request_call(child) for child in ast.walk(statement)
+            )
+
+        if not isinstance(statement, ast.Assert):
+            continue
+        assertion = statement
+        assertion_names = {
+            child.id
+            for child in ast.walk(assertion.test)
+            if isinstance(child, ast.Name) and isinstance(child.ctx, ast.Load)
+        }
+        direct_client_call = any(
+            _is_client_request_call(child) for child in ast.walk(assertion.test)
+        )
+        if (
+            not request_seen
+            or (
+                not direct_client_call
+                and not assertion_names.intersection(derived_names)
+            )
+        ):
+            return "every assertion must reference data derived from the client response"
+        if any(
+            _is_http_status_comparison(child, direct_response_names)
+            for child in ast.walk(assertion.test)
+        ):
+            has_status_assertion = True
+        for child in ast.walk(assertion.test):
+            if isinstance(child, ast.BoolOp) and isinstance(child.op, ast.Or):
+                return "boolean OR is forbidden in generated assertions"
+    if not has_status_assertion:
+        return "generated tests must assert a client response status_code"
+
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Step 3 - Call OpenRouter (non-streaming), with validation + one retry
 # ---------------------------------------------------------------------------
@@ -322,14 +718,15 @@ async def generate_test(prompt, retries: int = 1):
             raw = response.choices[0].message.content.strip()
             code = _extract_code(raw)
 
-            if _is_valid_python(code):
+            validation_error = _generated_test_validation_error(code)
+            if validation_error is None:
                 return code
 
             last_invalid_code = code
             remaining = retries - attempt
             print(
-                f"   Attempt {attempt + 1} produced invalid Python "
-                f"(syntax error) - {'retrying' if remaining > 0 else 'giving up'}."
+                f"   Attempt {attempt + 1} produced a rejected test "
+                f"({validation_error}) - {'retrying' if remaining > 0 else 'giving up'}."
             )
 
         except Exception as e:
@@ -366,35 +763,37 @@ async def main():
     spec = await fetch_openapi()
     print(f"Found {len(spec['paths'])} endpoints.")
 
+    operations = [
+        (path, method, operation)
+        for path, methods in spec["paths"].items()
+        for method, operation in methods.items()
+        if method.lower() in {"get", "post", "put", "delete"}
+    ]
     all_tests = []
     async with httpx.AsyncClient() as http_client:
-        for path, methods in spec["paths"].items():
-            for method, operation in methods.items():
-                if method.lower() not in ["get", "post", "put", "delete"]:
-                    continue
-                print(f"Generating test for {method.upper()} {path} ...")
-                sample_response = await fetch_sample_response(
-                    http_client, path, method, operation, spec
+        for path, method, operation in operations:
+            print(f"Generating test for {method.upper()} {path} ...")
+            sample_response = await fetch_sample_response(
+                http_client, path, method, operation, spec
+            )
+            if sample_response is not None:
+                print(
+                    f"   Got live sample response (status {sample_response['status_code']})"
                 )
-                if sample_response is not None:
-                    print(
-                        f"   Got live sample response (status {sample_response['status_code']})"
-                    )
-                else:
-                    print("   No live sample available - falling back to spec only")
-                prompt = build_prompt(path, method, operation, sample_response)
-                code = await generate_test(prompt)
-                if code:
-                    all_tests.append(code)
-                else:
-                    print(
-                        f"Skipping {method.upper()} {path} due to generation error."
-                    )
+            else:
+                print("   No live sample available - falling back to spec only")
+            prompt = build_prompt(path, method, operation, sample_response)
+            code = await generate_test(prompt)
+            if code:
+                all_tests.append(code)
+            else:
+                print(f"Skipping {method.upper()} {path} due to generation error.")
 
-    if not all_tests:
+    if len(all_tests) != len(operations):
         sys.exit(
             run_committed_generated_tests(
-                "LLM did not generate any valid tests."
+                f"LLM generated {len(all_tests)} of {len(operations)} required tests; "
+                "partial output will not replace the committed suite."
             )
         )
 
@@ -415,16 +814,21 @@ async def main():
     # Defense in depth: each function was validated individually, but verify
     # the fully concatenated file too, in case of duplicate function names or
     # other interaction effects between generations.
-    if not _is_valid_python(full_file_contents):
+    full_file_valid = _is_valid_python(full_file_contents)
+    if full_file_valid:
+        generated_tree = ast.parse(full_file_contents)
+        generated_names = [
+            node.name
+            for node in generated_tree.body
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+        ]
+        full_file_valid = len(generated_names) == len(set(generated_names))
+    if not full_file_valid:
         print(
-            "The concatenated test file failed to parse even though each "
-            "function validated individually. Writing it anyway for "
-            "inspection, but NOT running pytest on it."
+            "The concatenated test file is invalid or has duplicate function "
+            "names. Preserving and running the committed fallback instead."
         )
-        with open(OUTPUT_PATH, encoding="utf-8", mode="w") as f:
-            f.write(full_file_contents)
-        print(f"Wrote (invalid) file to {OUTPUT_PATH} for manual review.")
-        return
+        sys.exit(run_committed_generated_tests("Generated candidate was rejected."))
 
     # Save the file using the absolute output path
     with open(OUTPUT_PATH, encoding="utf-8", mode="w") as f:
@@ -440,19 +844,29 @@ async def main():
     os.makedirs(REPORTS_DIR, exist_ok=True)
     CSV_PATH = os.path.join(REPORTS_DIR, "generated_test_results.csv")
 
-    result = subprocess.run(
-        [
-            "pytest",
-            OUTPUT_PATH,  # Use the dynamic path here too!
-            "--cov=main",
-            "--cov-report=term-missing",
-            "--tb=short",
-            f"--csv={CSV_PATH}",
-            "--csv-columns=id,status,duration,message",
-        ],
-        capture_output=False,
-        text=True,
-    )
+    try:
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "pytest",
+                OUTPUT_PATH,  # Use the dynamic path here too!
+                "--cov=main",
+                "--cov-report=term-missing",
+                "--tb=short",
+                "-p",
+                "no:cacheprovider",
+                f"--csv={CSV_PATH}",
+                "--csv-columns=id,status,duration,message",
+            ],
+            capture_output=False,
+            text=True,
+            env=sanitized_pytest_env(),
+            timeout=300,
+        )
+    except subprocess.TimeoutExpired:
+        print("Generated tests timed out after 300 seconds.")
+        sys.exit(124)
     print(f"Wrote CSV report to {CSV_PATH}")
     sys.exit(result.returncode)
 

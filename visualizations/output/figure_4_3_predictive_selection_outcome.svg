@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="277.632pt" height="312.691585pt" viewBox="0 0 277.632 312.691585" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-07-21T21:42:28.940085</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 312.691585 
+L 277.632 312.691585 
+L 277.632 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 241.058159 128.471826 
+C 234.642096 106.32101 221.198088 86.844007 202.761886 72.990099 
+C 184.32568 59.136192 161.877314 51.641825 138.815995 51.641825 
+L 138.815997 87.833057 
+C 154.036468 87.833057 168.852389 92.779339 181.020284 101.922918 
+C 193.188178 111.066497 202.061223 123.921319 206.295825 138.540858 
+z
+" style="fill: #2a9d8f; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 138.816001 51.641825 
+C 127.71815 51.641825 116.688273 53.377398 106.126704 56.785561 
+C 95.565136 60.193724 85.601207 65.232742 76.596659 71.719681 
+C 67.592111 78.206621 59.657199 86.062028 53.079919 95.000808 
+C 46.502639 103.939588 41.363567 113.852239 37.849233 124.378956 
+C 34.3349 134.905672 32.488347 145.917539 32.376599 157.014827 
+C 32.264852 168.112115 33.88928 179.158906 37.190923 189.754256 
+C 40.492567 200.349606 45.430991 210.363746 51.82693 219.433158 
+C 58.222868 228.502573 65.998004 236.516196 74.870102 243.183144 
+C 83.7422 249.850093 93.602607 255.088725 104.093404 258.708874 
+C 114.584201 262.329022 125.576914 264.286365 136.672514 264.509841 
+C 147.768115 264.733323 158.830704 263.220198 169.458762 260.025411 
+C 180.086821 256.830623 190.150173 251.993287 199.283526 245.68899 
+C 208.416882 239.384693 216.508385 231.690635 223.264329 222.88612 
+C 230.020273 214.081604 235.357913 204.274467 239.083515 193.820656 
+C 242.809118 183.366844 244.877047 172.39437 245.212238 161.301582 
+C 245.547424 150.208793 244.145774 139.131513 241.058159 128.471826 
+L 206.295825 138.540858 
+C 208.333651 145.576251 209.25874 152.887256 209.037517 160.208496 
+C 208.816291 167.529736 207.451458 174.77157 204.99256 181.671085 
+C 202.533663 188.570601 199.01082 195.043311 194.551897 200.854292 
+C 190.092974 206.665272 184.752582 211.74335 178.724567 215.904186 
+C 172.696554 220.065022 166.054742 223.257664 159.040223 225.366224 
+C 152.025704 227.474783 144.724396 228.473446 137.401299 228.325947 
+C 130.078203 228.178453 122.823013 226.886607 115.899087 224.497309 
+C 108.97516 222.108011 102.467292 218.650514 96.611707 214.250328 
+C 90.756122 209.850142 85.624533 204.561151 81.403214 198.575337 
+C 77.181894 192.589525 73.922534 185.980192 71.743449 178.987261 
+C 69.564365 171.99433 68.492242 164.703449 68.565996 157.379238 
+C 68.639749 150.055028 69.858474 142.787196 72.177934 135.839564 
+C 74.497394 128.89193 77.889182 122.34958 82.230187 116.449986 
+C 86.571192 110.550391 91.808233 105.365822 97.751235 101.084442 
+C 103.694237 96.803062 110.27043 93.47731 117.241065 91.227923 
+C 124.2117 88.978535 131.491419 87.833057 138.816001 87.833057 
+z
+" style="fill: #d9e1e8; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1"/>
+   <g id="matplotlib.axis_2"/>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 22px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #17324d" x="138.816" y="156.631031" transform="rotate(-0 138.816 156.631031)">16/78</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 10px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #5d6d7e" x="138.816" y="175.391241" transform="rotate(-0 138.816 175.391241)">tests selected</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #17324d" x="5.76" y="15.030625" transform="rotate(-0 5.76 15.030625)">Predictive selection outcome</text>
+   </g>
+   <g id="legend_1">
+    <g id="patch_4">
+     <path d="M 39.282328 300.178616 
+L 61.282328 300.178616 
+L 61.282328 292.478616 
+L 39.282328 292.478616 
+z
+" style="fill: #2a9d8f; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_4">
+     <text style="font-size: 11px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start" x="70.082328" y="300.178616" transform="rotate(-0 70.082328 300.178616)">Selected (16)</text>
+    </g>
+    <g id="patch_5">
+     <path d="M 150.418422 300.178616 
+L 172.418422 300.178616 
+L 172.418422 292.478616 
+L 150.418422 292.478616 
+z
+" style="fill: #d9e1e8; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_5">
+     <text style="font-size: 11px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start" x="181.218422" y="300.178616" transform="rotate(-0 181.218422 300.178616)">Skipped (62)</text>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

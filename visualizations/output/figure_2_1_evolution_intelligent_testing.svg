@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="413.852094pt" height="222.192pt" viewBox="0 0 413.852094 222.192" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-07-21T21:42:20.315326</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 222.192 
+L 413.852094 222.192 
+L 413.852094 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="line2d_1">
+    <path d="M 46.508094 115.30944 
+L 359.880894 115.30944 
+" clip-path="url(#pd3ebca4db6)" style="fill: none; stroke: #d9e1e8; stroke-width: 5; stroke-linecap: round"/>
+   </g>
+   <g id="patch_2">
+    <path d="M 6.733854 96.770304 
+L 86.282334 96.770304 
+Q 93.514014 96.770304 93.514014 92.978208 
+L 93.514014 49.158432 
+Q 93.514014 45.366336 86.282334 45.366336 
+L 6.733854 45.366336 
+Q -0.497826 45.366336 -0.497826 49.158432 
+L -0.497826 92.978208 
+Q -0.497826 96.770304 6.733854 96.770304 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #fdede8; stroke: #e76f51; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 111.191454 96.770304 
+L 190.739934 96.770304 
+Q 197.971614 96.770304 197.971614 92.978208 
+L 197.971614 49.158432 
+Q 197.971614 45.366336 190.739934 45.366336 
+L 111.191454 45.366336 
+Q 103.959774 45.366336 103.959774 49.158432 
+L 103.959774 92.978208 
+Q 103.959774 96.770304 111.191454 96.770304 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #fff6d9; stroke: #e9c46a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 215.649054 96.770304 
+L 295.197534 96.770304 
+Q 302.429214 96.770304 302.429214 92.978208 
+L 302.429214 49.158432 
+Q 302.429214 45.366336 295.197534 45.366336 
+L 215.649054 45.366336 
+Q 208.417374 45.366336 208.417374 49.158432 
+L 208.417374 92.978208 
+Q 208.417374 96.770304 215.649054 96.770304 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #eaf2f8; stroke: #2f6b9a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 320.106654 96.770304 
+L 399.655134 96.770304 
+Q 406.886814 96.770304 406.886814 92.978208 
+L 406.886814 49.158432 
+Q 406.886814 45.366336 399.655134 45.366336 
+L 320.106654 45.366336 
+Q 312.874974 45.366336 312.874974 49.158432 
+L 312.874974 92.978208 
+Q 312.874974 96.770304 320.106654 96.770304 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #e8f6f3; stroke: #2a9d8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #17324d" x="14.367294" y="21.569535" transform="rotate(-0 14.367294 21.569535)">Evolution of intelligent continuous testing</text>
+   </g>
+   <g id="patch_6">
+    <path d="M 46.508094 122.68296 
+C 50.237274 122.68296 53.814218 121.906039 56.451146 120.523306 
+C 59.088075 119.140573 60.569694 117.26492 60.569694 115.30944 
+C 60.569694 113.35396 59.088075 111.478307 56.451146 110.095574 
+C 53.814218 108.712841 50.237274 107.93592 46.508094 107.93592 
+C 42.778914 107.93592 39.201969 108.712841 36.565041 110.095574 
+C 33.928113 111.478307 32.446494 113.35396 32.446494 115.30944 
+C 32.446494 117.26492 33.928113 119.140573 36.565041 120.523306 
+C 39.201969 121.906039 42.778914 122.68296 46.508094 122.68296 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #e76f51; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(5.76 54.550337)">Traditional automation</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(46.508094 63.870028)"/>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(23.886102 73.189718)">Rigid scripts</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(11.038117 82.526097)">Full-suite execution</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(14.989578 91.845787)">Manual diagnosis</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #5d6d7e" x="46.508094" y="146.82258" transform="rotate(-0 46.508094 146.82258)">Stage 1</text>
+   </g>
+   <g id="patch_7">
+    <path d="M 150.965694 122.68296 
+C 154.694874 122.68296 158.271818 121.906039 160.908746 120.523306 
+C 163.545675 119.140573 165.027294 117.26492 165.027294 115.30944 
+C 165.027294 113.35396 163.545675 111.478307 160.908746 110.095574 
+C 158.271818 108.712841 154.694874 107.93592 150.965694 107.93592 
+C 147.236514 107.93592 143.659569 108.712841 141.022641 110.095574 
+C 138.385713 111.478307 136.904094 113.35396 136.904094 115.30944 
+C 136.904094 117.26492 138.385713 119.140573 141.022641 120.523306 
+C 143.659569 121.906039 147.236514 122.68296 150.965694 122.68296 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #e9c46a; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(115.985913 54.550337)">ML-assisted testing</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(150.965694 63.886715)"/>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(115.994952 73.206406)">Predictive selection</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(114.014006 82.526097)">Flaky-test prediction</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(116.487928 91.862475)">Specialized models</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #5d6d7e" x="150.965694" y="146.82258" transform="rotate(-0 150.965694 146.82258)">Stage 2</text>
+   </g>
+   <g id="patch_8">
+    <path d="M 255.423294 122.68296 
+C 259.152474 122.68296 262.729418 121.906039 265.366346 120.523306 
+C 268.003275 119.140573 269.484894 117.26492 269.484894 115.30944 
+C 269.484894 113.35396 268.003275 111.478307 265.366346 110.095574 
+C 262.729418 108.712841 259.152474 107.93592 255.423294 107.93592 
+C 251.694114 107.93592 248.117169 108.712841 245.480241 110.095574 
+C 242.843313 111.478307 241.361694 113.35396 241.361694 115.30944 
+C 241.361694 117.26492 242.843313 119.140573 245.480241 120.523306 
+C 248.117169 121.906039 251.694114 122.68296 255.423294 122.68296 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #2f6b9a; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(217.725536 54.53365)">LLM-assisted testing</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(255.423294 63.870028)"/>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(228.180255 73.189718)">Test generation</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(206.122161 82.526097)">Natural-language reasoning</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(219.212809 91.862475)">Self-healing support</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #5d6d7e" x="255.423294" y="146.82258" transform="rotate(-0 255.423294 146.82258)">Stage 3</text>
+   </g>
+   <g id="patch_9">
+    <path d="M 359.880894 122.68296 
+C 363.610074 122.68296 367.187018 121.906039 369.823946 120.523306 
+C 372.460875 119.140573 373.942494 117.26492 373.942494 115.30944 
+C 373.942494 113.35396 372.460875 111.478307 369.823946 110.095574 
+C 367.187018 108.712841 363.610074 107.93592 359.880894 107.93592 
+C 356.151714 107.93592 352.574769 108.712841 349.937841 110.095574 
+C 347.300913 111.478307 345.819294 113.35396 345.819294 115.30944 
+C 345.819294 117.26492 347.300913 119.140573 349.937841 120.523306 
+C 352.574769 121.906039 356.151714 122.68296 359.880894 122.68296 
+z
+" clip-path="url(#pd3ebca4db6)" style="fill: #2a9d8f; stroke: #ffffff; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(325.645792 54.550337)">Agentic LLM-CTF</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(359.880894 63.886715)"/>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(315.519956 73.206406)">End-to-end orchestration</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(325.894019 82.526097)">Adaptive decisions</text>
+    <text style="font-size: 8.9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(323.424269 91.845787)">Governed autonomy</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 9px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #5d6d7e" x="359.880894" y="146.82258" transform="rotate(-0 359.880894 146.82258)">Stage 4</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: middle; fill: #17324d" x="207.212094" y="180.61776" transform="rotate(-0 207.212094 180.61776)">Increasing scope: execution support  -&gt;  artifact intelligence  -&gt;  lifecycle orchestration</text>
+   </g>
+   <g id="text_11">
+    <text style="font-style: italic; font-size: 8.5px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #5d6d7e" x="14.367294" y="209.331059" transform="rotate(-0 14.367294 209.331059)">Conceptual synthesis of the literature reviewed in the proposal.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pd3ebca4db6">
+   <rect x="6.332094" y="5.76" width="401.76" height="210.672"/>
+  </clipPath>
+ </defs>
+</svg>

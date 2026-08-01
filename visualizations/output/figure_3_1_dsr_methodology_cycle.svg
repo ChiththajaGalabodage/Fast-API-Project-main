@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="379.8pt" height="310.896pt" viewBox="0 0 379.8 310.896" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-07-21T21:42:21.739879</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 310.896 
+L 379.8 310.896 
+L 379.8 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 190.910285 73.348679 
+Q 226.988957 134.318697 292.859754 154.293057 
+" clip-path="url(#pd6ffb89aa6)" style="fill: none; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 288.962748 150.603431 
+L 292.859754 154.293057 
+L 287.569849 155.196886 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 294.784621 156.019255 
+Q 226.988192 176.577903 191.934615 235.816267 
+" clip-path="url(#pd6ffb89aa6)" style="fill: none; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 196.444526 232.907538 
+L 191.934615 235.816267 
+L 192.313579 230.463101 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 188.889715 237.547321 
+Q 152.811043 176.577303 86.940246 156.602943 
+" clip-path="url(#pd6ffb89aa6)" style="fill: none; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 90.837252 160.292569 
+L 86.940246 156.602943 
+L 92.230151 155.699114 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 85.015379 154.876745 
+Q 152.811808 134.318097 187.865385 75.079733 
+" clip-path="url(#pd6ffb89aa6)" style="fill: none; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+    <path d="M 183.355474 77.988462 
+L 187.865385 75.079733 
+L 187.486421 80.432899 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #17324d; stroke: #17324d; stroke-width: 1.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 189.9 188.37936 
+C 200.64359 188.37936 210.948596 184.909504 218.545461 178.733988 
+C 226.142327 172.558472 230.4108 164.181499 230.4108 155.448 
+C 230.4108 146.714501 226.142327 138.337528 218.545461 132.162012 
+C 210.948596 125.986496 200.64359 122.51664 189.9 122.51664 
+C 179.15641 122.51664 168.851404 125.986496 161.254539 132.162012 
+C 153.657673 138.337528 149.3892 146.714501 149.3892 155.448 
+C 149.3892 164.181499 153.657673 172.558472 161.254539 178.733988 
+C 168.851404 184.909504 179.15641 188.37936 189.9 188.37936 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #17324d; stroke: #17324d; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 129.50208 97.668432 
+L 250.29792 97.668432 
+Q 256.92696 97.668432 256.92696 92.279664 
+L 256.92696 50.965776 
+Q 256.92696 45.577008 250.29792 45.577008 
+L 129.50208 45.577008 
+Q 122.87304 45.577008 122.87304 50.965776 
+L 122.87304 92.279664 
+Q 122.87304 97.668432 129.50208 97.668432 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #eaf2f8; stroke: #2f6b9a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 236.30328 181.493712 
+L 357.09912 181.493712 
+Q 363.72816 181.493712 363.72816 176.104944 
+L 363.72816 134.791056 
+Q 363.72816 129.402288 357.09912 129.402288 
+L 236.30328 129.402288 
+Q 229.67424 129.402288 229.67424 134.791056 
+L 229.67424 176.104944 
+Q 229.67424 181.493712 236.30328 181.493712 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #fff6d9; stroke: #e9c46a; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 129.50208 265.318992 
+L 250.29792 265.318992 
+Q 256.92696 265.318992 256.92696 259.930224 
+L 256.92696 218.616336 
+Q 256.92696 213.227568 250.29792 213.227568 
+L 129.50208 213.227568 
+Q 122.87304 213.227568 122.87304 218.616336 
+L 122.87304 259.930224 
+Q 122.87304 265.318992 129.50208 265.318992 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #e8f6f3; stroke: #2a9d8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 22.70088 181.493712 
+L 143.49672 181.493712 
+Q 150.12576 181.493712 150.12576 176.104944 
+L 150.12576 134.791056 
+Q 150.12576 129.402288 143.49672 129.402288 
+L 22.70088 129.402288 
+Q 16.07184 129.402288 16.07184 134.791056 
+L 16.07184 176.104944 
+Q 16.07184 181.493712 22.70088 181.493712 
+z
+" clip-path="url(#pd6ffb89aa6)" style="fill: #fdede8; stroke: #e76f51; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #17324d" x="13.1256" y="24.230655" transform="rotate(-0 13.1256 24.230655)">Artifact-centric Design Science Research cycle</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(141.830344 65.008114)">1. Design and development</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(163.642781 73.495526)">Build modular</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(158.208375 82.118389)">LLM-CTF agents</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(265.671075 148.689019)">2. Demonstration</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(271.156669 157.318181)">Integrate with</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(265.083731 165.956794)">case-study CI/CD</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(166.095188 232.597774)">3. Evaluation</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(151.014563 241.226936)">Compare metrics and</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(163.493156 249.698599)">analyze results</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(49.965394 148.685869)">4. Communication</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(47.157956 157.315031)">Report findings and</text>
+    <text style="font-weight: 700; font-size: 8.4px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #1f2933" transform="translate(47.5143 165.959944)">actionable guidance</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #ffffff" transform="translate(164.539844 152.366625)">LLM-CTF</text>
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Times New Roman', 'DejaVu Serif', serif; fill: #ffffff" transform="translate(161.772656 163.460469)">ARTIFACT</text>
+   </g>
+   <g id="text_7">
+    <text style="font-style: italic; font-size: 8.5px; font-family: 'Times New Roman', 'DejaVu Serif', serif; text-anchor: start; fill: #5d6d7e" x="13.1256" y="295.817459" transform="rotate(-0 13.1256 295.817459)">Evaluation findings feed back into redesign and refinement.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pd6ffb89aa6">
+   <rect x="5.76" y="5.76" width="368.28" height="299.376"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -7,19 +7,17 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  packages: write
 jobs:
   API-CI:
     name: API CI
     runs-on: ubuntu-latest
-    env:
-      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-      GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
+    timeout-minutes: 30
     steps:
       - name: Checkout code changes
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -54,13 +52,61 @@ jobs:
             sleep 2
           done
 
+          curl -sSf http://localhost:8000/api/health > /dev/null
+
+      - name: Snapshot protected files before agent execution
+        id: pre_agent_snapshot
+        run: |
+          mkdir -p reports
+          git ls-files -z | while IFS= read -r -d '' file; do
+            case "$file" in
+              tests_generated/generated_test.py|reports/*) ;;
+              *) sha256sum -- "$file" ;;
+            esac
+          done > reports/pre_agent_protected_files.sha256
+          find .venv -type f -print0 | sort -z | xargs -0 sha256sum > reports/pre_agent_venv_files.sha256
+          echo "source_manifest_sha=$(sha256sum reports/pre_agent_protected_files.sha256 | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          echo "venv_manifest_sha=$(sha256sum reports/pre_agent_venv_files.sha256 | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
       - name: Run test generator (LLM-driven test creation)
+        id: test_generator
+        continue-on-error: true
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
+          # Never expose an LLM credential to pull-request-controlled code.
+          OPENROUTER_API_KEY: ${{ (github.event_name != 'pull_request') && secrets.OPENROUTER_API_KEY || '' }}
+          GEMINI_MODEL: google/gemini-2.5-flash
+          PYTHONDONTWRITEBYTECODE: "1"
         run: |
           # The generator fetches OpenAPI spec, calls LLM, writes tests, and runs pytest with coverage
-          uv run python tests_generated/generator.py
+          .venv/bin/python tests_generated/generator.py
+
+      - name: Verify generator protected-file integrity
+        id: generator_integrity
+        if: always()
+        run: |
+          test -f reports/pre_agent_protected_files.sha256
+          test -f reports/pre_agent_venv_files.sha256
+          echo "${{ steps.pre_agent_snapshot.outputs.source_manifest_sha }}  reports/pre_agent_protected_files.sha256" | sha256sum --check --status -
+          echo "${{ steps.pre_agent_snapshot.outputs.venv_manifest_sha }}  reports/pre_agent_venv_files.sha256" | sha256sum --check --status -
+          find .venv -type f -print0 | sort -z | xargs -0 sha256sum > reports/post_agent_venv_files.sha256
+          cmp -s reports/pre_agent_venv_files.sha256 reports/post_agent_venv_files.sha256 || {
+            echo "Generated tests added, removed, or changed Python-environment files."
+            exit 1
+          }
+          sha256sum --check --status reports/pre_agent_protected_files.sha256 || {
+            echo "Test generation changed a protected repository file."
+            exit 1
+          }
+          sha256sum --check --status reports/pre_agent_venv_files.sha256 || {
+            echo "Generated tests changed the Python environment."
+            exit 1
+          }
+          unexpected_python="$(git ls-files --others --exclude-standard -- '*.py')"
+          if [ -n "$unexpected_python" ]; then
+            echo "Generated tests created unexpected Python source files:"
+            echo "$unexpected_python"
+            exit 1
+          fi
 
       - name: Upload Test Generator Results Artifact
         uses: actions/upload-artifact@v4
@@ -70,54 +116,160 @@ jobs:
           path: reports/generated_test_results.csv
           retention-days: 7
 
-      - name: Run all tests
-        if: always()
-        run: uv run pytest tests/test.py tests_generated/generated_test.py -v --csv=test-results.csv --csv-columns=id,status,duration,message
+      - name: Validate self-healing guardrails
+        if: always() && steps.generator_integrity.outcome == 'success'
+        run: uv run pytest tests/test_self_healing.py -q -p no:cacheprovider
+
+      - name: Run traditional application-test baseline
+        id: traditional_baseline
+        continue-on-error: true
+        if: always() && steps.generator_integrity.outcome == 'success'
+        run: |
+          uv run python tests_selecter/run_test_batch.py \
+            --csv-out test-results.csv \
+            --timing-out reports/traditional_timing.json \
+            --label traditional-full-suite \
+            --expected-count 78 \
+            --verbose \
+            tests/test.py \
+            tests/test_extended.py \
+            tests_generated/generated_test.py
 
       - name: Upload Test Results Artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: api-test-results
-          path: test-results.csv
+          path: |
+            test-results.csv
+            reports/traditional_timing.json
           retention-days: 7
 
       - name: Run test selector with self-healing (predictive test selection)
-        if: always()
+        if: always() && steps.generator_integrity.outcome == 'success'
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'google/gemini-2.5-flash' }}
+          # Autonomous LLM actions run only for trusted push/manual events.
+          OPENROUTER_API_KEY: ${{ (github.event_name != 'pull_request') && secrets.OPENROUTER_API_KEY || '' }}
+          GEMINI_MODEL: google/gemini-2.5-flash
         run: |
+          mkdir -p reports
+          git rev-parse HEAD > reports/source_head_before.txt
+          git status --short > reports/worktree_status_before.txt
+          git ls-files -z | while IFS= read -r -d '' file; do
+            case "$file" in
+              tests/test.py|tests/test_extended.py|tests_generated/generated_test.py|reports/*) ;;
+              *) sha256sum -- "$file" ;;
+            esac
+          done > reports/protected_files_before.sha256
+
           # Get diff from the last commit (or against origin/main for PRs)
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # For PRs, diff against the base branch
-            git fetch origin ${{ github.base_ref }}
-            DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
+            git diff "${{ github.event.pull_request.base.sha }}"...HEAD > /tmp/diff.txt
+          elif [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            git diff "${{ github.event.before }}" HEAD > /tmp/diff.txt
           else
-            # For push, diff against the previous commit
-            DIFF=$(git diff HEAD~1)
+            git show --format= --no-ext-diff HEAD > /tmp/diff.txt
           fi
-          # Write diff to a temporary file
-          echo "$DIFF" > /tmp/diff.txt
+
+          # Repairs are safety-checked, validated twice, checked against the
+          # complete selected batch, and rolled back on any regression.
+          uv run python tests_selecter/selecter.py \
+            --diff /tmp/diff.txt \
+            --run-medium \
+            --min-tests 16 \
+            --max-tests 16 \
+            --max-heal-functions 3 \
+            --heal-validation-runs 2 \
+            --batch-timeout 300 \
+            --failure-csv test-results.csv \
+            --before-csv reports/agentic_before_heal.csv \
+            --csv-out reports/test_results.csv \
+            --timing-out reports/agentic_timing.json \
+            --healing-report reports/self_healing_report.json \
+            --healing-patch reports/self_healing.patch \
+            --healing-backup-dir reports/self_healing_backups
+
+      - name: Record self-healing audit state
+        if: always()
+        run: |
           mkdir -p reports
-          # Run selector with the diff, enabling self-healing and running medium-priority tests
-          uv run python tests_selecter/selecter.py --diff /tmp/diff.txt --run-medium --no-heal --csv-out reports/test_results.csv
+          git rev-parse HEAD > reports/source_head_after.txt
+          git status --short > reports/worktree_status_after.txt
+          if [ -f reports/source_head_before.txt ]; then
+            cmp -s reports/source_head_before.txt reports/source_head_after.txt || {
+              echo "Self-healing must not create or change commits."
+              exit 1
+            }
+          fi
+          if [ -f reports/protected_files_before.sha256 ]; then
+            sha256sum --check --status reports/protected_files_before.sha256 || {
+              echo "Self-healing changed a protected repository file."
+              exit 1
+            }
+          fi
+
+      - name: Verify selector artifact contract
+        if: always()
+        run: |
+          for artifact in \
+            reports/agentic_before_heal.csv \
+            reports/test_results.csv \
+            reports/agentic_timing.json \
+            reports/self_healing_report.json \
+            reports/self_healing.patch; do
+            test -f "$artifact" || {
+              echo "Missing mandatory selector artifact: $artifact"
+              exit 1
+            }
+          done
+
+      - name: Run authoritative secret-free suite after healing
+        if: always() && steps.generator_integrity.outcome == 'success'
+        run: |
+          uv run python tests_selecter/run_test_batch.py \
+            --csv-out reports/final_suite_after_heal.csv \
+            --timing-out reports/final_suite_timing.json \
+            --label final-suite-after-healing \
+            --expected-count 106 \
+            --verbose \
+            tests/test.py \
+            tests/test_extended.py \
+            tests/test_self_healing.py \
+            tests_generated/generated_test.py
 
       - name: Upload Test Selector Results Artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: selector-test-results
-          path: reports/test_results.csv
+          path: |
+            reports/agentic_before_heal.csv
+            reports/test_results.csv
+            reports/agentic_timing.json
+            reports/self_healing_report.json
+            reports/self_healing.patch
+            reports/self_healing_backups/
+            reports/source_head_before.txt
+            reports/source_head_after.txt
+            reports/worktree_status_before.txt
+            reports/worktree_status_after.txt
+            reports/protected_files_before.sha256
+            reports/pre_agent_protected_files.sha256
+            reports/pre_agent_venv_files.sha256
+            reports/post_agent_venv_files.sha256
+            reports/final_suite_after_heal.csv
+            reports/final_suite_timing.json
           retention-days: 7
 
       - name: Generate traditional vs agentic comparison report
-        if: always()
+        if: always() && steps.generator_integrity.outcome == 'success'
         run: |
           uv run python tests_selecter/comparison_report.py \
             test-results.csv \
             reports/test_results.csv \
-            reports/comparison_report.csv
+            reports/comparison_report.csv \
+            reports/traditional_timing.json \
+            reports/agentic_timing.json
 
       - name: Upload Comparison Report Artifact
         uses: actions/upload-artifact@v4
