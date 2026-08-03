@@ -175,8 +175,8 @@ jobs:
           # complete selected batch, and rolled back on any regression.
           uv run python tests_selecter/selecter.py \
             --diff /tmp/diff.txt \
-            --run-medium \
-            --min-tests 16 \
+            --high-threshold 0.80 \
+            --medium-threshold 0.60 \
             --max-tests 16 \
             --max-heal-functions 3 \
             --heal-validation-runs 2 \

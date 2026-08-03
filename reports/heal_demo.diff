@@ -1,0 +1,13 @@
+diff --git a/tests/test.py b/tests/test.py
+index 27d0fff..a083296 100644
+--- a/tests/test.py
++++ b/tests/test.py
+@@ -87,7 +87,7 @@ async def test_create_post(client):
+         "content": "This is the post content.",
+     }
+     response = await client.post("/api/posts", json=payload)
+-    assert response.status_code == 201
++    assert response.status_code == 200
+     new_post = response.json()
+     assert new_post["user_id"] == 1
+     assert new_post["title"] == payload["title"]

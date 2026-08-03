@@ -87,7 +87,7 @@ async def test_create_post(client):
         "content": "This is the post content.",
     }
     response = await client.post("/api/posts", json=payload)
-    assert response.status_code == 201
+    assert response.status_code == 200
     new_post = response.json()
     assert new_post["user_id"] == 1
     assert new_post["title"] == payload["title"]

@@ -1,0 +1,18 @@
+id,status,duration,message
+tests/test.py::test_create_post,failed,0.12066139999660663,"assert 201 == 200
+ +  where 201 = <Response [201 Created]>.status_code"
+tests/test.py::test_get_users,passed,0.0702915000001667,
+tests/test.py::test_get_users_paginated,passed,0.12639630000921898,
+tests/test.py::test_get_user_with_posts,passed,0.054866800011950545,
+tests/test.py::test_update_post,passed,0.2243797999981325,
+tests/test.py::test_delete_post,passed,0.2446289999934379,
+tests/test.py::test_get_user_not_found,passed,0.06002820000867359,
+tests/test.py::test_create_post_user_not_found,passed,0.10855540000193287,
+tests/test.py::test_create_post_blank_title,passed,0.004954300005920231,
+tests/test.py::test_create_post_title_too_long,passed,0.002992099995026365,
+tests/test.py::test_create_post_content_too_long,passed,0.002634000004036352,
+tests/test.py::test_update_post_not_found,passed,0.12067129999923054,
+tests/test.py::test_delete_post_not_found,passed,0.060456699997303076,
+tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20],passed,0.0028026999934809282,
+tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20],passed,0.002325800000107847,
+tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0],passed,0.0016487999964738265,

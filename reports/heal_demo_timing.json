@@ -1,0 +1,14 @@
+{
+  "strategy": "agentic-selected-batch",
+  "wall_time_sec": 17.628,
+  "initial_batch_wall_time_sec": 12.693,
+  "healing_wall_time_sec": 0.262,
+  "final_validation_wall_time_sec": 0.0,
+  "test_count": 16,
+  "collected_test_count": 78,
+  "initial_failed_count": 1,
+  "healed_count": 0,
+  "rollback_failed_count": 0,
+  "final_failed_count": 1,
+  "exit_code": 1
+}

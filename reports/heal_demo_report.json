@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-08-01T16:36:27.519089+00:00",
+  "model": "google/gemini-2.5-flash",
+  "initial_failed_count": 1,
+  "healed_count": 0,
+  "rollback_failed_count": 0,
+  "final_failed_count": 1,
+  "final_validation_passed": false,
+  "attempts": [
+    {
+      "test_id": "tests/test.py::test_create_post",
+      "base_test_id": "tests/test.py::test_create_post",
+      "test_file": "tests/test.py",
+      "function_name": "test_create_post",
+      "outcome": "no_fix",
+      "safety_validated": false,
+      "applied": false,
+      "kept": false,
+      "rolled_back": false,
+      "rollback_verified": false,
+      "rollback_error": "",
+      "validation_runs": 0,
+      "rerun_wall_time_sec": 0.0,
+      "rerun_test_duration_sec": 0.0,
+      "original_sha256": "",
+      "repaired_sha256": "",
+      "reason": "LLM returned NO_FIX or did not provide a candidate",
+      "patch": ""
+    }
+  ]
+}

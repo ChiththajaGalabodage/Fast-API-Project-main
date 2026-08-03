@@ -409,7 +409,7 @@ def test_selector_runs_complete_fail_repair_validate_keep_flow(tmp_path, monkeyp
     )
 
     async def deterministic_selection(_diff, _tests):
-        return {"high": [test_id], "medium": [], "low": []}
+        return [{"id": test_id, "score": 1.0, "reason": "directly affected"}]
 
     async def deterministic_repair(_test_id, _message):
         return "def test_target():\n    actual = 1\n    assert actual == 1\n"
@@ -426,8 +426,6 @@ def test_selector_runs_complete_fail_repair_validate_keep_flow(tmp_path, monkeyp
             "selecter.py",
             "--diff",
             str(diff_path),
-            "--min-tests",
-            "1",
             "--max-tests",
             "1",
             "--heal-validation-runs",
@@ -472,7 +470,7 @@ def test_selector_fails_and_restores_transaction_after_rollback_error(
     )
 
     async def deterministic_selection(_diff, _tests):
-        return {"high": [test_id], "medium": [], "low": []}
+        return [{"id": test_id, "score": 1.0, "reason": "directly affected"}]
 
     async def deterministic_repair(_test_id, _message):
         return "def test_target():\n    actual = 1\n    assert actual == 1\n"
@@ -506,8 +504,6 @@ def test_selector_fails_and_restores_transaction_after_rollback_error(
             "selecter.py",
             "--diff",
             str(diff_path),
-            "--min-tests",
-            "1",
             "--max-tests",
             "1",
             "--batch-timeout",

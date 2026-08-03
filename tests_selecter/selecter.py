@@ -187,18 +187,16 @@ Here is the list of all test functions (including file names):
 
 Your task:
 1. Analyse the diff and determine which tests are most likely to be affected.
-2. Rank them by relevance: high, medium, low.
-3. Place no more than 16 tests in the high and medium lists combined.
-4. Return a JSON object exactly like this:
-{{
-  "high": ["test_file::test_func", "..."],
-  "medium": ["test_file::test_func", "..."],
-  "low": ["test_file::test_func", "..."]
-}}
+2. Assign each relevant test a relevance score from 0.0 to 1.0.
+3. Give each test a short reason for its score.
+4. Return a JSON array exactly like this:
+[
+  {{"id": "test_file::test_func", "score": 0.95, "reason": "short reason"}}
+]
 
 Only include test IDs that exist in the list above. Do not invent names.
-If no tests are relevant, return empty lists.
-Return only the JSON object, no additional text or markdown.
+If no tests are relevant, return an empty array.
+Return only the JSON array, no additional text or markdown.
 """
     return prompt
 
@@ -214,9 +212,11 @@ def _strip_code_fences(text: str) -> str:
     return text.strip()
 
 
-async def select_tests(diff_text: str, test_list: List[str]) -> Dict[str, List[str]]:
+async def select_tests(
+    diff_text: str, test_list: List[str]
+) -> Optional[List[Dict[str, object]]]:
     if client is None:
-        return {"high": [], "medium": [], "low": []}
+        return None
 
     prompt = build_selection_prompt(diff_text, test_list)
     try:
@@ -234,16 +234,32 @@ async def select_tests(diff_text: str, test_list: List[str]) -> Dict[str, List[s
         raw = response.choices[0].message.content.strip()
         raw = _strip_code_fences(raw)
         data = json.loads(raw)
+        if not isinstance(data, list):
+            raise ValueError("response must be a JSON array")
 
-        # Ensure keys exist
-        return {
-            "high": data.get("high", []),
-            "medium": data.get("medium", []),
-            "low": data.get("low", []),
-        }
+        allowed_tests = set(test_list)
+        selections: List[Dict[str, object]] = []
+        for item in data:
+            if not isinstance(item, dict):
+                raise ValueError("each selection must be an object")
+            test_id = item.get("id")
+            score = item.get("score")
+            reason = item.get("reason")
+            if test_id not in allowed_tests:
+                raise ValueError(f"unknown test ID: {test_id!r}")
+            if isinstance(score, bool) or not isinstance(score, (int, float)):
+                raise ValueError(f"invalid score for {test_id!r}")
+            if not 0.0 <= float(score) <= 1.0:
+                raise ValueError(f"score out of range for {test_id!r}")
+            if not isinstance(reason, str) or not reason.strip():
+                raise ValueError(f"missing reason for {test_id!r}")
+            selections.append(
+                {"id": test_id, "score": float(score), "reason": reason.strip()}
+            )
+        return selections
     except Exception as e:
         print(f"Selection LLM call failed: {e}")
-        return {"high": [], "medium": [], "low": []}
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -402,7 +418,7 @@ def read_failed_test_ids(path: Optional[str], allowed_tests: set[str]) -> List[s
 
 
 def fallback_selected_tests(diff_text: str, tests: List[str], limit: int = 16) -> List[str]:
-    """Pick a deterministic impacted subset when the LLM returns no runnable tests."""
+    """Pick deterministic keyword matches when the LLM selection fails."""
     lowered_diff = diff_text.lower()
     keywords = []
     if "post" in lowered_diff or "updatepostrequest" in lowered_diff:
@@ -419,8 +435,7 @@ def fallback_selected_tests(diff_text: str, tests: List[str], limit: int = 16) -
         for test_id in tests
         if keywords and any(keyword in test_id.lower() for keyword in keywords)
     ]
-    remaining = [test_id for test_id in tests if test_id not in impacted]
-    return (impacted + remaining)[: min(limit, len(tests))]
+    return impacted[: min(max(limit, 0), len(impacted))]
 
 
 def run_selected_tests_batch(
@@ -531,9 +546,6 @@ def rollback_repair_transaction(
 async def main() -> int:
     parser = argparse.ArgumentParser(description="TestSelectAgent")
     parser.add_argument("--diff", help="Path to a diff file (instead of git diff)")
-    parser.add_argument(
-        "--run-medium", action="store_true", help="Also run medium-relevance tests"
-    )
     parser.add_argument("--commit", default="HEAD", help="Git commit to diff against")
     parser.add_argument(
         "--no-heal", action="store_true", help="Skip self-healing attempts"
@@ -545,10 +557,16 @@ async def main() -> int:
         "for the tests that were actually selected and run",
     )
     parser.add_argument(
-        "--min-tests",
-        type=int,
-        default=16,
-        help="Minimum selected tests; deterministic impacted tests supplement the LLM result",
+        "--high-threshold",
+        type=float,
+        default=0.80,
+        help="Score at or above which a test must be selected",
+    )
+    parser.add_argument(
+        "--medium-threshold",
+        type=float,
+        default=0.60,
+        help="Minimum score for optional tests selected up to --max-tests",
     )
     parser.add_argument(
         "--max-tests",
@@ -611,6 +629,10 @@ async def main() -> int:
         help="Optional baseline pytest CSV whose failed/error tests are prioritized",
     )
     args = parser.parse_args()
+    if not 0.0 <= args.medium_threshold <= args.high_threshold <= 1.0:
+        parser.error("thresholds must satisfy 0.0 <= medium <= high <= 1.0")
+    if args.max_tests < 1:
+        parser.error("--max-tests must be at least 1")
     agent_started = time.monotonic()
     Path(args.healing_backup_dir).mkdir(parents=True, exist_ok=True)
 
@@ -657,44 +679,79 @@ async def main() -> int:
     # Select tests
     print("Asking LLM to select relevant tests...")
     selection = await select_tests(diff_text, tests)
-    high = selection.get("high", [])
-    medium = selection.get("medium", [])
-    low = selection.get("low", [])
-
-    print("\nSelected tests:")
-    print(f"   HIGH ({len(high)}):")
-    for t in high:
-        print(f"     - {t}")
-    print(f"   MEDIUM ({len(medium)}):")
-    for t in medium:
-        print(f"     - {t}")
-    print(f"   LOW ({len(low)}):")
-    for t in low:
-        print(f"     - {t}")
-
-    # Decide which to run
     allowed_tests = set(tests)
     known_failures = read_failed_test_ids(args.failure_csv, allowed_tests)
     if known_failures:
         print(f"Prioritizing {len(known_failures)} known baseline failure(s).")
-    to_run = list(known_failures)
-    to_run.extend(test_id for test_id in high if test_id in allowed_tests)
-    if args.run_medium:
-        to_run.extend(test_id for test_id in medium if test_id in allowed_tests)
-    to_run = list(dict.fromkeys(to_run))
-
-    minimum = min(max(args.min_tests, 0), len(tests))
-    maximum = min(max(args.max_tests, minimum), len(tests))
-    if len(to_run) < minimum:
+    if len(known_failures) > args.max_tests:
         print(
-            f"Supplementing selection to the minimum sample size of {minimum} tests."
+            "ERROR: Known failures are mandatory, but their count "
+            f"({len(known_failures)}) exceeds --max-tests ({args.max_tests})."
         )
-        for test_id in fallback_selected_tests(diff_text, tests, limit=len(tests)):
-            if test_id not in to_run:
+        _write_early_artifacts(
+            args,
+            exit_code=1,
+            reason="mandatory_tests_exceed_max_tests",
+            final_validation_passed=False,
+            collected_test_count=len(tests),
+        )
+        return 1
+    to_run = list(known_failures)
+
+    if selection is None:
+        print("Using deterministic keyword selection because the LLM failed.")
+        candidates = fallback_selected_tests(diff_text, tests, limit=len(tests))
+        for test_id in candidates:
+            if test_id not in to_run and len(to_run) < args.max_tests:
                 to_run.append(test_id)
-            if len(to_run) >= minimum:
-                break
-    to_run = to_run[:maximum]
+    else:
+        # Keep the highest score for duplicate IDs, then use test ID as a stable tie-breaker.
+        scored = {}
+        for item in selection:
+            test_id = str(item["id"])
+            if test_id not in scored or float(item["score"]) > float(
+                scored[test_id]["score"]
+            ):
+                scored[test_id] = item
+        ranked = sorted(
+            scored.values(),
+            key=lambda item: (-float(item["score"]), str(item["id"])),
+        )
+
+        print("\nLLM relevance scores:")
+        for item in ranked:
+            print(f"   {float(item['score']):.2f} {item['id']} - {item['reason']}")
+
+        high = [
+            str(item["id"])
+            for item in ranked
+            if float(item["score"]) >= args.high_threshold
+        ]
+        mandatory = list(dict.fromkeys(known_failures + high))
+        if len(mandatory) > args.max_tests:
+            print(
+                "ERROR: Known failures and high-relevance tests are mandatory, "
+                f"but their combined count ({len(mandatory)}) exceeds "
+                f"--max-tests ({args.max_tests})."
+            )
+            _write_early_artifacts(
+                args,
+                exit_code=1,
+                reason="mandatory_tests_exceed_max_tests",
+                final_validation_passed=False,
+                collected_test_count=len(tests),
+            )
+            return 1
+
+        to_run = mandatory
+        medium = [
+            str(item["id"])
+            for item in ranked
+            if args.medium_threshold <= float(item["score"]) < args.high_threshold
+        ]
+        for test_id in medium:
+            if test_id not in to_run and len(to_run) < args.max_tests:
+                to_run.append(test_id)
 
     if not to_run:
         print("No runnable tests selected.")

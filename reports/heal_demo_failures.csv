@@ -1,0 +1,2 @@
+id,status,duration,message
+tests/test.py::test_create_post,failed,0,Controlled stale status-code assertion
