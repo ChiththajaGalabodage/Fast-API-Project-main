@@ -390,8 +390,8 @@ async def update_post(post_id: int, body: UpdatePostRequest):
     await asyncio.sleep(BASE_DELAY * 2)
     for p in posts_db:
         if p.id == post_id:
-            p.title = body.title
-            p.content = body.content
+            p.title = body.title.strip()
+            p.content = body.content.strip()
             logger.info(
                 "post_updated post_id=%d",
                 p.id,
