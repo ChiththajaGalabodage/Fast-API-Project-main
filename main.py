@@ -371,6 +371,11 @@ async def create_post(post: CreatePostRequest):
         created_at=fake.iso8601(),
     )
     posts_db.append(new_post)
+    logger.info(
+        "post_created post_id=%d user_id=%d",
+        new_post.id,
+        new_post.user_id,
+    )
     return new_post
 
 
