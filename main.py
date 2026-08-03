@@ -282,7 +282,10 @@ async def set_error_injection(enabled: bool = Query(...)):
     global _force_error
     _force_error = enabled
     logger.warning("Error injection set to %s", enabled)
-    return {"error_injection": _force_error}
+    return {
+        "error_injection": _force_error,
+        "status": "enabled" if _force_error else "disabled",
+    }
 
 
 # ---------------------------------------------------------------------------
