@@ -322,6 +322,7 @@ async def get_users_paginated(
         "pages": -(-len(users_db) // limit),  # ceiling division
         "has_next": end < len(users_db),
         "has_previous": page > 1,
+        "returned_count": len(users_db[start:end]),
         "data": users_db[start:end],
     }
 
