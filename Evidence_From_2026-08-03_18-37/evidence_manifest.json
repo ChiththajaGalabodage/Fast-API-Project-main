@@ -1,0 +1,408 @@
+﻿[
+    {
+        "source_relative":  "E01_Application_Test_Inventory_80.png",
+        "destination_relative":  "screenshots\\actual\\E01_Application_Test_Inventory_80.png",
+        "bytes":  193017,
+        "last_write_time":  "2026-08-03 18:29:43",
+        "sha256":  "6b4b7c9682b03ab5cadb1326370031b0fbd8bbdd40d9513c68d5645fc4e6ec87"
+    },
+    {
+        "source_relative":  "E02_Guardrail_Test_Inventory_33.png",
+        "destination_relative":  "screenshots\\actual\\E02_Guardrail_Test_Inventory_33.png",
+        "bytes":  127957,
+        "last_write_time":  "2026-08-03 18:35:58",
+        "sha256":  "3ed5e9322d8c5c840719c18f37b1d8ae8048864fe931867666d1020f78ea8876"
+    },
+    {
+        "source_relative":  "E03_Final_Test_Inventory_113.png",
+        "destination_relative":  "screenshots\\actual\\E03_Final_Test_Inventory_113.png",
+        "bytes":  288218,
+        "last_write_time":  "2026-08-03 18:37:06",
+        "sha256":  "ba7485e97304f8e54bd36137d482886b261e16f406f02d8a11ff9f11e2511633"
+    },
+    {
+        "source_relative":  "E04_Traditional_80_Passed.png",
+        "destination_relative":  "screenshots\\actual\\E04_Traditional_80_Passed.png",
+        "bytes":  39304,
+        "last_write_time":  "2026-08-03 18:39:31",
+        "sha256":  "68301f4f3fc2825bb7cfdc9c54c8eac4f61bea517fb4937e4c6822010f6f7e7a"
+    },
+    {
+        "source_relative":  "E05_Traditional_Timing_JSON.png",
+        "destination_relative":  "screenshots\\actual\\E05_Traditional_Timing_JSON.png",
+        "bytes":  35113,
+        "last_write_time":  "2026-08-03 18:39:31",
+        "sha256":  "24a19485fa84f6c2ea9a03bf4a005830eed5b3e41fd8a176c556348cfcc8186f"
+    },
+    {
+        "source_relative":  "E06_Server_Log_Terminal.png",
+        "destination_relative":  "screenshots\\actual\\E06_Server_Log_Terminal.png",
+        "bytes":  63195,
+        "last_write_time":  "2026-08-03 18:41:28",
+        "sha256":  "d12f0f4f2926276c88dbf5c375f0ba5ef83bad9fe653fcec714c129900f5a018"
+    },
+    {
+        "source_relative":  "E07_Server_Log_Manifest.png",
+        "destination_relative":  "screenshots\\actual\\E07_Server_Log_Manifest.png",
+        "bytes":  39905,
+        "last_write_time":  "2026-08-03 18:41:28",
+        "sha256":  "4c8948520ba30e3fc5d4f379579e3ce210c89cc63f66281c5c58495b21bf5198"
+    },
+    {
+        "source_relative":  "E08_History_Replay_20_Completed.png",
+        "destination_relative":  "screenshots\\actual\\E08_History_Replay_20_Completed.png",
+        "bytes":  18791,
+        "last_write_time":  "2026-08-03 19:08:05",
+        "sha256":  "9ab9b2057578bd3fbf5e1a9e4a77ad78dd9f1d78c77d156f1b83ec0a19fe82e6"
+    },
+    {
+        "source_relative":  "E09_History_Summary_Statistics.png",
+        "destination_relative":  "screenshots\\actual\\E09_History_Summary_Statistics.png",
+        "bytes":  25559,
+        "last_write_time":  "2026-08-03 19:08:05",
+        "sha256":  "fa465acceb3025712bb935b281725a2d52984a4f635d48ec0136f44a51eaf9b2"
+    },
+    {
+        "source_relative":  "E10_Commit_Level_Results.png",
+        "destination_relative":  "screenshots\\actual\\E10_Commit_Level_Results.png",
+        "bytes":  82274,
+        "last_write_time":  "2026-08-03 19:08:06",
+        "sha256":  "8c7b0a0ee1f6841726ffe721c4bbd484f24576e568cda18cf780deddbe58a2bb"
+    },
+    {
+        "source_relative":  "E11_Mutation_20_Completed.png",
+        "destination_relative":  "screenshots\\actual\\E11_Mutation_20_Completed.png",
+        "bytes":  23917,
+        "last_write_time":  "2026-08-03 19:51:04",
+        "sha256":  "0adab294e27c546f41bcb5abfdb320591e84377e6151ade49fc997a7363071e3"
+    },
+    {
+        "source_relative":  "E12_Mutation_Recall_Summary.png",
+        "destination_relative":  "screenshots\\actual\\E12_Mutation_Recall_Summary.png",
+        "bytes":  20476,
+        "last_write_time":  "2026-08-03 19:51:04",
+        "sha256":  "b0098e83417e67e032bc964b712152630a657dea308d52a91e94ff4f3d166116"
+    },
+    {
+        "source_relative":  "E13_Mutant_Level_Results.png",
+        "destination_relative":  "screenshots\\actual\\E13_Mutant_Level_Results.png",
+        "bytes":  71480,
+        "last_write_time":  "2026-08-03 19:51:04",
+        "sha256":  "191af57180a247815faa816674aec48dac414d393099613325baa14a5b39129a"
+    },
+    {
+        "source_relative":  "E14_Selection_Policy_5_Passed.png",
+        "destination_relative":  "screenshots\\actual\\E14_Selection_Policy_5_Passed.png",
+        "bytes":  11310,
+        "last_write_time":  "2026-08-03 19:52:56",
+        "sha256":  "196a872f4dfa613cf6a57752e9c5098d2be11ff396434d1a3c79d8d2e979b38c"
+    },
+    {
+        "source_relative":  "E15_Threshold_Safety_Report.png",
+        "destination_relative":  "screenshots\\actual\\E15_Threshold_Safety_Report.png",
+        "bytes":  66856,
+        "last_write_time":  "2026-08-03 19:52:56",
+        "sha256":  "5d7e7c152b722b684d4e7fcdfecd4cfa1b34a761e324a4b33e5fb8adcedc3ace"
+    },
+    {
+        "source_relative":  "E28_Final_113_Tests_Passed.png",
+        "destination_relative":  "screenshots\\actual\\E28_Final_113_Tests_Passed.png",
+        "bytes":  38845,
+        "last_write_time":  "2026-08-03 20:38:59",
+        "sha256":  "509847b30725e7aceb63d425114b2c170feb8774e55294802c4fb5efe5f7ca16"
+    },
+    {
+        "source_relative":  "E29_Final_Count_Gate.png",
+        "destination_relative":  "screenshots\\actual\\E29_Final_Count_Gate.png",
+        "bytes":  41495,
+        "last_write_time":  "2026-08-03 20:38:59",
+        "sha256":  "2d75fbaa7a17fa4f42628b1aad1d028d46b1345796b0dfefda5484d75e7f974d"
+    },
+    {
+        "source_relative":  "E30_Controlled_Benchmark_20_Commits.png",
+        "destination_relative":  "screenshots\\actual\\E30_Controlled_Benchmark_20_Commits.png",
+        "bytes":  76238,
+        "last_write_time":  "2026-08-03 18:21:32",
+        "sha256":  "5738a4175387ea3132689bcd56b66e431f78c229e34d7bc1b230212e69c8dcb7"
+    },
+    {
+        "source_relative":  "reports\\final_evidence_suite.csv",
+        "destination_relative":  "reports\\final_evidence_suite.csv",
+        "bytes":  11795,
+        "last_write_time":  "2026-08-03 20:38:15",
+        "sha256":  "f31cda15aba02bd243a34b8e7258e542d205ec6e36ab5ae0d01a458438fba366"
+    },
+    {
+        "source_relative":  "reports\\final_evidence_suite_timing.json",
+        "destination_relative":  "reports\\final_evidence_suite_timing.json",
+        "bytes":  642,
+        "last_write_time":  "2026-08-03 20:38:16",
+        "sha256":  "db39020953d0f4e4a84726a32475353e15244356e800a68815664010a0360cf7"
+    },
+    {
+        "source_relative":  "reports\\history_repetition_1\\evaluation_manifest.json",
+        "destination_relative":  "reports\\history_repetition_1\\evaluation_manifest.json",
+        "bytes":  255,
+        "last_write_time":  "2026-08-03 19:11:53",
+        "sha256":  "fa0d4ca8a7022cde70108071fed07082ef63b47a3541fa54bfc9146276134005"
+    },
+    {
+        "source_relative":  "reports\\history_repetition_1\\history_results.json",
+        "destination_relative":  "reports\\history_repetition_1\\history_results.json",
+        "bytes":  32448,
+        "last_write_time":  "2026-08-03 19:18:37",
+        "sha256":  "faaba1daf4578386a06aaec7576e7051b0e5b39d8234e34169cd5213353ab19b"
+    },
+    {
+        "source_relative":  "reports\\history_repetition_2\\evaluation_manifest.json",
+        "destination_relative":  "reports\\history_repetition_2\\evaluation_manifest.json",
+        "bytes":  255,
+        "last_write_time":  "2026-08-03 19:18:43",
+        "sha256":  "fa0d4ca8a7022cde70108071fed07082ef63b47a3541fa54bfc9146276134005"
+    },
+    {
+        "source_relative":  "reports\\history_repetition_2\\history_results.json",
+        "destination_relative":  "reports\\history_repetition_2\\history_results.json",
+        "bytes":  32446,
+        "last_write_time":  "2026-08-03 19:25:37",
+        "sha256":  "89e3162d388879d3e43d60751436aeadcc79c01011f6244d58cc3f8439cc5402"
+    },
+    {
+        "source_relative":  "reports\\history_repetition_3\\evaluation_manifest.json",
+        "destination_relative":  "reports\\history_repetition_3\\evaluation_manifest.json",
+        "bytes":  255,
+        "last_write_time":  "2026-08-03 19:25:43",
+        "sha256":  "fa0d4ca8a7022cde70108071fed07082ef63b47a3541fa54bfc9146276134005"
+    },
+    {
+        "source_relative":  "reports\\history_repetition_3\\history_results.json",
+        "destination_relative":  "reports\\history_repetition_3\\history_results.json",
+        "bytes":  32451,
+        "last_write_time":  "2026-08-03 19:33:14",
+        "sha256":  "080109ce0187ae928280731d8f4cb18fc612ef3e093d2b594e5df5441ba0c0d8"
+    },
+    {
+        "source_relative":  "reports\\mutation_evaluation\\evaluation_manifest.json",
+        "destination_relative":  "reports\\mutation_evaluation\\evaluation_manifest.json",
+        "bytes":  255,
+        "last_write_time":  "2026-08-03 19:42:41",
+        "sha256":  "fa0d4ca8a7022cde70108071fed07082ef63b47a3541fa54bfc9146276134005"
+    },
+    {
+        "source_relative":  "reports\\mutation_evaluation\\mutation_results.json",
+        "destination_relative":  "reports\\mutation_evaluation\\mutation_results.json",
+        "bytes":  185096,
+        "last_write_time":  "2026-08-03 19:50:23",
+        "sha256":  "bdd8c895df4e088f6c8a1e5530d2699c1523614ec41d3fa37b0ade6d93b0e950"
+    },
+    {
+        "source_relative":  "reports\\research_evaluation\\evaluation_manifest.json",
+        "destination_relative":  "reports\\research_evaluation\\evaluation_manifest.json",
+        "bytes":  255,
+        "last_write_time":  "2026-08-03 18:55:19",
+        "sha256":  "fa0d4ca8a7022cde70108071fed07082ef63b47a3541fa54bfc9146276134005"
+    },
+    {
+        "source_relative":  "reports\\research_evaluation\\history_results.json",
+        "destination_relative":  "reports\\research_evaluation\\history_results.json",
+        "bytes":  32452,
+        "last_write_time":  "2026-08-03 18:49:32",
+        "sha256":  "9fc15d41f8332b67077bf63d3c97811538b5edc4dc73dc5384f938cfda3afc86"
+    },
+    {
+        "source_relative":  "reports\\research_evaluation\\mutation_results.json",
+        "destination_relative":  "reports\\research_evaluation\\mutation_results.json",
+        "bytes":  185095,
+        "last_write_time":  "2026-08-03 19:01:51",
+        "sha256":  "a782221b9038b6c5fde16d94eb865ccf87dc7ac2f3b2469229ba2a0cdea038dd"
+    },
+    {
+        "source_relative":  "reports\\research_evaluation\\summary.md",
+        "destination_relative":  "reports\\research_evaluation\\summary.md",
+        "bytes":  798,
+        "last_write_time":  "2026-08-03 19:01:51",
+        "sha256":  "dcd2fc2d4e8f470764761c5414b7d9358e7f7cdb56ef5807d7313a9fe36c1c5b"
+    },
+    {
+        "source_relative":  "reports\\research_evaluation\\threshold_safety_report.json",
+        "destination_relative":  "reports\\research_evaluation\\threshold_safety_report.json",
+        "bytes":  1466,
+        "last_write_time":  "2026-08-03 19:52:34",
+        "sha256":  "5ae0ed8b7e7b01fed3fb935a39b1b897676d8282bcc0d5af58479add5e74376f"
+    },
+    {
+        "source_relative":  "reports\\score_baseline.csv",
+        "destination_relative":  "reports\\score_baseline.csv",
+        "bytes":  7207,
+        "last_write_time":  "2026-08-03 19:56:51",
+        "sha256":  "ec631acde01f7ba43a35f7e11c3e0b6414b06b317c064b06506fdaf4e09b5d92"
+    },
+    {
+        "source_relative":  "reports\\score_baseline_timing.json",
+        "destination_relative":  "reports\\score_baseline_timing.json",
+        "bytes":  553,
+        "last_write_time":  "2026-08-03 19:56:52",
+        "sha256":  "959d74bb39a2729e840796a56cfe4c51e2ac7d716fbd3a98f99dc92a86b6a344"
+    },
+    {
+        "source_relative":  "reports\\score_healing.patch",
+        "destination_relative":  "reports\\score_healing.patch",
+        "bytes":  0,
+        "last_write_time":  "2026-08-03 20:22:37",
+        "sha256":  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+        "source_relative":  "reports\\score_healing_report.json",
+        "destination_relative":  "reports\\score_healing_report.json",
+        "bytes":  263,
+        "last_write_time":  "2026-08-03 20:22:37",
+        "sha256":  "5194608af474d2f3e6038a33607ee55281d15278c3f637cf29f2f936ef2878b7"
+    },
+    {
+        "source_relative":  "reports\\score_selected_after.csv",
+        "destination_relative":  "reports\\score_selected_after.csv",
+        "bytes":  1221,
+        "last_write_time":  "2026-08-03 20:22:37",
+        "sha256":  "ba50f487e7bf659336056956f2bacf110e60dd5d74876bdfc7624053490db292"
+    },
+    {
+        "source_relative":  "reports\\score_selected_before.csv",
+        "destination_relative":  "reports\\score_selected_before.csv",
+        "bytes":  1221,
+        "last_write_time":  "2026-08-03 20:22:37",
+        "sha256":  "ba50f487e7bf659336056956f2bacf110e60dd5d74876bdfc7624053490db292"
+    },
+    {
+        "source_relative":  "reports\\score_selected_timing.json",
+        "destination_relative":  "reports\\score_selected_timing.json",
+        "bytes":  371,
+        "last_write_time":  "2026-08-03 20:22:37",
+        "sha256":  "6e96c0fc1a237ae4e6b06e3497b96c07f00c9006275c7f5ff6e28c36462a564e"
+    },
+    {
+        "source_relative":  "reports\\score_variation_diff.txt",
+        "destination_relative":  "reports\\score_variation_diff.txt",
+        "bytes":  11362,
+        "last_write_time":  "2026-08-03 19:55:34",
+        "sha256":  "cae208f085c2fdfb5c3e1bb41d87d0a1b244772a3f34c548b62f03cb4c58022d"
+    },
+    {
+        "source_relative":  "reports\\selection_decisions.json",
+        "destination_relative":  "reports\\selection_decisions.json",
+        "bytes":  3949,
+        "last_write_time":  "2026-08-03 20:22:23",
+        "sha256":  "a05121006aecf4a60197d691e3a7c156e9ab64f3af395bc1b392730afbe3815a"
+    },
+    {
+        "source_relative":  "reports\\server.log",
+        "destination_relative":  "reports\\server.log",
+        "bytes":  920,
+        "last_write_time":  "2026-08-03 18:41:07",
+        "sha256":  "3935ebdb741c219dd13ef7be7426b555eae8e4b0bf19d4a3dd5769d05f4bbbbd"
+    },
+    {
+        "source_relative":  "reports\\server_log_manifest.json",
+        "destination_relative":  "reports\\server_log_manifest.json",
+        "bytes":  637,
+        "last_write_time":  "2026-08-03 18:41:07",
+        "sha256":  "3f24c33655e01f572a32fe1fb145b3130e4cc41151ae7ac6af0f0ae63cc228a1"
+    },
+    {
+        "source_relative":  "reports\\traditional_current.csv",
+        "destination_relative":  "reports\\traditional_current.csv",
+        "bytes":  7206,
+        "last_write_time":  "2026-08-03 18:39:01",
+        "sha256":  "915ae9edea03d0d93dadd2bb46d2f05c5627d524f9850de5258c4265964ccba7"
+    },
+    {
+        "source_relative":  "reports\\traditional_current_timing.json",
+        "destination_relative":  "reports\\traditional_current_timing.json",
+        "bytes":  574,
+        "last_write_time":  "2026-08-03 18:39:02",
+        "sha256":  "57a286fe9793b595b252975320a09a120f80942904a247d1a0d1b7582241256b"
+    },
+    {
+        "source_relative":  "SAMPLE_E16_Live_Three_Run_Score_Summary.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E16_Live_Three_Run_Score_Summary.png",
+        "bytes":  44930,
+        "last_write_time":  "2026-08-03 20:25:16",
+        "sha256":  "4abbf1623b15a5df826afdf19aaf4e62bc1e841ddf1ac8dcb1ee2bb4f5d3e5a0"
+    },
+    {
+        "source_relative":  "SAMPLE_E17_Live_Repair_Initial_Failure.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E17_Live_Repair_Initial_Failure.png",
+        "bytes":  32549,
+        "last_write_time":  "2026-08-03 20:31:08",
+        "sha256":  "15eea86633fabe7a709e7befb0fcb41e5cb35d1fdf473e3144ca462f72b484d5"
+    },
+    {
+        "source_relative":  "SAMPLE_E18_Live_Repair_Model_Decision.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E18_Live_Repair_Model_Decision.png",
+        "bytes":  34139,
+        "last_write_time":  "2026-08-03 20:31:08",
+        "sha256":  "e3753a1b6a9d87d9b422f85240daac7ae14666760440e0b59f46472760d9ecda"
+    },
+    {
+        "source_relative":  "SAMPLE_E19_Live_Repair_Two_Validations.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E19_Live_Repair_Two_Validations.png",
+        "bytes":  34864,
+        "last_write_time":  "2026-08-03 20:31:08",
+        "sha256":  "c0d3d98d3ccf21afd6aa197c34fcc776ceffb6b61836f610debcca5b45bc968f"
+    },
+    {
+        "source_relative":  "SAMPLE_E20_Live_Repair_Patch.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E20_Live_Repair_Patch.png",
+        "bytes":  38288,
+        "last_write_time":  "2026-08-03 20:31:08",
+        "sha256":  "c4b046fac824859211189489b10b1c93862fd3eb401e88eb7468c2a26a08df9a"
+    },
+    {
+        "source_relative":  "SAMPLE_E21_Live_Repair_Final_Pass.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E21_Live_Repair_Final_Pass.png",
+        "bytes":  36362,
+        "last_write_time":  "2026-08-03 20:31:08",
+        "sha256":  "caa1986241c0b36abd0e16b1c48accc941c98ff0f3884fd1e95099d7e6d3d112"
+    },
+    {
+        "source_relative":  "SAMPLE_E22_Research_Evaluation_Green.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E22_Research_Evaluation_Green.png",
+        "bytes":  29516,
+        "last_write_time":  "2026-08-03 20:35:25",
+        "sha256":  "54cfc3316a64c7ae0bf4f68572f6551f920e283938e930ce4487f3ae59c7d680"
+    },
+    {
+        "source_relative":  "SAMPLE_E23_Research_Artifacts_List.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E23_Research_Artifacts_List.png",
+        "bytes":  27429,
+        "last_write_time":  "2026-08-03 20:35:25",
+        "sha256":  "b292b7da9ea211527cce3051b406a597520336bb6402ca8474f4bd0873ff7b58"
+    },
+    {
+        "source_relative":  "SAMPLE_E24_Live_Repair_Workflow_Green.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E24_Live_Repair_Workflow_Green.png",
+        "bytes":  29970,
+        "last_write_time":  "2026-08-03 20:35:25",
+        "sha256":  "04eef66e1dcfab323663d67faad22b3bb24a58a4c05a290974ea61849a48ff3d"
+    },
+    {
+        "source_relative":  "SAMPLE_E25_Live_Repair_Artifact_List.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E25_Live_Repair_Artifact_List.png",
+        "bytes":  31820,
+        "last_write_time":  "2026-08-03 20:35:25",
+        "sha256":  "ec16914d87e5d49f8d7719e0f94515db506e473c3a69560d7126ed11dbff42fc"
+    },
+    {
+        "source_relative":  "SAMPLE_E26_Final_CI_113_Passed.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E26_Final_CI_113_Passed.png",
+        "bytes":  30860,
+        "last_write_time":  "2026-08-03 20:35:25",
+        "sha256":  "a5150ed16e7abd56c3bd8e6fce4ce93a306c7aab91d1f8e718142e3d9c818a82"
+    },
+    {
+        "source_relative":  "SAMPLE_E27_Server_Log_Artifact.png",
+        "destination_relative":  "screenshots\\sample\\SAMPLE_E27_Server_Log_Artifact.png",
+        "bytes":  26282,
+        "last_write_time":  "2026-08-03 20:35:25",
+        "sha256":  "6b3759bf9cc2f9309a905ea952247d2b8538a3a5289c48a08d6a56a53c32f4e8"
+    }
+]

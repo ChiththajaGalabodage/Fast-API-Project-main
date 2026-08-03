@@ -24,7 +24,9 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_MODEL: google/gemini-2.5-flash
-        run: uv run python tests_selecter/live_repair_replay.py --source-commit HEAD
+        run: >
+          uv run python tests_selecter/live_repair_replay.py
+          --source-commit 5c3c52f
       - name: Upload repair audit
         if: always()
         uses: actions/upload-artifact@v4

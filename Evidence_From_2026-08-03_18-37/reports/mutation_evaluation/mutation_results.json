@@ -1,0 +1,1026 @@
+{
+  "design": "first-order source mutation in isolated repository copies",
+  "mutant_count": 20,
+  "results": [
+    {
+      "mutant_id": "M01_create_blank_title",
+      "old": "class CreatePostRequest(BaseModel):\n    user_id: int = Field(..., gt=0)\n    title: str = Field(..., min_length=1, max_length=200)",
+      "new": "class CreatePostRequest(BaseModel):\n    user_id: int = Field(..., gt=0)\n    title: str = Field(..., min_length=0, max_length=200)",
+      "description": "Allow blank titles when creating a post",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests_generated/generated_test.py::test_post_api_posts",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.74,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.464,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "killed_by_full_suite": false,
+      "killed_by_selected_suite": false,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M02_create_title_limit",
+      "old": "class CreatePostRequest(BaseModel):\n    user_id: int = Field(..., gt=0)\n    title: str = Field(..., min_length=1, max_length=200)",
+      "new": "class CreatePostRequest(BaseModel):\n    user_id: int = Field(..., gt=0)\n    title: str = Field(..., min_length=1, max_length=201)",
+      "description": "Increase create-title maximum by one",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests_generated/generated_test.py::test_post_api_posts",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 18.078,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_create_post_title_too_long",
+          "tests_generated/generated_test.py::test_post_api_posts"
+        ],
+        "output_tail": "E       assert 404 == 422\nE        +  where 404 = <Response [404 Not Found]>.status_code\n\ntests_generated\\generated_test.py:181: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:43:20,021 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:43:20,021 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=112.9 request_id=f78e8e93-a4e0-486f-9bfa-73a242b7fd28\n2026-08-03 19:43:20,021 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=112.9 request_id=f78e8e93-a4e0-486f-9bfa-73a242b7fd28\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:43:20,023 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:43:20,023 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=a3058986-9933-4446-a118-89a86f764a68\n2026-08-03 19:43:20,024 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:43:20,025 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=0.8 request_id=4e61c57a-8622-4099-91de-a3bdd3392425\n2026-08-03 19:43:20,025 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n2026-08-03 19:43:20,026 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.7 request_id=651a704a-255b-4dc9-899e-77d25d458b9b\n2026-08-03 19:43:20,027 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:20,028 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.7 request_id=b3cb952b-dec8-4e5b-b463-28fe8e072144\n2026-08-03 19:43:20,028 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:20,029 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=0.7 request_id=3494cd42-3fe2-442e-9b69-db8768bad1d3\n2026-08-03 19:43:20,029 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=a3058986-9933-4446-a118-89a86f764a68\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=0.8 request_id=4e61c57a-8622-4099-91de-a3bdd3392425\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.7 request_id=651a704a-255b-4dc9-899e-77d25d458b9b\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.7 request_id=b3cb952b-dec8-4e5b-b463-28fe8e072144\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=0.7 request_id=3494cd42-3fe2-442e-9b69-db8768bad1d3\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_1p926_ms\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_create_post_title_too_long - pydantic_core._pydant...\nFAILED tests_generated/generated_test.py::test_post_api_posts - assert 404 ==...\n2 failed, 78 passed in 16.11s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.982,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_create_post_title_too_long",
+          "tests_generated/generated_test.py::test_post_api_posts"
+        ],
+        "output_tail": "\nE       assert 404 == 422\nE        +  where 404 = <Response [404 Not Found]>.status_code\n\ntests_generated\\generated_test.py:181: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:43:26,784 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:43:26,785 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=115.5 request_id=e2f7db33-8c36-403d-891d-1532c06d8d24\n2026-08-03 19:43:26,785 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=115.5 request_id=e2f7db33-8c36-403d-891d-1532c06d8d24\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:43:26,787 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:43:26,787 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=689d2d37-ac6b-478b-9d09-cbc7d951f169\n2026-08-03 19:43:26,787 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:43:26,788 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=0.8 request_id=7c74d135-131c-48b5-97ad-6265b8ab376a\n2026-08-03 19:43:26,789 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n2026-08-03 19:43:26,790 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.7 request_id=1ae605e7-12eb-427b-a7a4-727a36afdf3a\n2026-08-03 19:43:26,790 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:26,791 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.7 request_id=7cc36107-63f3-4704-a9c2-685a4d1eb825\n2026-08-03 19:43:26,791 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:26,792 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=0.7 request_id=40f651fc-acb6-449b-87c1-4e6cbfe99964\n2026-08-03 19:43:26,793 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=689d2d37-ac6b-478b-9d09-cbc7d951f169\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=0.8 request_id=7c74d135-131c-48b5-97ad-6265b8ab376a\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.7 request_id=1ae605e7-12eb-427b-a7a4-727a36afdf3a\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.7 request_id=7cc36107-63f3-4704-a9c2-685a4d1eb825\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=0.7 request_id=40f651fc-acb6-449b-87c1-4e6cbfe99964\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_c6qrsf2a\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_create_post_title_too_long - pydantic_core._pydant...\nFAILED tests_generated/generated_test.py::test_post_api_posts - assert 404 ==...\n2 failed, 14 passed in 2.94s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M03_create_content_limit",
+      "old": "class CreatePostRequest(BaseModel):\n    user_id: int = Field(..., gt=0)\n    title: str = Field(..., min_length=1, max_length=200)\n    content: str = Field(..., min_length=1, max_length=5000)",
+      "new": "class CreatePostRequest(BaseModel):\n    user_id: int = Field(..., gt=0)\n    title: str = Field(..., min_length=1, max_length=200)\n    content: str = Field(..., min_length=1, max_length=5001)",
+      "description": "Increase create-content maximum by one",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests_generated/generated_test.py::test_post_api_posts",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 18.034,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_create_post_content_too_long",
+          "tests_generated/generated_test.py::test_post_api_posts"
+        ],
+        "output_tail": "p://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=120.0 request_id=51e4ef97-5e39-4c20-8716-b119b36528c8\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:43:43,072 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:43:43,072 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=85d6b7f9-3610-4361-85f9-3a1f72f4eeb1\n2026-08-03 19:43:43,072 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:43:43,074 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=0.8 request_id=ec18b265-4889-4e38-8f18-13aa01afab79\n2026-08-03 19:43:43,074 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n2026-08-03 19:43:43,075 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.7 request_id=c694414d-f8fb-491b-b261-db32979fc0b9\n2026-08-03 19:43:43,075 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:43,076 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.8 request_id=74447a9f-92ef-469c-ac85-69b3a3ee6a74\n2026-08-03 19:43:43,077 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:43,078 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.8 request_id=f7ba30c4-266d-47e6-9061-e5ec62831db4\n2026-08-03 19:43:43,078 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:43,080 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=1.1 request_id=6acb238f-cb2e-4273-b875-f59f1dfe13e0\n2026-08-03 19:43:43,081 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=85d6b7f9-3610-4361-85f9-3a1f72f4eeb1\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=0.8 request_id=ec18b265-4889-4e38-8f18-13aa01afab79\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.7 request_id=c694414d-f8fb-491b-b261-db32979fc0b9\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.8 request_id=74447a9f-92ef-469c-ac85-69b3a3ee6a74\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.8 request_id=f7ba30c4-266d-47e6-9061-e5ec62831db4\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=1.1 request_id=6acb238f-cb2e-4273-b875-f59f1dfe13e0\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_d_9vecaw\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_create_post_content_too_long - pydantic_core._pyda...\nFAILED tests_generated/generated_test.py::test_post_api_posts - assert 404 ==...\n2 failed, 78 passed in 16.02s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 5.37,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_create_post_content_too_long",
+          "tests_generated/generated_test.py::test_post_api_posts"
+        ],
+        "output_tail": "tp://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=123.1 request_id=a077d72b-49f6-40b3-9463-39bc29a2d482\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:43:50,061 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:43:50,061 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=5b59ddb9-2401-4add-9282-7092358d82e6\n2026-08-03 19:43:50,061 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:43:50,064 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=1.5 request_id=69cbbbb5-bc0c-49e1-a436-c5b640b4ba79\n2026-08-03 19:43:50,064 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n2026-08-03 19:43:50,066 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.8 request_id=1d6641ec-6c6b-4619-9375-50bb66bec98d\n2026-08-03 19:43:50,066 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:50,067 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.8 request_id=dd121391-1968-44ae-8114-c657e4fad945\n2026-08-03 19:43:50,067 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:50,068 INFO llm_ctf_api method=POST path=/api/posts status=422 duration_ms=0.7 request_id=407f43b5-0e97-4e1a-8560-c2c705fa1ce5\n2026-08-03 19:43:50,069 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:43:50,070 INFO llm_ctf_api method=POST path=/api/posts status=404 duration_ms=0.7 request_id=26066a8c-5c34-4216-a2b1-7c9350587c13\n2026-08-03 19:43:50,070 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=5b59ddb9-2401-4add-9282-7092358d82e6\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=1.5 request_id=69cbbbb5-bc0c-49e1-a436-c5b640b4ba79\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.8 request_id=1d6641ec-6c6b-4619-9375-50bb66bec98d\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.8 request_id=dd121391-1968-44ae-8114-c657e4fad945\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=422 duration_ms=0.7 request_id=407f43b5-0e97-4e1a-8560-c2c705fa1ce5\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=404 duration_ms=0.7 request_id=26066a8c-5c34-4216-a2b1-7c9350587c13\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 404 Not Found\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_ln4fl03f\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_create_post_content_too_long - pydantic_core._pyda...\nFAILED tests_generated/generated_test.py::test_post_api_posts - assert 404 ==...\n2 failed, 14 passed in 3.41s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M04_seed_minimum",
+      "old": "10, ge=1, le=1000, description=\"How many users to seed (default 10)\"",
+      "new": "10, ge=0, le=1000, description=\"How many users to seed (default 10)\"",
+      "description": "Allow an empty database seed",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests_generated/generated_test.py::test_post_api_seed",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 18.832,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_seed_db_invalid_limit",
+          "tests/test.py::test_invalid_seed_request_should_not_change_database",
+          "tests_generated/generated_test.py::test_post_api_seed"
+        ],
+        "output_tail": " Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.5 request_id=f0024cc1-59e3-45c9-a21b-aecbd2f0f2ba\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:70 DB seeded: 0 users, 0 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=1.5 request_id=d12408f0-b2fd-4eeb-95fc-bd98b4b8532d\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n_____________________________ test_post_api_seed ______________________________\n\nclient = <httpx.AsyncClient object at 0x0000029556F60050>\n\n    @pytest.mark.asyncio\n    async def test_post_api_seed(client: AsyncClient):\n        # Valid seeding\n        response = await client.post(\"/api/seed\", json={\"num_users\": 10})\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"status\"] == \"seeded\"\n        assert data[\"users\"] == 10\n        assert data[\"posts\"] >= 50\n    \n        # Invalid: num_users out of range\n        response = await client.post(\"/api/seed\", json={\"num_users\": 0})\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:57: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:44:06,782 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:44:06,782 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=124.4 request_id=46aa9d9f-2b37-4c8c-89fc-477d0a0df953\n2026-08-03 19:44:06,783 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=124.4 request_id=46aa9d9f-2b37-4c8c-89fc-477d0a0df953\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:44:06,796 INFO llm_ctf_api DB seeded: 10 users, 70 posts\n2026-08-03 19:44:06,797 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=13.3 request_id=36116746-5838-4c96-b234-133b2c0f1612\n2026-08-03 19:44:06,797 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:44:06,798 INFO llm_ctf_api DB seeded: 0 users, 0 posts\n2026-08-03 19:44:06,799 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=1.0 request_id=0c6f1836-9c1e-4057-bcc4-a7d7f85f3a51\n2026-08-03 19:44:06,799 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 10 users, 70 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=13.3 request_id=36116746-5838-4c96-b234-133b2c0f1612\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:70 DB seeded: 0 users, 0 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=1.0 request_id=0c6f1836-9c1e-4057-bcc4-a7d7f85f3a51\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_1bkgagqk\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_seed_db_invalid_limit - assert 200 == 422\nFAILED tests/test.py::test_invalid_seed_request_should_not_change_database - ...\nFAILED tests_generated/generated_test.py::test_post_api_seed - assert 200 == 422\n3 failed, 77 passed in 16.89s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 6.588,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_seed_db_invalid_limit",
+          "tests/test.py::test_invalid_seed_request_should_not_change_database",
+          "tests_generated/generated_test.py::test_post_api_seed"
+        ],
+        "output_tail": "P Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.3 request_id=1d56f0d3-f676-42c6-b036-25e0e976e3e9\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:70 DB seeded: 0 users, 0 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=1.3 request_id=52bccb1a-5a89-408c-8366-c54b2584eff9\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n_____________________________ test_post_api_seed ______________________________\n\nclient = <httpx.AsyncClient object at 0x0000016DC0CBED50>\n\n    @pytest.mark.asyncio\n    async def test_post_api_seed(client: AsyncClient):\n        # Valid seeding\n        response = await client.post(\"/api/seed\", json={\"num_users\": 10})\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"status\"] == \"seeded\"\n        assert data[\"users\"] == 10\n        assert data[\"posts\"] >= 50\n    \n        # Invalid: num_users out of range\n        response = await client.post(\"/api/seed\", json={\"num_users\": 0})\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:57: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:44:13,594 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:44:13,595 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=121.6 request_id=690e06ff-d5c7-48ca-b2f2-91ee5c528373\n2026-08-03 19:44:13,595 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=121.6 request_id=690e06ff-d5c7-48ca-b2f2-91ee5c528373\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:44:13,610 INFO llm_ctf_api DB seeded: 10 users, 70 posts\n2026-08-03 19:44:13,611 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=13.5 request_id=ecac535f-4eb7-4422-ab0b-6a5a4ef912fb\n2026-08-03 19:44:13,611 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:44:13,612 INFO llm_ctf_api DB seeded: 0 users, 0 posts\n2026-08-03 19:44:13,613 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=1.3 request_id=af86121d-9860-4b23-8e93-9b494a1c7494\n2026-08-03 19:44:13,613 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 10 users, 70 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=13.5 request_id=ecac535f-4eb7-4422-ab0b-6a5a4ef912fb\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:70 DB seeded: 0 users, 0 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=1.3 request_id=af86121d-9860-4b23-8e93-9b494a1c7494\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_3gnwqo38\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_seed_db_invalid_limit - assert 200 == 422\nFAILED tests/test.py::test_invalid_seed_request_should_not_change_database - ...\nFAILED tests_generated/generated_test.py::test_post_api_seed - assert 200 == 422\n3 failed, 13 passed in 4.69s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M05_seed_maximum",
+      "old": "10, ge=1, le=1000, description=\"How many users to seed (default 10)\"",
+      "new": "10, ge=1, le=1001, description=\"How many users to seed (default 10)\"",
+      "description": "Increase seed maximum by one",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests_generated/generated_test.py::test_post_api_seed",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 19.92,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_seed_db_invalid_limit",
+          "tests_generated/generated_test.py::test_post_api_seed"
+        ],
+        "output_tail": "85-b76e-3fd9a571b4f4\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n_____________________________ test_post_api_seed ______________________________\n\nclient = <httpx.AsyncClient object at 0x0000014D406CA5D0>\n\n    @pytest.mark.asyncio\n    async def test_post_api_seed(client: AsyncClient):\n        # Valid seeding\n        response = await client.post(\"/api/seed\", json={\"num_users\": 10})\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"status\"] == \"seeded\"\n        assert data[\"users\"] == 10\n        assert data[\"posts\"] >= 50\n    \n        # Invalid: num_users out of range\n        response = await client.post(\"/api/seed\", json={\"num_users\": 0})\n        assert response.status_code == 422\n        response = await client.post(\"/api/seed\", json={\"num_users\": 1001})\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:59: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:44:32,397 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:44:32,398 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=111.8 request_id=86cb747d-02f9-4219-bcf9-e937e1b13b10\n2026-08-03 19:44:32,398 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=111.8 request_id=86cb747d-02f9-4219-bcf9-e937e1b13b10\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:44:32,412 INFO llm_ctf_api DB seeded: 10 users, 70 posts\n2026-08-03 19:44:32,412 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=13.0 request_id=24d928b1-0c32-4e76-93ee-c0eeb794789f\n2026-08-03 19:44:32,412 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:44:32,414 INFO llm_ctf_api method=POST path=/api/seed status=422 duration_ms=1.3 request_id=852a47ec-a96e-44f0-8f4e-712d382d952c\n2026-08-03 19:44:32,415 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:44:33,556 INFO llm_ctf_api DB seeded: 1001 users, 7515 posts\n2026-08-03 19:44:33,557 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=1141.6 request_id=9a65627c-13f8-44e7-839f-4d77d0860f46\n2026-08-03 19:44:33,557 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 10 users, 70 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=13.0 request_id=24d928b1-0c32-4e76-93ee-c0eeb794789f\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=422 duration_ms=1.3 request_id=852a47ec-a96e-44f0-8f4e-712d382d952c\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:70 DB seeded: 1001 users, 7515 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=1141.6 request_id=9a65627c-13f8-44e7-839f-4d77d0860f46\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_eaesg0pj\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_seed_db_invalid_limit - assert 200 == 422\nFAILED tests_generated/generated_test.py::test_post_api_seed - assert 200 == 422\n2 failed, 78 passed in 17.81s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 8.545,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_seed_db_invalid_limit",
+          "tests_generated/generated_test.py::test_post_api_seed"
+        ],
+        "output_tail": "4b5-9d76-c7bb4bd1bd74\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n_____________________________ test_post_api_seed ______________________________\n\nclient = <httpx.AsyncClient object at 0x000001EC3D8B4AA0>\n\n    @pytest.mark.asyncio\n    async def test_post_api_seed(client: AsyncClient):\n        # Valid seeding\n        response = await client.post(\"/api/seed\", json={\"num_users\": 10})\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"status\"] == \"seeded\"\n        assert data[\"users\"] == 10\n        assert data[\"posts\"] >= 50\n    \n        # Invalid: num_users out of range\n        response = await client.post(\"/api/seed\", json={\"num_users\": 0})\n        assert response.status_code == 422\n        response = await client.post(\"/api/seed\", json={\"num_users\": 1001})\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:59: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:44:41,221 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:44:41,221 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=118.1 request_id=0d9420b5-9212-4296-9123-68641baba236\n2026-08-03 19:44:41,222 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=118.1 request_id=0d9420b5-9212-4296-9123-68641baba236\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:44:41,237 INFO llm_ctf_api DB seeded: 10 users, 70 posts\n2026-08-03 19:44:41,237 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=14.3 request_id=738cc610-fe2b-4a10-8af1-477759c539ac\n2026-08-03 19:44:41,237 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:44:41,239 INFO llm_ctf_api method=POST path=/api/seed status=422 duration_ms=0.8 request_id=4fb4e23e-6ea3-423e-a563-2eed97c0ee6d\n2026-08-03 19:44:41,239 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 422 Unprocessable Entity\"\n2026-08-03 19:44:42,442 INFO llm_ctf_api DB seeded: 1001 users, 7515 posts\n2026-08-03 19:44:42,443 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=1203.3 request_id=6187b36d-42c6-4675-8fbe-3e944444e3e1\n2026-08-03 19:44:42,443 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 10 users, 70 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=14.3 request_id=738cc610-fe2b-4a10-8af1-477759c539ac\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=422 duration_ms=0.8 request_id=4fb4e23e-6ea3-423e-a563-2eed97c0ee6d\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 422 Unprocessable Entity\"\nINFO     llm_ctf_api:main.py:70 DB seeded: 1001 users, 7515 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=1203.3 request_id=6187b36d-42c6-4675-8fbe-3e944444e3e1\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_i36e5vm3\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_seed_db_invalid_limit - assert 200 == 422\nFAILED tests_generated/generated_test.py::test_post_api_seed - assert 200 == 422\n2 failed, 14 passed in 6.67s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M06_page_minimum",
+      "old": "page: int = Query(1, ge=1, description=\"Page number (1-based)\")",
+      "new": "page: int = Query(1, ge=0, description=\"Page number (1-based)\")",
+      "description": "Allow page zero",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+        "tests/test_extended.py::test_pagination_rejects_limit_above_maximum",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_get_user_id_must_be_integer"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 20.287,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+          "tests_generated/generated_test.py::test_get_api_users_paginated"
+        ],
+        "output_tail": "____________________ test_get_api_users_paginated _________________________\n\nclient = <httpx.AsyncClient object at 0x000001579726AA50>\n\n    @pytest.mark.asyncio\n    async def test_get_api_users_paginated(client: AsyncClient):\n        # Default page 1, limit 20\n        response = await client.get(\"/api/users/paginated\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"page\"] == 1\n        assert data[\"limit\"] == 20\n        assert \"total\" in data\n        assert \"pages\" in data\n        assert \"data\" in data\n        assert len(data[\"data\"]) <= 20\n    \n        # Custom page and limit\n        response = await client.get(\"/api/users/paginated?page=2&limit=5\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"page\"] == 2\n        assert data[\"limit\"] == 5\n        assert len(data[\"data\"]) <= 5\n    \n        # Invalid page (<1) \\u2192 422\n        response = await client.get(\"/api/users/paginated?page=0\")\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:120: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:45:02,640 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:45:02,641 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=169.1 request_id=55b20821-bf53-4dd1-b49f-7a9511d8bb8b\n2026-08-03 19:45:02,641 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=169.1 request_id=55b20821-bf53-4dd1-b49f-7a9511d8bb8b\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:45:02,643 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=0.8 request_id=dd60a17f-4e7e-44df-aab6-9b4ae2466372\n2026-08-03 19:45:02,644 INFO httpx HTTP Request: GET http://test/api/users/paginated \"HTTP/1.1 200 OK\"\n2026-08-03 19:45:02,645 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=0.4 request_id=3884d421-abf4-41bf-8d5c-5d705984f25c\n2026-08-03 19:45:02,646 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=2&limit=5 \"HTTP/1.1 200 OK\"\n2026-08-03 19:45:02,647 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=0.6 request_id=ae171714-1dc6-435a-9215-ed71d11b5a7a\n2026-08-03 19:45:02,648 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=0 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=0.8 request_id=dd60a17f-4e7e-44df-aab6-9b4ae2466372\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=0.4 request_id=3884d421-abf4-41bf-8d5c-5d705984f25c\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=2&limit=5 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=0.6 request_id=ae171714-1dc6-435a-9215-ed71d11b5a7a\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=0 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_9yo6az32\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]\nFAILED tests_generated/generated_test.py::test_get_api_users_paginated - asse...\n2 failed, 78 passed in 18.39s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 5.56,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+        ],
+        "output_tail": ".........F......                                                         [100%]\n================================== FAILURES ===================================\n__________ test_get_users_paginated_invalid_values[page=0&limit=20] ___________\n\nclient = <httpx.AsyncClient object at 0x00000265AADB2B50>\nquery = 'page=0&limit=20'\n\n    @pytest.mark.parametrize(\n        \"query\",\n        [\n            \"page=0&limit=20\",      # page must be >= 1\n            \"page=-1&limit=20\",     # negative page is invalid\n            \"page=1&limit=0\",       # limit must be >= 1\n            \"page=1&limit=-5\",      # negative limit is invalid\n        ],\n    )\n    async def test_get_users_paginated_invalid_values(client, query):\n        \"\"\"\n        The pagination endpoint should reject invalid page/limit values.\n        If this test fails, it means pagination validation is weak.\n        \"\"\"\n        response = await client.get(f\"/api/users/paginated?{query}\")\n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test.py:272: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:45:09,693 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:45:09,693 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=139.2 request_id=52d42e10-be45-4051-b3e7-12a8854e6242\n2026-08-03 19:45:09,693 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=139.2 request_id=52d42e10-be45-4051-b3e7-12a8854e6242\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:45:09,697 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=1.2 request_id=f1c073e5-6482-4226-826a-791c9bd6d9c3\n2026-08-03 19:45:09,698 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=0&limit=20 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=1.2 request_id=f1c073e5-6482-4226-826a-791c9bd6d9c3\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=0&limit=20 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_r8qeoagg\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]\n1 failed, 15 passed in 2.98s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M07_page_limit",
+      "old": "limit: int = Query(20, ge=1, le=100, description=\"Records per page\")",
+      "new": "limit: int = Query(20, ge=1, le=101, description=\"Records per page\")",
+      "description": "Increase page-size maximum by one",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+        "tests/test_extended.py::test_pagination_rejects_limit_above_maximum",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_get_user_id_must_be_integer"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 21.405,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test_extended.py::test_pagination_rejects_limit_above_maximum"
+        ],
+        "output_tail": "............................................F........................... [ 90%]\n........                                                                 [100%]\n================================== FAILURES ===================================\n_________________ test_pagination_rejects_limit_above_maximum _________________\n\nclient = <httpx.AsyncClient object at 0x000001E94365AF90>\n\n    async def test_pagination_rejects_limit_above_maximum(client):\n        response = await client.get(\"/api/users/paginated?page=1&limit=101\")\n    \n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test_extended.py:121: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:45:23,825 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:45:23,826 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=260.9 request_id=a3c3031e-d54d-4f89-8ef8-d21cf1f883df\n2026-08-03 19:45:23,827 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=260.9 request_id=a3c3031e-d54d-4f89-8ef8-d21cf1f883df\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:45:23,835 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=2.8 request_id=8045e5fe-9128-40b8-a40c-6086d6cd7c56\n2026-08-03 19:45:23,836 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=1&limit=101 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=2.8 request_id=8045e5fe-9128-40b8-a40c-6086d6cd7c56\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=1&limit=101 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_1_c11tmn\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_pagination_rejects_limit_above_maximum - ...\n1 failed, 79 passed in 19.22s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 6.604,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test_extended.py::test_pagination_rejects_limit_above_maximum"
+        ],
+        "output_tail": "............F...                                                         [100%]\n================================== FAILURES ===================================\n_________________ test_pagination_rejects_limit_above_maximum _________________\n\nclient = <httpx.AsyncClient object at 0x000001E2C42D4BB0>\n\n    async def test_pagination_rejects_limit_above_maximum(client):\n        response = await client.get(\"/api/users/paginated?page=1&limit=101\")\n    \n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test_extended.py:121: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:45:38,224 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:45:38,224 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=173.5 request_id=ce647af0-7918-4c1c-830d-e07eb0c3c47a\n2026-08-03 19:45:38,225 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=173.5 request_id=ce647af0-7918-4c1c-830d-e07eb0c3c47a\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:45:38,230 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=3.6 request_id=fc97d966-4118-4069-9c6f-8943eee49ad8\n2026-08-03 19:45:38,231 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=1&limit=101 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=3.6 request_id=fc97d966-4118-4069-9c6f-8943eee49ad8\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=1&limit=101 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_1xjq3bl7\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_pagination_rejects_limit_above_maximum - ...\n1 failed, 15 passed in 3.43s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M08_page_count",
+      "old": "\"pages\": -(-len(users_db) // limit),  # ceiling division",
+      "new": "\"pages\": len(users_db) // limit,  # mutated floor division",
+      "description": "Use floor rather than ceiling pagination",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_seed_updates_pagination_metadata",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+        "tests/test.py::test_get_user_id_must_be_integer"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 17.62,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test_extended.py::test_seed_updates_pagination_metadata"
+        ],
+        "output_tail": ".........................................F.............................. [ 90%]\n........                                                                 [100%]\n================================== FAILURES ===================================\n____________________ test_seed_updates_pagination_metadata ____________________\n\nclient = <httpx.AsyncClient object at 0x000002C9CCFCA750>\n\n    async def test_seed_updates_pagination_metadata(client):\n        await client.post(\"/api/seed\", json={\"num_users\": 23})\n        response = await client.get(\"/api/users/paginated?page=3&limit=10\")\n    \n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"total\"] == 23\n>       assert data[\"pages\"] == 3\nE       assert 2 == 3\n\ntests\\test_extended.py:96: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:45:49,148 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:45:49,148 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=157.3 request_id=3f7cf6de-f8f9-4544-9bf0-5414ea6636cc\n2026-08-03 19:45:49,149 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=157.3 request_id=3f7cf6de-f8f9-4544-9bf0-5414ea6636cc\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:45:49,184 INFO llm_ctf_api DB seeded: 23 users, 166 posts\n2026-08-03 19:45:49,184 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=34.2 request_id=8821a4a9-4512-48ea-ad30-34ad0e0db190\n2026-08-03 19:45:49,184 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:45:49,185 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=0.4 request_id=9ab018e8-02fa-4472-ac44-d8ac9447c3e2\n2026-08-03 19:45:49,186 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=3&limit=10 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 23 users, 166 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=34.2 request_id=8821a4a9-4512-48ea-ad30-34ad0e0db190\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=0.4 request_id=9ab018e8-02fa-4472-ac44-d8ac9447c3e2\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=3&limit=10 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_gzuo4t4u\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_seed_updates_pagination_metadata - assert...\n1 failed, 79 passed in 15.64s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 5.158,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test_extended.py::test_seed_updates_pagination_metadata"
+        ],
+        "output_tail": "........F.......                                                         [100%]\n================================== FAILURES ===================================\n____________________ test_seed_updates_pagination_metadata ____________________\n\nclient = <httpx.AsyncClient object at 0x000002260B2A2050>\n\n    async def test_seed_updates_pagination_metadata(client):\n        await client.post(\"/api/seed\", json={\"num_users\": 23})\n        response = await client.get(\"/api/users/paginated?page=3&limit=10\")\n    \n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"total\"] == 23\n>       assert data[\"pages\"] == 3\nE       assert 2 == 3\n\ntests\\test_extended.py:96: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:46:00,322 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:46:00,322 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=127.3 request_id=1998a816-b64d-4a23-8c80-8c28fbde177b\n2026-08-03 19:46:00,323 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=127.3 request_id=1998a816-b64d-4a23-8c80-8c28fbde177b\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:00,352 INFO llm_ctf_api DB seeded: 23 users, 166 posts\n2026-08-03 19:46:00,353 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=28.8 request_id=451dfc9c-2c1e-4fdf-8529-99f87b2c3f36\n2026-08-03 19:46:00,353 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:46:00,354 INFO llm_ctf_api method=GET path=/api/users/paginated status=200 duration_ms=0.4 request_id=ea8f3c72-e03c-41ae-a292-572d894223fb\n2026-08-03 19:46:00,354 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=3&limit=10 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 23 users, 166 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=28.8 request_id=451dfc9c-2c1e-4fdf-8529-99f87b2c3f36\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/paginated status=200 duration_ms=0.4 request_id=ea8f3c72-e03c-41ae-a292-572d894223fb\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=3&limit=10 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results__fvekt0e\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_seed_updates_pagination_metadata - assert...\n1 failed, 15 passed in 3.01s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M09_user_not_found_status",
+      "old": "if not user:\n        raise HTTPException(status_code=404, detail=\"User not found\")",
+      "new": "if not user:\n        raise HTTPException(status_code=200, detail=\"User not found\")",
+      "description": "Return success for a missing user",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 16.913,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_get_user_not_found",
+          "tests_generated/generated_test.py::test_get_api_users_user_id"
+        ],
+        "output_tail": "-- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=123.1 request_id=2cdd1bd6-2565-4252-946c-e214b66a0ae3\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:05,231 INFO llm_ctf_api method=GET path=/api/users/999999 status=200 duration_ms=0.6 request_id=4332e1df-3fc8-4a76-a1e7-c771a5d90988\n2026-08-03 19:46:05,231 INFO httpx HTTP Request: GET http://test/api/users/999999 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/999999 status=200 duration_ms=0.6 request_id=4332e1df-3fc8-4a76-a1e7-c771a5d90988\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/999999 \"HTTP/1.1 200 OK\"\n_________________________ test_get_api_users_user_id __________________________\n\nclient = <httpx.AsyncClient object at 0x000001CB2CCEAB10>\n\n    @pytest.mark.asyncio\n    async def test_get_api_users_user_id(client: AsyncClient):\n        # User with ID 1 exists\n        response = await client.get(\"/api/users/1\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"user\"][\"id\"] == 1\n        assert \"posts\" in data\n        assert isinstance(data[\"posts\"], list)\n    \n        # Non-existent user \\u2192 404\n        response = await client.get(\"/api/users/999999\")\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:139: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:46:16,349 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:46:16,349 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=136.4 request_id=b013fd65-f43d-4b46-940e-898ab71e6c67\n2026-08-03 19:46:16,349 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=136.4 request_id=b013fd65-f43d-4b46-940e-898ab71e6c67\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:16,351 INFO llm_ctf_api method=GET path=/api/users/1 status=200 duration_ms=0.7 request_id=ac6d951a-260e-4875-8193-bc183ff28aa2\n2026-08-03 19:46:16,352 INFO httpx HTTP Request: GET http://test/api/users/1 \"HTTP/1.1 200 OK\"\n2026-08-03 19:46:16,352 INFO llm_ctf_api method=GET path=/api/users/999999 status=200 duration_ms=0.4 request_id=c58f7aff-e1b5-4dff-99b5-95771efb0d78\n2026-08-03 19:46:16,353 INFO httpx HTTP Request: GET http://test/api/users/999999 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/1 status=200 duration_ms=0.7 request_id=ac6d951a-260e-4875-8193-bc183ff28aa2\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/1 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/999999 status=200 duration_ms=0.4 request_id=c58f7aff-e1b5-4dff-99b5-95771efb0d78\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/999999 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_7kzmzc9m\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_get_user_not_found - assert 200 == 404\nFAILED tests_generated/generated_test.py::test_get_api_users_user_id - assert...\n2 failed, 78 passed in 14.86s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.488,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_get_user_not_found"
+        ],
+        "output_tail": "........F.......                                                         [100%]\n================================== FAILURES ===================================\n___________________________ test_get_user_not_found ___________________________\n\nclient = <httpx.AsyncClient object at 0x000001B951F82150>\n\n    async def test_get_user_not_found(client):\n        response = await client.get(\"/api/users/999999\")\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test.py:146: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:46:22,339 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:46:22,339 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=116.3 request_id=1c2056cc-120f-4e5b-9e7f-33b03300778a\n2026-08-03 19:46:22,340 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=116.3 request_id=1c2056cc-120f-4e5b-9e7f-33b03300778a\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:22,341 INFO llm_ctf_api method=GET path=/api/users/999999 status=200 duration_ms=0.4 request_id=90c548b1-9946-48d0-aae7-1ee3e56ed1d3\n2026-08-03 19:46:22,341 INFO httpx HTTP Request: GET http://test/api/users/999999 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/users/999999 status=200 duration_ms=0.4 request_id=90c548b1-9946-48d0-aae7-1ee3e56ed1d3\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/999999 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_y_lsmly1\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_get_user_not_found - assert 200 == 404\n1 failed, 15 passed in 2.51s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M10_create_missing_user_status",
+      "old": "if not any(u.id == post.user_id for u in users_db):\n        raise HTTPException(status_code=404, detail=\"User not found\")",
+      "new": "if not any(u.id == post.user_id for u in users_db):\n        raise HTTPException(status_code=200, detail=\"User not found\")",
+      "description": "Return success for create with a missing user",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 17.434,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_create_post_user_not_found",
+          "tests_generated/generated_test.py::test_post_api_posts"
+        ],
+        "output_tail": "---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:27,101 INFO llm_ctf_api method=POST path=/api/posts status=200 duration_ms=0.8 request_id=59910930-1ef5-4c1e-a9e8-0f3bd383323a\n2026-08-03 19:46:27,101 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=200 duration_ms=0.8 request_id=59910930-1ef5-4c1e-a9e8-0f3bd383323a\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 200 OK\"\n_____________________________ test_post_api_posts _____________________________\n\nclient = <httpx.AsyncClient object at 0x0000023E697B25D0>\n\n    @pytest.mark.asyncio\n    async def test_post_api_posts(client: AsyncClient):\n        user_id = 1\n    \n        # Happy path\n        payload = {\"user_id\": user_id, \"title\": \"Test Post\", \"content\": \"Content\"}\n        response = await client.post(\"/api/posts\", json=payload)\n        assert response.status_code == 201\n        post = response.json()\n        assert post[\"user_id\"] == user_id\n        assert post[\"title\"] == payload[\"title\"]\n        assert post[\"content\"] == payload[\"content\"]\n        assert \"id\" in post\n        assert \"created_at\" in post\n    \n        # User not found \\u2192 404\n        payload[\"user_id\"] = 999999\n        response = await client.post(\"/api/posts\", json=payload)\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:165: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:46:38,372 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:46:38,373 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=119.3 request_id=6e1bdc72-d7df-46fd-88db-f5b597d25133\n2026-08-03 19:46:38,373 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=119.3 request_id=6e1bdc72-d7df-46fd-88db-f5b597d25133\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:38,376 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:46:38,376 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.6 request_id=ff18b28c-4cba-4a7d-bf1a-33498f317737\n2026-08-03 19:46:38,377 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:46:38,379 INFO llm_ctf_api method=POST path=/api/posts status=200 duration_ms=1.6 request_id=e21ca14f-f54c-4115-ab74-52ce5a0f3afe\n2026-08-03 19:46:38,379 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.6 request_id=ff18b28c-4cba-4a7d-bf1a-33498f317737\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=200 duration_ms=1.6 request_id=e21ca14f-f54c-4115-ab74-52ce5a0f3afe\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_fp785s27\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_create_post_user_not_found - assert 200 == 404\nFAILED tests_generated/generated_test.py::test_post_api_posts - assert 200 ==...\n2 failed, 78 passed in 15.25s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.839,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_create_post_user_not_found"
+        ],
+        "output_tail": "..........F.....                                                         [100%]\n================================== FAILURES ===================================\n_______________________ test_create_post_user_not_found _______________________\n\nclient = <httpx.AsyncClient object at 0x000001C21198F2F0>\n\n    async def test_create_post_user_not_found(client):\n        payload = {\"user_id\": 999999, \"title\": \"Test\", \"content\": \"Content\"}\n        response = await client.post(\"/api/posts\", json=payload)\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test.py:153: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:46:44,808 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:46:44,809 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=144.6 request_id=3bad755b-f5dd-4ffc-ab42-a3b1d61df1da\n2026-08-03 19:46:44,810 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=144.6 request_id=3bad755b-f5dd-4ffc-ab42-a3b1d61df1da\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:44,813 INFO llm_ctf_api method=POST path=/api/posts status=200 duration_ms=1.0 request_id=f6cfa39f-7360-4f08-91b7-ca5b7244e457\n2026-08-03 19:46:44,813 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=200 duration_ms=1.0 request_id=f6cfa39f-7360-4f08-91b7-ca5b7244e457\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_iq6a9ymj\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_create_post_user_not_found - assert 200 == 404\n1 failed, 15 passed in 2.83s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M11_create_duplicate_id",
+      "old": "id=len(posts_db) + 1,\n        user_id=post.user_id,",
+      "new": "id=len(posts_db),\n        user_id=post.user_id,",
+      "description": "Create a duplicate post identifier",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 18.388,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test_extended.py::test_delete_post_decrements_database_metrics"
+        ],
+        "output_tail": "_delete_post_decrements_database_metrics(client):\n        created = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Delete\", \"content\": \"Content\"}\n        )\n        before = (await client.get(\"/api/metrics/db-size\")).json()\n    \n        deleted = await client.delete(f\"/api/posts/{created.json()['id']}\")\n        after = (await client.get(\"/api/metrics/db-size\")).json()\n    \n        assert deleted.status_code == 200\n>       assert after[\"posts\"] == before[\"posts\"] - 1\nE       assert 740 == (742 - 1)\n\ntests\\test_extended.py:240: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:46:58,134 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:46:58,135 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=121.1 request_id=a2fa0f7b-6ea1-4791-bf53-9272df9a8f13\n2026-08-03 19:46:58,135 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=121.1 request_id=a2fa0f7b-6ea1-4791-bf53-9272df9a8f13\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:46:58,137 INFO llm_ctf_api post_created post_id=741 user_id=1\n2026-08-03 19:46:58,138 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=4cf3453d-2112-4ead-a556-05707e253317\n2026-08-03 19:46:58,138 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:46:58,138 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=0f544376-5e07-426a-9cb4-b5386815c9f2\n2026-08-03 19:46:58,139 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n2026-08-03 19:46:58,139 INFO llm_ctf_api post_deleted post_id=741\n2026-08-03 19:46:58,139 INFO llm_ctf_api method=DELETE path=/api/posts/741 status=200 duration_ms=0.5 request_id=a10d874a-3e17-4fe2-9851-0df1c4b13c46\n2026-08-03 19:46:58,140 INFO httpx HTTP Request: DELETE http://test/api/posts/741 \"HTTP/1.1 200 OK\"\n2026-08-03 19:46:58,140 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=0ed70a78-3cf6-42e6-96ce-3912228588c4\n2026-08-03 19:46:58,140 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=741 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=4cf3453d-2112-4ead-a556-05707e253317\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=0f544376-5e07-426a-9cb4-b5386815c9f2\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=741\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/741 status=200 duration_ms=0.5 request_id=a10d874a-3e17-4fe2-9851-0df1c4b13c46\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/741 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=0ed70a78-3cf6-42e6-96ce-3912228588c4\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_ty25vget\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_delete_post_decrements_database_metrics\n1 failed, 79 passed in 16.02s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 5.241,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test_extended.py::test_delete_post_decrements_database_metrics"
+        ],
+        "output_tail": "t_delete_post_decrements_database_metrics(client):\n        created = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Delete\", \"content\": \"Content\"}\n        )\n        before = (await client.get(\"/api/metrics/db-size\")).json()\n    \n        deleted = await client.delete(f\"/api/posts/{created.json()['id']}\")\n        after = (await client.get(\"/api/metrics/db-size\")).json()\n    \n        assert deleted.status_code == 200\n>       assert after[\"posts\"] == before[\"posts\"] - 1\nE       assert 740 == (742 - 1)\n\ntests\\test_extended.py:240: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:47:08,082 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:47:08,083 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=227.3 request_id=2ce3868f-f142-445f-b607-1105fa95ea43\n2026-08-03 19:47:08,083 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=227.3 request_id=2ce3868f-f142-445f-b607-1105fa95ea43\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:47:08,085 INFO llm_ctf_api post_created post_id=741 user_id=1\n2026-08-03 19:47:08,086 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.4 request_id=b230dbca-075f-4ace-948b-0b7e244fb0bf\n2026-08-03 19:47:08,086 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:47:08,087 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.3 request_id=abf2e2f9-0c98-4463-8cb1-254d183828bc\n2026-08-03 19:47:08,087 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n2026-08-03 19:47:08,088 INFO llm_ctf_api post_deleted post_id=741\n2026-08-03 19:47:08,089 INFO llm_ctf_api method=DELETE path=/api/posts/741 status=200 duration_ms=0.8 request_id=be46077f-543c-4d12-8707-6fa6131361d5\n2026-08-03 19:47:08,089 INFO httpx HTTP Request: DELETE http://test/api/posts/741 \"HTTP/1.1 200 OK\"\n2026-08-03 19:47:08,090 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.3 request_id=52e5a6dd-d446-4c00-a9fb-8866317098b0\n2026-08-03 19:47:08,090 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=741 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.4 request_id=b230dbca-075f-4ace-948b-0b7e244fb0bf\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.3 request_id=abf2e2f9-0c98-4463-8cb1-254d183828bc\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=741\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/741 status=200 duration_ms=0.8 request_id=be46077f-543c-4d12-8707-6fa6131361d5\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/741 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.3 request_id=52e5a6dd-d446-4c00-a9fb-8866317098b0\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_i_er5o93\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_delete_post_decrements_database_metrics\n1 failed, 15 passed in 3.12s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M12_update_wrong_title",
+      "old": "p.title = body.title.strip()\n            p.content = body.content.strip()",
+      "new": "p.title = body.content.strip()\n            p.content = body.content.strip()",
+      "description": "Write content into the title during update",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_create_post_missing_required_fields[payload0-user_id]",
+        "tests/test.py::test_create_post_missing_required_fields[payload1-title]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 19.571,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_update_post",
+          "tests/test_extended.py::test_update_post_accepts_maximum_title_length",
+          "tests_generated/generated_test.py::test_put_api_posts_post_id"
+        ],
+        "output_tail": "250-43b9-ad2b-c91ff24cb749\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=1.4 request_id=dc345705-09d9-42fe-a234-bf4143ea66b0\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n_________________________ test_put_api_posts_post_id __________________________\n\nclient = <httpx.AsyncClient object at 0x0000012E1FA06E10>\n\n    @pytest.mark.asyncio\n    async def test_put_api_posts_post_id(client: AsyncClient):\n        # Create a post to update\n        create_resp = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Old\", \"content\": \"Old content\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy update\n        update_payload = {\"title\": \"New Title\", \"content\": \"New content\"}\n        response = await client.put(f\"/api/posts/{post_id}\", json=update_payload)\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n>       assert data[\"post\"][\"title\"] == \"New Title\"\nE       AssertionError: assert 'New content' == 'New Title'\nE         \nE         - New Title\nE         + New content\n\ntests_generated\\generated_test.py:205: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:47:27,105 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:47:27,105 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=126.6 request_id=070d06b6-e396-40e6-bb4f-0ebfccc407e1\n2026-08-03 19:47:27,106 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=126.6 request_id=070d06b6-e396-40e6-bb4f-0ebfccc407e1\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:47:27,107 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:47:27,108 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=de8231ea-936c-4026-b6f5-2667fd467da4\n2026-08-03 19:47:27,108 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:47:27,109 INFO llm_ctf_api post_updated post_id=742\n2026-08-03 19:47:27,109 INFO llm_ctf_api method=PUT path=/api/posts/742 status=200 duration_ms=1.1 request_id=46d747b7-29d7-4ab2-b900-a42462acfcf6\n2026-08-03 19:47:27,110 INFO httpx HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=de8231ea-936c-4026-b6f5-2667fd467da4\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=1.1 request_id=46d747b7-29d7-4ab2-b900-a42462acfcf6\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_37yi9s5o\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_update_post - AssertionError: assert 'Updated cont...\nFAILED tests/test_extended.py::test_update_post_accepts_maximum_title_length\nFAILED tests_generated/generated_test.py::test_put_api_posts_post_id - Assert...\n3 failed, 77 passed in 17.28s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.677,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_update_post"
+        ],
+        "output_tail": ".....F..........                                                         [100%]\n================================== FAILURES ===================================\n______________________________ test_update_post _______________________________\n\nclient = <httpx.AsyncClient object at 0x000002031E3E60F0>\n\n    async def test_update_post(client):\n        create_payload = {\n            \"user_id\": 1,\n            \"title\": \"Original Title\",\n            \"content\": \"Original content\",\n        }\n        create_resp = await client.post(\"/api/posts\", json=create_payload)\n        post_id = create_resp.json()[\"id\"]\n    \n        update_payload = {\"title\": \"Updated Title\", \"content\": \"Updated content\"}\n        resp = await client.put(f\"/api/posts/{post_id}\", json=update_payload)\n        assert resp.status_code == 200\n        data = resp.json()\n        assert data[\"success\"] is True\n        updated = data[\"post\"]\n>       assert updated[\"title\"] == update_payload[\"title\"]\nE       AssertionError: assert 'Updated content' == 'Updated Title'\nE         \nE         - Updated Title\nE         + Updated content\n\ntests\\test.py:114: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:47:32,343 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:47:32,343 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=126.9 request_id=056b042b-f7f3-4dae-b392-bafebc5beeec\n2026-08-03 19:47:32,344 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=126.9 request_id=056b042b-f7f3-4dae-b392-bafebc5beeec\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:47:32,347 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:47:32,347 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.3 request_id=498a188d-f308-49d6-919b-d69e1e9ab0d1\n2026-08-03 19:47:32,348 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:47:32,349 INFO llm_ctf_api post_updated post_id=742\n2026-08-03 19:47:32,350 INFO llm_ctf_api method=PUT path=/api/posts/742 status=200 duration_ms=1.6 request_id=15c3745b-9649-407c-a511-af670b45e943\n2026-08-03 19:47:32,350 INFO httpx HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.3 request_id=498a188d-f308-49d6-919b-d69e1e9ab0d1\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=1.6 request_id=15c3745b-9649-407c-a511-af670b45e943\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_e854jzrf\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_update_post - AssertionError: assert 'Updated cont...\n1 failed, 15 passed in 2.52s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M13_update_wrong_content",
+      "old": "p.title = body.title.strip()\n            p.content = body.content.strip()",
+      "new": "p.title = body.title.strip()\n            p.content = body.title.strip()",
+      "description": "Write title into the content during update",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_create_post_missing_required_fields[payload0-user_id]",
+        "tests/test.py::test_create_post_missing_required_fields[payload1-title]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 18.401,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_update_post",
+          "tests/test_extended.py::test_update_post_accepts_maximum_content_length",
+          "tests_generated/generated_test.py::test_put_api_posts_post_id"
+        ],
+        "output_tail": "HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=1.3 request_id=22004fac-8f99-4fef-a781-43cc4d5673bc\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n_________________________ test_put_api_posts_post_id __________________________\n\nclient = <httpx.AsyncClient object at 0x000001FEE955ED50>\n\n    @pytest.mark.asyncio\n    async def test_put_api_posts_post_id(client: AsyncClient):\n        # Create a post to update\n        create_resp = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Old\", \"content\": \"Old content\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy update\n        update_payload = {\"title\": \"New Title\", \"content\": \"New content\"}\n        response = await client.put(f\"/api/posts/{post_id}\", json=update_payload)\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n        assert data[\"post\"][\"title\"] == \"New Title\"\n>       assert data[\"post\"][\"content\"] == \"New content\"\nE       AssertionError: assert 'New Title' == 'New content'\nE         \nE         - New content\nE         + New Title\n\ntests_generated\\generated_test.py:206: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:47:50,348 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:47:50,348 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=146.5 request_id=e0c6bd6a-f2f7-47cb-99b2-10848af3198d\n2026-08-03 19:47:50,348 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=146.5 request_id=e0c6bd6a-f2f7-47cb-99b2-10848af3198d\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:47:50,350 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:47:50,351 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.2 request_id=89b94648-7446-4d6e-8a34-485ae69db82a\n2026-08-03 19:47:50,351 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:47:50,353 INFO llm_ctf_api post_updated post_id=742\n2026-08-03 19:47:50,353 INFO llm_ctf_api method=PUT path=/api/posts/742 status=200 duration_ms=1.3 request_id=dbbdc927-08fa-4ef5-b69e-90776983f844\n2026-08-03 19:47:50,353 INFO httpx HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.2 request_id=89b94648-7446-4d6e-8a34-485ae69db82a\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=1.3 request_id=dbbdc927-08fa-4ef5-b69e-90776983f844\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_h17sclj6\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_update_post - AssertionError: assert 'Updated Titl...\nFAILED tests/test_extended.py::test_update_post_accepts_maximum_content_length\nFAILED tests_generated/generated_test.py::test_put_api_posts_post_id - Assert...\n3 failed, 77 passed in 16.29s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.488,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_update_post"
+        ],
+        "output_tail": ".....F..........                                                         [100%]\n================================== FAILURES ===================================\n______________________________ test_update_post _______________________________\n\nclient = <httpx.AsyncClient object at 0x000002AB231060F0>\n\n    async def test_update_post(client):\n        create_payload = {\n            \"user_id\": 1,\n            \"title\": \"Original Title\",\n            \"content\": \"Original content\",\n        }\n        create_resp = await client.post(\"/api/posts\", json=create_payload)\n        post_id = create_resp.json()[\"id\"]\n    \n        update_payload = {\"title\": \"Updated Title\", \"content\": \"Updated content\"}\n        resp = await client.put(f\"/api/posts/{post_id}\", json=update_payload)\n        assert resp.status_code == 200\n        data = resp.json()\n        assert data[\"success\"] is True\n        updated = data[\"post\"]\n        assert updated[\"title\"] == update_payload[\"title\"]\n>       assert updated[\"content\"] == update_payload[\"content\"]\nE       AssertionError: assert 'Updated Title' == 'Updated content'\nE         \nE         - Updated content\nE         + Updated Title\n\ntests\\test.py:115: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:47:55,448 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:47:55,449 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=114.3 request_id=9b1dfaa1-21cf-4b66-a84b-cd994eb7e597\n2026-08-03 19:47:55,449 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=114.3 request_id=9b1dfaa1-21cf-4b66-a84b-cd994eb7e597\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:47:55,451 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:47:55,451 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=9e2314b2-d160-4ec0-a062-4cc71b028b80\n2026-08-03 19:47:55,451 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:47:55,454 INFO llm_ctf_api post_updated post_id=742\n2026-08-03 19:47:55,455 INFO llm_ctf_api method=PUT path=/api/posts/742 status=200 duration_ms=2.9 request_id=af1b85c8-d673-45a0-888b-d2387aa13ea8\n2026-08-03 19:47:55,455 INFO httpx HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=9e2314b2-d160-4ec0-a062-4cc71b028b80\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=2.9 request_id=af1b85c8-d673-45a0-888b-d2387aa13ea8\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_we0a22bf\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_update_post - AssertionError: assert 'Updated Titl...\n1 failed, 15 passed in 2.32s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M14_update_not_found_status",
+      "old": "return {\"success\": True, \"post\": p}\n    raise HTTPException(status_code=404, detail=\"Post not found\")",
+      "new": "return {\"success\": True, \"post\": p}\n    raise HTTPException(status_code=200, detail=\"Post not found\")",
+      "description": "Return success when an update target is missing",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_create_post_missing_required_fields[payload0-user_id]",
+        "tests/test.py::test_create_post_missing_required_fields[payload1-title]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 16.554,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_update_post_not_found",
+          "tests/test.py::test_deleted_post_cannot_be_updated",
+          "tests_generated/generated_test.py::test_put_api_posts_post_id"
+        ],
+        "output_tail": " to update\n        create_resp = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Old\", \"content\": \"Old content\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy update\n        update_payload = {\"title\": \"New Title\", \"content\": \"New content\"}\n        response = await client.put(f\"/api/posts/{post_id}\", json=update_payload)\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n        assert data[\"post\"][\"title\"] == \"New Title\"\n        assert data[\"post\"][\"content\"] == \"New content\"\n    \n        # Non-existent post \\u2192 404\n        response = await client.put(\"/api/posts/999999\", json=update_payload)\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:210: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:48:11,383 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:48:11,384 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=129.6 request_id=931ddd17-8e08-47a9-a150-a92298e36630\n2026-08-03 19:48:11,384 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=129.6 request_id=931ddd17-8e08-47a9-a150-a92298e36630\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:48:11,386 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:48:11,386 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=9c6dc349-e16e-4753-bb23-df1a6c2dcb74\n2026-08-03 19:48:11,387 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:48:11,388 INFO llm_ctf_api post_updated post_id=742\n2026-08-03 19:48:11,389 INFO llm_ctf_api method=PUT path=/api/posts/742 status=200 duration_ms=1.8 request_id=79168930-f1e3-45a3-b526-062b03c093c5\n2026-08-03 19:48:11,389 INFO httpx HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n2026-08-03 19:48:11,391 INFO llm_ctf_api method=PUT path=/api/posts/999999 status=200 duration_ms=1.1 request_id=ab00e858-bfdd-4df4-b5d6-b65752a1cb37\n2026-08-03 19:48:11,391 INFO httpx HTTP Request: PUT http://test/api/posts/999999 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=9c6dc349-e16e-4753-bb23-df1a6c2dcb74\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:395 post_updated post_id=742\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/742 status=200 duration_ms=1.8 request_id=79168930-f1e3-45a3-b526-062b03c093c5\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/742 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/999999 status=200 duration_ms=1.1 request_id=ab00e858-bfdd-4df4-b5d6-b65752a1cb37\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/999999 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_j8xmbzbl\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_update_post_not_found - assert 200 == 404\nFAILED tests/test.py::test_deleted_post_cannot_be_updated - assert 200 == 404\nFAILED tests_generated/generated_test.py::test_put_api_posts_post_id - assert...\n3 failed, 77 passed in 14.68s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.618,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_update_post_not_found"
+        ],
+        "output_tail": "............F...                                                         [100%]\n================================== FAILURES ===================================\n_________________________ test_update_post_not_found __________________________\n\nclient = <httpx.AsyncClient object at 0x000001FBA5F74BB0>\n\n    async def test_update_post_not_found(client):\n        payload = {\"title\": \"New\", \"content\": \"New content\"}\n        response = await client.put(\"/api/posts/999999\", json=payload)\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test.py:184: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:48:17,625 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:48:17,625 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=136.8 request_id=75b8d1e5-8165-4eb1-af87-47386261520c\n2026-08-03 19:48:17,625 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=136.8 request_id=75b8d1e5-8165-4eb1-af87-47386261520c\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:48:17,630 INFO llm_ctf_api method=PUT path=/api/posts/999999 status=200 duration_ms=2.4 request_id=8581a12d-3288-49de-b172-752980608316\n2026-08-03 19:48:17,630 INFO httpx HTTP Request: PUT http://test/api/posts/999999 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=PUT path=/api/posts/999999 status=200 duration_ms=2.4 request_id=8581a12d-3288-49de-b172-752980608316\nINFO     httpx:_client.py:1740 HTTP Request: PUT http://test/api/posts/999999 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results__25bykr8\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_update_post_not_found - assert 200 == 404\n1 failed, 15 passed in 2.59s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M15_delete_not_persisted",
+      "old": "posts_db = new_posts\n    logger.info(\"post_deleted post_id=%d\", post_id)",
+      "new": "posts_db = posts_db\n    logger.info(\"post_deleted post_id=%d\", post_id)",
+      "description": "Report deletion without persisting it",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+        "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+        "tests_generated/generated_test.py::test_delete_api_posts_post_id",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 16.756,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_delete_post",
+          "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+          "tests/test.py::test_deleted_post_cannot_be_updated",
+          "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+          "tests_generated/generated_test.py::test_delete_api_posts_post_id"
+        ],
+        "output_tail": ": \"...\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy delete\n        response = await client.delete(f\"/api/posts/{post_id}\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n        assert data[\"deleted_id\"] == post_id\n    \n        # Delete again \\u2192 404\n        response = await client.delete(f\"/api/posts/{post_id}\")\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:247: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:48:33,165 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:48:33,166 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=118.5 request_id=58ef4a92-089d-4e75-93b7-5077542ace8e\n2026-08-03 19:48:33,166 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=118.5 request_id=58ef4a92-089d-4e75-93b7-5077542ace8e\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:48:33,168 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:48:33,168 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=9e924e14-5a12-413b-a5cb-9e5a59b8d53e\n2026-08-03 19:48:33,168 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:48:33,169 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:48:33,169 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=e3386eda-db21-400b-8a63-e5a1a8e59f57\n2026-08-03 19:48:33,169 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n2026-08-03 19:48:33,170 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:48:33,170 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.5 request_id=f3043eae-d63c-4813-a764-c0db07080d7b\n2026-08-03 19:48:33,170 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=9e924e14-5a12-413b-a5cb-9e5a59b8d53e\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=e3386eda-db21-400b-8a63-e5a1a8e59f57\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.5 request_id=f3043eae-d63c-4813-a764-c0db07080d7b\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_paegm5io\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_delete_post - assert 742 not in [1, 2, 3, 4, 5, 6,...\nFAILED tests/test.py::test_delete_post_twice_second_attempt_should_fail - ass...\nFAILED tests/test.py::test_deleted_post_cannot_be_updated - assert 200 == 404\nFAILED tests/test_extended.py::test_delete_post_decrements_database_metrics\nFAILED tests_generated/generated_test.py::test_delete_api_posts_post_id - ass...\n5 failed, 75 passed in 14.83s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.985,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_delete_post",
+          "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+          "tests_generated/generated_test.py::test_delete_api_posts_post_id"
+        ],
+        "output_tail": "):\n        # Create a post to delete\n        create_resp = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Delete me\", \"content\": \"...\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy delete\n        response = await client.delete(f\"/api/posts/{post_id}\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n        assert data[\"deleted_id\"] == post_id\n    \n        # Delete again \\u2192 404\n        response = await client.delete(f\"/api/posts/{post_id}\")\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:247: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:48:39,659 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:48:39,660 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=120.6 request_id=d8d1a1bf-2959-473c-850c-a593899a115e\n2026-08-03 19:48:39,661 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=120.6 request_id=d8d1a1bf-2959-473c-850c-a593899a115e\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:48:39,663 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:48:39,664 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.4 request_id=769174fa-7448-4b73-8693-9a036bdcc897\n2026-08-03 19:48:39,664 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:48:39,665 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:48:39,665 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=7f79f93b-b24d-46cb-b96a-50431ca2fdcf\n2026-08-03 19:48:39,665 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n2026-08-03 19:48:39,666 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:48:39,666 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.5 request_id=49f73371-f790-4068-9357-309a8a04a30d\n2026-08-03 19:48:39,666 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.4 request_id=769174fa-7448-4b73-8693-9a036bdcc897\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=7f79f93b-b24d-46cb-b96a-50431ca2fdcf\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.5 request_id=49f73371-f790-4068-9357-309a8a04a30d\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_xvse_906\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_delete_post - assert 742 not in [1, 2, 3, 4, 5, 6,...\nFAILED tests/test.py::test_delete_post_twice_second_attempt_should_fail - ass...\nFAILED tests_generated/generated_test.py::test_delete_api_posts_post_id - ass...\n3 failed, 13 passed in 2.67s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M16_delete_not_found_status",
+      "old": "if len(new_posts) == len(posts_db):\n        raise HTTPException(status_code=404, detail=\"Post not found\")",
+      "new": "if len(new_posts) == len(posts_db):\n        raise HTTPException(status_code=200, detail=\"Post not found\")",
+      "description": "Return success when deleting a missing post",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+        "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+        "tests_generated/generated_test.py::test_delete_api_posts_post_id",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 16.75,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_delete_post_not_found",
+          "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+          "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+          "tests_generated/generated_test.py::test_delete_api_posts_post_id"
+        ],
+        "output_tail": "f test_delete_api_posts_post_id(client: AsyncClient):\n        # Create a post to delete\n        create_resp = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Delete me\", \"content\": \"...\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy delete\n        response = await client.delete(f\"/api/posts/{post_id}\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n        assert data[\"deleted_id\"] == post_id\n    \n        # Delete again \\u2192 404\n        response = await client.delete(f\"/api/posts/{post_id}\")\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:247: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:48:55,080 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:48:55,081 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=130.3 request_id=b0f08e27-30f3-4ced-b58f-4f50adde3942\n2026-08-03 19:48:55,081 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=130.3 request_id=b0f08e27-30f3-4ced-b58f-4f50adde3942\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:48:55,083 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:48:55,083 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=11c2abd6-192d-4f8a-83df-aa90c911652c\n2026-08-03 19:48:55,084 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:48:55,084 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:48:55,085 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=389a0502-6315-49ad-af9d-968129ef79ca\n2026-08-03 19:48:55,085 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n2026-08-03 19:48:55,086 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.4 request_id=745cd6f9-a2b6-4dbf-9115-09ba50997902\n2026-08-03 19:48:55,086 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=11c2abd6-192d-4f8a-83df-aa90c911652c\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=389a0502-6315-49ad-af9d-968129ef79ca\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.4 request_id=745cd6f9-a2b6-4dbf-9115-09ba50997902\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results__lh9kdm5\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_delete_post_not_found - assert 200 == 404\nFAILED tests/test.py::test_delete_post_twice_second_attempt_should_fail - ass...\nFAILED tests/test_extended.py::test_missing_delete_does_not_change_database_metrics\nFAILED tests_generated/generated_test.py::test_delete_api_posts_post_id - ass...\n4 failed, 76 passed in 14.86s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.335,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_delete_post_not_found",
+          "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+          "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+          "tests_generated/generated_test.py::test_delete_api_posts_post_id"
+        ],
+        "output_tail": "ef test_delete_api_posts_post_id(client: AsyncClient):\n        # Create a post to delete\n        create_resp = await client.post(\n            \"/api/posts\", json={\"user_id\": 1, \"title\": \"Delete me\", \"content\": \"...\"}\n        )\n        assert create_resp.status_code == 201\n        post_id = create_resp.json()[\"id\"]\n    \n        # Happy delete\n        response = await client.delete(f\"/api/posts/{post_id}\")\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"success\"] is True\n        assert data[\"deleted_id\"] == post_id\n    \n        # Delete again \\u2192 404\n        response = await client.delete(f\"/api/posts/{post_id}\")\n>       assert response.status_code == 404\nE       assert 200 == 404\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests_generated\\generated_test.py:247: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:49:00,852 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:49:00,852 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=115.8 request_id=22b57408-0081-4f13-872a-a5a1e2484874\n2026-08-03 19:49:00,853 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=115.8 request_id=22b57408-0081-4f13-872a-a5a1e2484874\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:49:00,855 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:49:00,855 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=b67355db-72a3-4c03-ab28-bb78c2be7ec6\n2026-08-03 19:49:00,855 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:49:00,856 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:49:00,856 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.5 request_id=5fdf0992-6230-42a6-9419-11d6c5381d3f\n2026-08-03 19:49:00,856 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n2026-08-03 19:49:00,857 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.4 request_id=8dee49e5-693f-4e6b-a126-d541b01b16f2\n2026-08-03 19:49:00,857 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=b67355db-72a3-4c03-ab28-bb78c2be7ec6\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.5 request_id=5fdf0992-6230-42a6-9419-11d6c5381d3f\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.4 request_id=8dee49e5-693f-4e6b-a126-d541b01b16f2\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results__zniozob\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_delete_post_not_found - assert 200 == 404\nFAILED tests/test.py::test_delete_post_twice_second_attempt_should_fail - ass...\nFAILED tests/test_extended.py::test_missing_delete_does_not_change_database_metrics\nFAILED tests_generated/generated_test.py::test_delete_api_posts_post_id - ass...\n4 failed, 12 passed in 2.42s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M17_large_payload_minimum",
+      "old": "100, ge=10, le=1000, description=\"Number of paragraphs to return (10",
+      "new": "100, ge=9, le=1000, description=\"Number of paragraphs to return (10",
+      "description": "Allow payload size below the documented minimum",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_large_payload_rejects_size_below_minimum",
+        "tests_generated/generated_test.py::test_get_api_large_payload",
+        "tests/test_extended.py::test_large_payload_accepts_minimum_size",
+        "tests/test_extended.py::test_large_payload_rejects_non_integer_size"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 16.06,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test_extended.py::test_large_payload_rejects_size_below_minimum"
+        ],
+        "output_tail": "...........................................................F............ [ 90%]\n........                                                                 [100%]\n================================== FAILURES ===================================\n________________ test_large_payload_rejects_size_below_minimum ________________\n\nclient = <httpx.AsyncClient object at 0x000001C107DE4DD0>\n\n    async def test_large_payload_rejects_size_below_minimum(client):\n        response = await client.get(\"/api/large-payload?size=9\")\n    \n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test_extended.py:270: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:49:12,962 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:49:12,963 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=114.6 request_id=620b7aed-1e36-40ae-87bc-ba43473d65fa\n2026-08-03 19:49:12,963 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=114.6 request_id=620b7aed-1e36-40ae-87bc-ba43473d65fa\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:49:12,965 INFO llm_ctf_api method=GET path=/api/large-payload status=200 duration_ms=0.7 request_id=391327c2-c84e-4329-bebc-f41ba890483d\n2026-08-03 19:49:12,965 INFO httpx HTTP Request: GET http://test/api/large-payload?size=9 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/large-payload status=200 duration_ms=0.7 request_id=391327c2-c84e-4329-bebc-f41ba890483d\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/large-payload?size=9 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_7rvjokny\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_large_payload_rejects_size_below_minimum\n1 failed, 79 passed in 14.18s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.02,
+        "test_count": 12,
+        "failing_tests": [
+          "tests/test_extended.py::test_large_payload_rejects_size_below_minimum"
+        ],
+        "output_tail": "........F...                                                             [100%]\n================================== FAILURES ===================================\n________________ test_large_payload_rejects_size_below_minimum ________________\n\nclient = <httpx.AsyncClient object at 0x000001BBA6683D50>\n\n    async def test_large_payload_rejects_size_below_minimum(client):\n        response = await client.get(\"/api/large-payload?size=9\")\n    \n>       assert response.status_code == 422\nE       assert 200 == 422\nE        +  where 200 = <Response [200 OK]>.status_code\n\ntests\\test_extended.py:270: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:49:21,058 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:49:21,059 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=120.9 request_id=e9e6a4f8-31c1-41cf-9932-48cc09417169\n2026-08-03 19:49:21,059 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=120.9 request_id=e9e6a4f8-31c1-41cf-9932-48cc09417169\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:49:21,062 INFO llm_ctf_api method=GET path=/api/large-payload status=200 duration_ms=1.0 request_id=cebe59b3-fc65-4344-ae7f-a33cdaba479d\n2026-08-03 19:49:21,063 INFO httpx HTTP Request: GET http://test/api/large-payload?size=9 \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/large-payload status=200 duration_ms=1.0 request_id=cebe59b3-fc65-4344-ae7f-a33cdaba479d\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/large-payload?size=9 \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_p4orjz89\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_large_payload_rejects_size_below_minimum\n1 failed, 11 passed in 1.97s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M18_health_status",
+      "old": "\"status\": \"ok\",\n        \"api_version\": app.version",
+      "new": "\"status\": \"degraded\",\n        \"api_version\": app.version",
+      "description": "Report a degraded service as the health payload",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 15.749,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+          "tests/test_extended.py::test_health_remains_available_during_error_injection",
+          "tests_generated/generated_test.py::test_get_api_health"
+        ],
+        "output_tail": "----- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=115.6 request_id=bde4810e-7e13-432f-997d-ea5c7ca7a8c9\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:49:30,137 WARNING llm_ctf_api Error injection set to True\n2026-08-03 19:49:30,137 INFO llm_ctf_api method=POST path=/api/error-injection status=200 duration_ms=0.5 request_id=bbcfff8e-32e0-4da3-aab0-8042ec14ae24\n2026-08-03 19:49:30,137 INFO httpx HTTP Request: POST http://test/api/error-injection?enabled=true \"HTTP/1.1 200 OK\"\n2026-08-03 19:49:30,138 INFO llm_ctf_api method=GET path=/api/health status=200 duration_ms=0.2 request_id=d13ae940-8240-43ef-9f25-981dad281e46\n2026-08-03 19:49:30,138 INFO httpx HTTP Request: GET http://test/api/health \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nWARNING  llm_ctf_api:main.py:284 Error injection set to True\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/error-injection status=200 duration_ms=0.5 request_id=bbcfff8e-32e0-4da3-aab0-8042ec14ae24\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/error-injection?enabled=true \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/health status=200 duration_ms=0.2 request_id=d13ae940-8240-43ef-9f25-981dad281e46\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/health \"HTTP/1.1 200 OK\"\n_____________________________ test_get_api_health _____________________________\n\nclient = <httpx.AsyncClient object at 0x00000215135F8950>\n\n    @pytest.mark.asyncio\n    async def test_get_api_health(client: AsyncClient):\n        response = await client.get(\"/api/health\")\n        assert response.status_code == 200\n        data = response.json()\n>       assert data[\"status\"] == \"ok\"\nE       AssertionError: assert 'degraded' == 'ok'\nE         \nE         - ok\nE         + degraded\n\ntests_generated\\generated_test.py:28: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:49:34,161 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:49:34,162 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=119.1 request_id=d804db3d-2b72-4266-a427-b9fac080e657\n2026-08-03 19:49:34,162 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=119.1 request_id=d804db3d-2b72-4266-a427-b9fac080e657\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:49:34,163 INFO llm_ctf_api method=GET path=/api/health status=200 duration_ms=0.3 request_id=c94810c2-6310-48fe-89b5-0373da68666b\n2026-08-03 19:49:34,164 INFO httpx HTTP Request: GET http://test/api/health \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/health status=200 duration_ms=0.3 request_id=c94810c2-6310-48fe-89b5-0373da68666b\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/health \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_27bp3onn\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_health_response_has_typed_operational_fields\nFAILED tests/test_extended.py::test_health_remains_available_during_error_injection\nFAILED tests_generated/generated_test.py::test_get_api_health - AssertionErro...\n3 failed, 77 passed in 13.83s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.314,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test_extended.py::test_health_response_has_typed_operational_fields"
+        ],
+        "output_tail": "F...............                                                         [100%]\n================================== FAILURES ===================================\n______________ test_health_response_has_typed_operational_fields ______________\n\nclient = <httpx.AsyncClient object at 0x0000020780146BA0>\n\n    async def test_health_response_has_typed_operational_fields(client):\n        response = await client.get(\"/api/health\")\n    \n        assert response.status_code == 200\n        data = response.json()\n>       assert data[\"status\"] == \"ok\"\nE       AssertionError: assert 'degraded' == 'ok'\nE         \nE         - ok\nE         + degraded\n\ntests\\test_extended.py:21: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:49:39,551 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:49:39,552 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=117.4 request_id=aedefeff-ac00-45af-8319-4b927ad1865b\n2026-08-03 19:49:39,553 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=117.4 request_id=aedefeff-ac00-45af-8319-4b927ad1865b\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:49:39,554 INFO llm_ctf_api method=GET path=/api/health status=200 duration_ms=0.7 request_id=73e7f09c-8bd6-43f5-a0e3-44391eae7826\n2026-08-03 19:49:39,555 INFO httpx HTTP Request: GET http://test/api/health \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/health status=200 duration_ms=0.7 request_id=73e7f09c-8bd6-43f5-a0e3-44391eae7826\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/health \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_3rezmpvy\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test_extended.py::test_health_response_has_typed_operational_fields\n1 failed, 15 passed in 2.40s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M19_reset_error_flag",
+      "old": "global _force_error\n    _force_error = False\n    _seed_db()",
+      "new": "global _force_error\n    _force_error = True\n    _seed_db()",
+      "description": "Keep forced errors enabled after reset",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+        "tests/test_extended.py::test_seed_is_deterministic",
+        "tests/test_extended.py::test_seed_updates_pagination_metadata"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 13.519,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_get_users",
+          "tests/test.py::test_get_users_paginated",
+          "tests/test.py::test_get_user_with_posts",
+          "tests/test.py::test_create_post",
+          "tests/test.py::test_update_post",
+          "tests/test.py::test_delete_post",
+          "tests/test.py::test_get_user_not_found",
+          "tests/test.py::test_create_post_user_not_found",
+          "tests/test.py::test_create_post_blank_title",
+          "tests/test.py::test_create_post_title_too_long",
+          "tests/test.py::test_create_post_content_too_long",
+          "tests/test.py::test_update_post_not_found",
+          "tests/test.py::test_delete_post_not_found",
+          "tests/test.py::test_reset_db_restores_initial_state",
+          "tests/test.py::test_seed_db_with_custom_number",
+          "tests/test.py::test_seed_db_max_limit",
+          "tests/test.py::test_seed_db_invalid_limit",
+          "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+          "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+          "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+          "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+          "tests/test.py::test_get_user_id_must_be_integer",
+          "tests/test.py::test_create_post_missing_required_fields[payload0-user_id]",
+          "tests/test.py::test_create_post_missing_required_fields[payload1-title]",
+          "tests/test.py::test_create_post_missing_required_fields[payload2-content]",
+          "tests/test.py::test_create_post_invalid_user_id_type",
+          "tests/test.py::test_update_post_blank_title_should_fail",
+          "tests/test.py::test_update_post_content_too_long_should_fail",
+          "tests/test.py::test_update_post_id_must_be_integer",
+          "tests/test.py::test_delete_post_id_must_be_integer",
+          "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+          "tests/test.py::test_deleted_post_cannot_be_updated",
+          "tests/test.py::test_invalid_seed_request_should_not_change_database",
+          "tests/test_extended.py::test_reset_disables_error_injection",
+          "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+          "tests/test_extended.py::test_seed_updates_pagination_metadata",
+          "tests/test_extended.py::test_pagination_beyond_last_page_returns_empty_data",
+          "tests/test_extended.py::test_pagination_accepts_maximum_limit",
+          "tests/test_extended.py::test_pagination_rejects_limit_above_maximum",
+          "tests/test_extended.py::test_paginated_users_preserve_identifier_order",
+          "tests/test_extended.py::test_user_posts_have_expected_schema",
+          "tests/test_extended.py::test_create_post_increments_database_metrics",
+          "tests/test_extended.py::test_create_post_accepts_maximum_title_length",
+          "tests/test_extended.py::test_create_post_accepts_maximum_content_length",
+          "tests/test_extended.py::test_create_post_rejects_empty_content",
+          "tests/test_extended.py::test_create_post_rejects_malformed_json",
+          "tests/test_extended.py::test_update_post_accepts_maximum_title_length",
+          "tests/test_extended.py::test_update_post_accepts_maximum_content_length",
+          "tests/test_extended.py::test_update_post_rejects_missing_content",
+          "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+          "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+          "tests/test_extended.py::test_large_payload_accepts_minimum_size",
+          "tests/test_extended.py::test_large_payload_rejects_non_integer_size",
+          "tests/test_extended.py::test_large_payload_rejects_size_below_minimum",
+          "tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[0.49]",
+          "tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[5.01]",
+          "tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[not-a-number]",
+          "tests/test_extended.py::test_cors_preflight_allows_configured_frontend",
+          "tests/test_extended.py::test_concurrent_read_requests_preserve_consistent_user",
+          "tests_generated/generated_test.py::test_post_api_seed",
+          "tests_generated/generated_test.py::test_get_api_users",
+          "tests_generated/generated_test.py::test_get_api_users_paginated",
+          "tests_generated/generated_test.py::test_get_api_users_user_id",
+          "tests_generated/generated_test.py::test_post_api_posts",
+          "tests_generated/generated_test.py::test_put_api_posts_post_id",
+          "tests_generated/generated_test.py::test_delete_api_posts_post_id",
+          "tests_generated/generated_test.py::test_get_api_slow_data",
+          "tests_generated/generated_test.py::test_get_api_large_payload",
+          "tests_generated/generated_test.py::test_get_api_metrics_db_size"
+        ],
+        "output_tail": "nated_invalid_values[page=1&limit=0]\nFAILED tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]\nFAILED tests/test.py::test_get_user_id_must_be_integer - assert 500 == 422\nFAILED tests/test.py::test_create_post_missing_required_fields[payload0-user_id]\nFAILED tests/test.py::test_create_post_missing_required_fields[payload1-title]\nFAILED tests/test.py::test_create_post_missing_required_fields[payload2-content]\nFAILED tests/test.py::test_create_post_invalid_user_id_type - assert 500 == 422\nFAILED tests/test.py::test_update_post_blank_title_should_fail - KeyError: 'id'\nFAILED tests/test.py::test_update_post_content_too_long_should_fail - KeyErro...\nFAILED tests/test.py::test_update_post_id_must_be_integer - assert 500 == 422\nFAILED tests/test.py::test_delete_post_id_must_be_integer - assert 500 == 422\nFAILED tests/test.py::test_delete_post_twice_second_attempt_should_fail - Key...\nFAILED tests/test.py::test_deleted_post_cannot_be_updated - KeyError: 'id'\nFAILED tests/test.py::test_invalid_seed_request_should_not_change_database - ...\nFAILED tests/test_extended.py::test_reset_disables_error_injection - assert 5...\nFAILED tests/test_extended.py::test_seed_accepts_minimum_user_count - assert ...\nFAILED tests/test_extended.py::test_seed_updates_pagination_metadata - assert...\nFAILED tests/test_extended.py::test_pagination_beyond_last_page_returns_empty_data\nFAILED tests/test_extended.py::test_pagination_accepts_maximum_limit - assert...\nFAILED tests/test_extended.py::test_pagination_rejects_limit_above_maximum - ...\nFAILED tests/test_extended.py::test_paginated_users_preserve_identifier_order\nFAILED tests/test_extended.py::test_user_posts_have_expected_schema - assert ...\nFAILED tests/test_extended.py::test_create_post_increments_database_metrics\nFAILED tests/test_extended.py::test_create_post_accepts_maximum_title_length\nFAILED tests/test_extended.py::test_create_post_accepts_maximum_content_length\nFAILED tests/test_extended.py::test_create_post_rejects_empty_content - asser...\nFAILED tests/test_extended.py::test_create_post_rejects_malformed_json - asse...\nFAILED tests/test_extended.py::test_update_post_accepts_maximum_title_length\nFAILED tests/test_extended.py::test_update_post_accepts_maximum_content_length\nFAILED tests/test_extended.py::test_update_post_rejects_missing_content - ass...\nFAILED tests/test_extended.py::test_delete_post_decrements_database_metrics\nFAILED tests/test_extended.py::test_missing_delete_does_not_change_database_metrics\nFAILED tests/test_extended.py::test_large_payload_accepts_minimum_size - asse...\nFAILED tests/test_extended.py::test_large_payload_rejects_non_integer_size - ...\nFAILED tests/test_extended.py::test_large_payload_rejects_size_below_minimum\nFAILED tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[0.49]\nFAILED tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[5.01]\nFAILED tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[not-a-number]\nFAILED tests/test_extended.py::test_cors_preflight_allows_configured_frontend\nFAILED tests/test_extended.py::test_concurrent_read_requests_preserve_consistent_user\nFAILED tests_generated/generated_test.py::test_post_api_seed - assert 500 == 200\nFAILED tests_generated/generated_test.py::test_get_api_users - assert 500 == 200\nFAILED tests_generated/generated_test.py::test_get_api_users_paginated - asse...\nFAILED tests_generated/generated_test.py::test_get_api_users_user_id - assert...\nFAILED tests_generated/generated_test.py::test_post_api_posts - assert 500 ==...\nFAILED tests_generated/generated_test.py::test_put_api_posts_post_id - assert...\nFAILED tests_generated/generated_test.py::test_delete_api_posts_post_id - ass...\nFAILED tests_generated/generated_test.py::test_get_api_slow_data - assert 500...\nFAILED tests_generated/generated_test.py::test_get_api_large_payload - assert...\nFAILED tests_generated/generated_test.py::test_get_api_metrics_db_size - asse...\n69 failed, 11 passed in 11.63s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 6.113,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_get_users",
+          "tests/test.py::test_get_users_paginated",
+          "tests/test.py::test_get_user_with_posts",
+          "tests/test.py::test_create_post",
+          "tests/test.py::test_update_post",
+          "tests/test.py::test_delete_post",
+          "tests/test.py::test_reset_db_restores_initial_state",
+          "tests/test_extended.py::test_reset_disables_error_injection",
+          "tests/test.py::test_seed_db_with_custom_number",
+          "tests/test.py::test_seed_db_max_limit",
+          "tests/test.py::test_seed_db_invalid_limit",
+          "tests/test.py::test_invalid_seed_request_should_not_change_database",
+          "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+          "tests/test_extended.py::test_seed_updates_pagination_metadata"
+        ],
+        "output_tail": "OST http://test/api/seed \"HTTP/1.1 500 Internal Server Error\"\n------------------------------ Captured log call ------------------------------\nWARNING  llm_ctf_api:main.py:181 Forced error active | request_id=2ebc2c75-378e-4a0a-9f92-1a6cc4a6444f path=/api/seed\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 500 Internal Server Error\"\n____________________ test_seed_updates_pagination_metadata ____________________\n\nclient = <httpx.AsyncClient object at 0x000002272550C350>\n\n    async def test_seed_updates_pagination_metadata(client):\n        await client.post(\"/api/seed\", json={\"num_users\": 23})\n        response = await client.get(\"/api/users/paginated?page=3&limit=10\")\n    \n>       assert response.status_code == 200\nE       assert 500 == 200\nE        +  where 500 = <Response [500 Internal Server Error]>.status_code\n\ntests\\test_extended.py:93: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:50:01,418 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:50:01,418 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=122.9 request_id=220deb19-a30c-46c8-aafa-fd0c85f68245\n2026-08-03 19:50:01,418 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=122.9 request_id=220deb19-a30c-46c8-aafa-fd0c85f68245\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:50:01,420 WARNING llm_ctf_api Forced error active | request_id=d7abcc34-ba57-42c5-9892-c289865f44ed path=/api/seed\n2026-08-03 19:50:01,420 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 500 Internal Server Error\"\n2026-08-03 19:50:01,420 WARNING llm_ctf_api Forced error active | request_id=ecd4b1af-04ec-4592-b63e-50f89e559da1 path=/api/users/paginated\n2026-08-03 19:50:01,420 INFO httpx HTTP Request: GET http://test/api/users/paginated?page=3&limit=10 \"HTTP/1.1 500 Internal Server Error\"\n------------------------------ Captured log call ------------------------------\nWARNING  llm_ctf_api:main.py:181 Forced error active | request_id=d7abcc34-ba57-42c5-9892-c289865f44ed path=/api/seed\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 500 Internal Server Error\"\nWARNING  llm_ctf_api:main.py:181 Forced error active | request_id=ecd4b1af-04ec-4592-b63e-50f89e559da1 path=/api/users/paginated\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/users/paginated?page=3&limit=10 \"HTTP/1.1 500 Internal Server Error\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_7lvmy5zn\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_get_users - assert 500 == 200\nFAILED tests/test.py::test_get_users_paginated - assert 500 == 200\nFAILED tests/test.py::test_get_user_with_posts - assert 500 == 200\nFAILED tests/test.py::test_create_post - assert 500 == 201\nFAILED tests/test.py::test_update_post - KeyError: 'id'\nFAILED tests/test.py::test_delete_post - KeyError: 'id'\nFAILED tests/test.py::test_reset_db_restores_initial_state - KeyError: 'posts'\nFAILED tests/test_extended.py::test_reset_disables_error_injection - assert 5...\nFAILED tests/test.py::test_seed_db_with_custom_number - assert 500 == 200\nFAILED tests/test.py::test_seed_db_max_limit - assert 500 == 200\nFAILED tests/test.py::test_seed_db_invalid_limit - assert 500 == 422\nFAILED tests/test.py::test_invalid_seed_request_should_not_change_database - ...\nFAILED tests/test_extended.py::test_seed_accepts_minimum_user_count - assert ...\nFAILED tests/test_extended.py::test_seed_updates_pagination_metadata - assert...\n14 failed, 2 passed in 3.64s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    },
+    {
+      "mutant_id": "M20_metrics_swap",
+      "old": "\"users\": len(users_db),\n        \"posts\": len(posts_db),\n        \"total_records\": len(users_db) + len(posts_db),",
+      "new": "\"users\": len(posts_db),\n        \"posts\": len(users_db),\n        \"total_records\": len(users_db) + len(posts_db),",
+      "description": "Swap user and post metric counts",
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 1,
+        "wall_time_sec": 16.7,
+        "test_count": 80,
+        "failing_tests": [
+          "tests/test.py::test_reset_db_restores_initial_state",
+          "tests/test.py::test_seed_db_with_custom_number",
+          "tests/test_extended.py::test_create_post_increments_database_metrics",
+          "tests/test_extended.py::test_delete_post_decrements_database_metrics"
+        ],
+        "output_tail": "ics/db-size\")).json()\n    \n        deleted = await client.delete(f\"/api/posts/{created.json()['id']}\")\n        after = (await client.get(\"/api/metrics/db-size\")).json()\n    \n        assert deleted.status_code == 200\n>       assert after[\"posts\"] == before[\"posts\"] - 1\nE       assert 100 == (100 - 1)\n\ntests\\test_extended.py:240: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:50:12,555 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:50:12,556 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=115.2 request_id=05515527-4c61-4125-b0ed-739e7e8750b4\n2026-08-03 19:50:12,556 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=115.2 request_id=05515527-4c61-4125-b0ed-739e7e8750b4\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:50:12,558 INFO llm_ctf_api post_created post_id=742 user_id=1\n2026-08-03 19:50:12,558 INFO llm_ctf_api method=POST path=/api/posts status=201 duration_ms=1.1 request_id=868ad4b0-2e1e-4567-ad23-c42678076481\n2026-08-03 19:50:12,559 INFO httpx HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\n2026-08-03 19:50:12,560 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.4 request_id=7c8f1655-f0a1-474d-84bc-8429306c64b1\n2026-08-03 19:50:12,561 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n2026-08-03 19:50:12,561 INFO llm_ctf_api post_deleted post_id=742\n2026-08-03 19:50:12,562 INFO llm_ctf_api method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=519ff653-29aa-4db3-8767-f626bdd17874\n2026-08-03 19:50:12,562 INFO httpx HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\n2026-08-03 19:50:12,562 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=4e1819da-3c7c-4b97-b7cc-25e59f1df5da\n2026-08-03 19:50:12,563 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.1 request_id=868ad4b0-2e1e-4567-ad23-c42678076481\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.4 request_id=7c8f1655-f0a1-474d-84bc-8429306c64b1\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:412 post_deleted post_id=742\nINFO     llm_ctf_api:main.py:194 method=DELETE path=/api/posts/742 status=200 duration_ms=0.6 request_id=519ff653-29aa-4db3-8767-f626bdd17874\nINFO     httpx:_client.py:1740 HTTP Request: DELETE http://test/api/posts/742 \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=4e1819da-3c7c-4b97-b7cc-25e59f1df5da\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_u314h_kn\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_reset_db_restores_initial_state - assert 100 == (1...\nFAILED tests/test.py::test_seed_db_with_custom_number - assert 70 == 10\nFAILED tests/test_extended.py::test_create_post_increments_database_metrics\nFAILED tests/test_extended.py::test_delete_post_decrements_database_metrics\n4 failed, 76 passed in 14.57s\n\n"
+      },
+      "agentic": {
+        "exit_code": 1,
+        "wall_time_sec": 4.393,
+        "test_count": 16,
+        "failing_tests": [
+          "tests/test.py::test_reset_db_restores_initial_state",
+          "tests/test.py::test_seed_db_with_custom_number"
+        ],
+        "output_tail": "2 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.6 request_id=4e16963a-2af1-48fb-bbad-5af6bf5ed89f\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:374 post_created post_id=742 user_id=1\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/posts status=201 duration_ms=1.3 request_id=f8fc90cb-bb4b-4304-9d24-2549d3c25375\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/posts \"HTTP/1.1 201 Created\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.5 request_id=5cd082d7-3226-4214-b6b3-eec7e527c2f6\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n_______________________ test_seed_db_with_custom_number _______________________\n\nclient = <httpx.AsyncClient object at 0x00000281FFA596D0>\n\n    async def test_seed_db_with_custom_number(client):\n        payload = {\"num_users\": 10}\n        response = await client.post(\"/api/seed\", json=payload)\n        assert response.status_code == 200\n        data = response.json()\n        assert data[\"status\"] == \"seeded\"\n        assert data[\"users\"] == 10\n        assert data[\"posts\"] >= 50\n    \n        metrics = await client.get(\"/api/metrics/db-size\")\n        metrics_data = metrics.json()\n>       assert metrics_data[\"users\"] == 10\nE       assert 70 == 10\n\ntests\\test.py:229: AssertionError\n---------------------------- Captured stderr setup ----------------------------\n2026-08-03 19:50:22,618 INFO llm_ctf_api DB seeded: 100 users, 741 posts\n2026-08-03 19:50:22,619 INFO llm_ctf_api method=POST path=/api/reset status=200 duration_ms=116.5 request_id=6ddaf579-10b2-477f-8587-0cb61c6cadae\n2026-08-03 19:50:22,619 INFO httpx HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n----------------------------- Captured log setup ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 100 users, 741 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/reset status=200 duration_ms=116.5 request_id=6ddaf579-10b2-477f-8587-0cb61c6cadae\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/reset \"HTTP/1.1 200 OK\"\n---------------------------- Captured stderr call -----------------------------\n2026-08-03 19:50:22,634 INFO llm_ctf_api DB seeded: 10 users, 70 posts\n2026-08-03 19:50:22,634 INFO llm_ctf_api method=POST path=/api/seed status=200 duration_ms=14.4 request_id=f858a11d-0155-44b3-aee7-e8a88755928b\n2026-08-03 19:50:22,635 INFO httpx HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\n2026-08-03 19:50:22,635 INFO llm_ctf_api method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=533bc796-e1fa-4996-8781-981cb8af36dc\n2026-08-03 19:50:22,636 INFO httpx HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n------------------------------ Captured log call ------------------------------\nINFO     llm_ctf_api:main.py:70 DB seeded: 10 users, 70 posts\nINFO     llm_ctf_api:main.py:194 method=POST path=/api/seed status=200 duration_ms=14.4 request_id=f858a11d-0155-44b3-aee7-e8a88755928b\nINFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/seed \"HTTP/1.1 200 OK\"\nINFO     llm_ctf_api:main.py:194 method=GET path=/api/metrics/db-size status=200 duration_ms=0.2 request_id=533bc796-e1fa-4996-8781-981cb8af36dc\nINFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/metrics/db-size \"HTTP/1.1 200 OK\"\n- CSV report: C:\\Users\\HP\\AppData\\Local\\Temp\\llm_ctf_results_l7245ssz\\results.csv -\n=========================== short test summary info ===========================\nFAILED tests/test.py::test_reset_db_restores_initial_state - assert 100 == (1...\nFAILED tests/test.py::test_seed_db_with_custom_number - assert 70 == 10\n2 failed, 14 passed in 2.35s\n\n"
+      },
+      "killed_by_full_suite": true,
+      "killed_by_selected_suite": true,
+      "selector_escape": false
+    }
+  ],
+  "summary": {
+    "full_suite_killed": 19,
+    "full_suite_mutation_score_pct": 95.0,
+    "selected_suite_killed": 19,
+    "selector_mutation_recall_pct": 100.0,
+    "selector_escapes": 0,
+    "survived_full_suite": 1,
+    "mean_selected_tests": 15.8,
+    "mean_test_reduction_pct": 80.25
+  }
+}

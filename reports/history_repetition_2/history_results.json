@@ -1,0 +1,872 @@
+{
+  "design": "fixed-current-snapshot historical-diff replay",
+  "commit_count": 20,
+  "benchmark_test_count": 80,
+  "rows": [
+    {
+      "commit": "f1321b615c310aa70cbd92daeeac1dfd93a847d4",
+      "short_sha": "f1321b6",
+      "date": "2026-08-03",
+      "subject": "benchmark(C20): expose total database record count",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_large_payload_rejects_size_below_minimum",
+        "tests_generated/generated_test.py::test_get_api_large_payload",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.63,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.646,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 73.65
+    },
+    {
+      "commit": "a41c5c592a721052cfcd33213dd8ce6cd19dfef0",
+      "short_sha": "a41c5c5",
+      "date": "2026-08-03",
+      "subject": "benchmark(C19): report generated large-payload count",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_large_payload_rejects_size_below_minimum",
+        "tests_generated/generated_test.py::test_get_api_large_payload",
+        "tests/test_extended.py::test_large_payload_accepts_minimum_size",
+        "tests/test_extended.py::test_large_payload_rejects_non_integer_size"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.421,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.56,
+        "test_count": 12,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 85.0,
+      "time_reduction_pct": 79.56
+    },
+    {
+      "commit": "6907830b58ac18735b9a8aac47ac1dc6f1b6e040",
+      "short_sha": "6907830",
+      "date": "2026-08-03",
+      "subject": "benchmark(C18): expose requested slow-response delay",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[0.49]",
+        "tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[5.01]",
+        "tests/test_extended.py::test_slow_data_rejects_invalid_delay_values[not-a-number]",
+        "tests_generated/generated_test.py::test_get_api_slow_data"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 18.084,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 5.426,
+        "test_count": 12,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 85.0,
+      "time_reduction_pct": 70.0
+    },
+    {
+      "commit": "6c56f60b3b8148901699e01acc0395a24646b22e",
+      "short_sha": "6c56f60",
+      "date": "2026-08-03",
+      "subject": "benchmark(C17): correct update-post not-found detail",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_deleted_post_cannot_be_updated",
+        "tests_generated/generated_test.py::test_put_api_posts_post_id",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.77,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.014,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.55
+    },
+    {
+      "commit": "742620b4359f0b0782b62d72fa07f0b31dc9539a",
+      "short_sha": "742620b",
+      "date": "2026-08-03",
+      "subject": "benchmark(C16): normalize update-post text fields",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_deleted_post_cannot_be_updated",
+        "tests_generated/generated_test.py::test_put_api_posts_post_id",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.332,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.234,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 75.57
+    },
+    {
+      "commit": "be96ef7b68459cc5cd684206d0a85ac2edc7f25c",
+      "short_sha": "be96ef7",
+      "date": "2026-08-03",
+      "subject": "benchmark(C15): normalize create-post text fields",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 16.102,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.953,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 75.45
+    },
+    {
+      "commit": "70b027605577c8556cef0357b12f4768918c5a8f",
+      "short_sha": "70b0276",
+      "date": "2026-08-03",
+      "subject": "benchmark(C14): log successful post deletion",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_delete_post_twice_second_attempt_should_fail",
+        "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+        "tests_generated/generated_test.py::test_delete_api_posts_post_id",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.244,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.959,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.03
+    },
+    {
+      "commit": "de8494e6929ebe970a43c819b385fb2f14462bd7",
+      "short_sha": "de8494e",
+      "date": "2026-08-03",
+      "subject": "benchmark(C13): log successful post updates",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_deleted_post_cannot_be_updated",
+        "tests_generated/generated_test.py::test_put_api_posts_post_id",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 14.811,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.965,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 73.23
+    },
+    {
+      "commit": "2fd6f2ef2c95da2aece68e66ebdc02c7be1247b5",
+      "short_sha": "2fd6f2e",
+      "date": "2026-08-03",
+      "subject": "benchmark(C12): log successful post creation",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 14.997,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.347,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 71.01
+    },
+    {
+      "commit": "e5d1d13691e43a3eeaf7421cf32ed6925320ad8a",
+      "short_sha": "e5d1d13",
+      "date": "2026-08-03",
+      "subject": "benchmark(C11): guarantee stable user-post ordering",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 14.877,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.953,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 73.43
+    },
+    {
+      "commit": "34987824ffa23641e2972357a4c3696bfe06e216",
+      "short_sha": "3498782",
+      "date": "2026-08-03",
+      "subject": "benchmark(C10): expose user post-count metadata",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.057,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.952,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 73.75
+    },
+    {
+      "commit": "f2149bf60c749845e6afe932b44a04f797b7cd2b",
+      "short_sha": "f2149bf",
+      "date": "2026-08-03",
+      "subject": "benchmark(C09): report returned pagination record count",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_seed_updates_pagination_metadata",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+        "tests/test.py::test_get_user_id_must_be_integer"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.671,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.92,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.99
+    },
+    {
+      "commit": "2fba6df80268c936afd747e225d4ce96fdd1ce1f",
+      "short_sha": "2fba6df",
+      "date": "2026-08-03",
+      "subject": "benchmark(C08): add pagination previous-page metadata",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_seed_updates_pagination_metadata",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+        "tests/test.py::test_get_user_id_must_be_integer"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.336,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.073,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 73.44
+    },
+    {
+      "commit": "71c411e83220d27ba3eab1d78f4564855353a50e",
+      "short_sha": "71c411e",
+      "date": "2026-08-03",
+      "subject": "benchmark(C07): add pagination next-page metadata",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_seed_updates_pagination_metadata",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0]",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5]",
+        "tests/test.py::test_get_user_id_must_be_integer"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 14.814,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.029,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 72.8
+    },
+    {
+      "commit": "9804f1e6f464b88110adadc22b8916bb758c5d37",
+      "short_sha": "9804f1e",
+      "date": "2026-08-03",
+      "subject": "benchmark(C06): add error-injection status metadata",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test_extended.py::test_error_injection_forces_server_error",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests_generated/generated_test.py::test_post_api_error_injection"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.28,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.645,
+        "test_count": 12,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 85.0,
+      "time_reduction_pct": 76.15
+    },
+    {
+      "commit": "a117087fab3dc185c5735b96cbc8d21f766f5a1c",
+      "short_sha": "a117087",
+      "date": "2026-08-03",
+      "subject": "benchmark(C05): report requested seed size",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.427,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.503,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.16
+    },
+    {
+      "commit": "5a2d9a05883f5f278c0eacad85d6b5b43a9fb749",
+      "short_sha": "5a2d9a0",
+      "date": "2026-08-03",
+      "subject": "benchmark(C04): report reset error-injection state",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.103,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.346,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.59
+    },
+    {
+      "commit": "b8ef0b7509b9c6a089a079c3206656e89ff0c958",
+      "short_sha": "b8ef0b7",
+      "date": "2026-08-03",
+      "subject": "benchmark(C03): normalize supplied request identifiers",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 18.913,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.68,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 80.54
+    },
+    {
+      "commit": "5fda1233974aa6ea38c5f95e8d191ebd30959217",
+      "short_sha": "5fda123",
+      "date": "2026-08-03",
+      "subject": "benchmark(C02): expose response processing time header",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 16.944,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 5.135,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 69.69
+    },
+    {
+      "commit": "11ea1958d39a9480246d4d72f1279f807a18f64e",
+      "short_sha": "11ea195",
+      "date": "2026-08-03",
+      "subject": "benchmark(C01): expose API version in health response",
+      "changed_files": [
+        "b/main.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 18.78,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.417,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 76.48
+    }
+  ],
+  "summary": {
+    "test_reduction_pct": {
+      "mean": 81.75,
+      "median": 80.0,
+      "stddev": 3.269,
+      "min": 80.0,
+      "max": 90.0
+    },
+    "time_reduction_pct": {
+      "mean": 74.353,
+      "median": 74.095,
+      "stddev": 2.594,
+      "min": 69.69,
+      "max": 80.54
+    },
+    "traditional_wall_time_sec": {
+      "mean": 16.38,
+      "median": 15.936,
+      "stddev": 1.341,
+      "min": 14.811,
+      "max": 18.913
+    },
+    "agentic_wall_time_sec": {
+      "mean": 4.188,
+      "median": 4.021,
+      "stddev": 0.458,
+      "min": 3.56,
+      "max": 5.426
+    },
+    "traditional_pass_runs": 20,
+    "agentic_pass_runs": 20
+  },
+  "limitation": "Each real commit diff is replayed against one fixed current test/application snapshot. This isolates selection behavior but is not a checkout-and-build study of old dependencies."
+}

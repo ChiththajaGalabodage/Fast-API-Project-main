@@ -1,0 +1,107 @@
+{
+  "policy_version": "conservative-union-v1",
+  "high_threshold": 0.8,
+  "medium_threshold": 0.6,
+  "uncertainty_margin": 0.05,
+  "score_run_count": 0,
+  "critical_tests": [
+    "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+    "tests/test.py::test_get_users",
+    "tests/test.py::test_get_users_paginated",
+    "tests/test.py::test_get_user_with_posts",
+    "tests/test.py::test_create_post",
+    "tests/test.py::test_update_post",
+    "tests/test.py::test_delete_post",
+    "tests/test.py::test_reset_db_restores_initial_state"
+  ],
+  "known_failures": [],
+  "deterministic_mandatory": [
+    "tests/test.py::test_seed_db_invalid_limit",
+    "tests/test.py::test_invalid_seed_request_should_not_change_database",
+    "tests_generated/generated_test.py::test_post_api_seed"
+  ],
+  "mandatory_tests": [
+    "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+    "tests/test.py::test_get_users",
+    "tests/test.py::test_get_users_paginated",
+    "tests/test.py::test_get_user_with_posts",
+    "tests/test.py::test_create_post",
+    "tests/test.py::test_update_post",
+    "tests/test.py::test_delete_post",
+    "tests/test.py::test_reset_db_restores_initial_state",
+    "tests/test.py::test_seed_db_invalid_limit",
+    "tests/test.py::test_invalid_seed_request_should_not_change_database",
+    "tests_generated/generated_test.py::test_post_api_seed"
+  ],
+  "mandatory_overflow": false,
+  "max_tests": 16,
+  "selected_tests": [
+    "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+    "tests/test.py::test_get_users",
+    "tests/test.py::test_get_users_paginated",
+    "tests/test.py::test_get_user_with_posts",
+    "tests/test.py::test_create_post",
+    "tests/test.py::test_update_post",
+    "tests/test.py::test_delete_post",
+    "tests/test.py::test_reset_db_restores_initial_state",
+    "tests/test.py::test_seed_db_invalid_limit",
+    "tests/test.py::test_invalid_seed_request_should_not_change_database",
+    "tests_generated/generated_test.py::test_post_api_seed",
+    "tests/test.py::test_get_user_not_found",
+    "tests/test.py::test_create_post_user_not_found",
+    "tests/test.py::test_create_post_blank_title",
+    "tests/test.py::test_create_post_title_too_long",
+    "tests/test.py::test_create_post_content_too_long"
+  ],
+  "selection_reasons": {
+    "tests/test_extended.py::test_health_response_has_typed_operational_fields": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_get_users": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_get_users_paginated": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_get_user_with_posts": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_create_post": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_update_post": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_delete_post": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_reset_db_restores_initial_state": [
+      "critical_invariant"
+    ],
+    "tests/test.py::test_seed_db_invalid_limit": [
+      "deterministic_impact_invariant"
+    ],
+    "tests/test.py::test_invalid_seed_request_should_not_change_database": [
+      "deterministic_impact_invariant"
+    ],
+    "tests_generated/generated_test.py::test_post_api_seed": [
+      "deterministic_impact_invariant"
+    ],
+    "tests/test.py::test_get_user_not_found": [
+      "deterministic_fallback"
+    ],
+    "tests/test.py::test_create_post_user_not_found": [
+      "deterministic_fallback"
+    ],
+    "tests/test.py::test_create_post_blank_title": [
+      "deterministic_fallback"
+    ],
+    "tests/test.py::test_create_post_title_too_long": [
+      "deterministic_fallback"
+    ],
+    "tests/test.py::test_create_post_content_too_long": [
+      "deterministic_fallback"
+    ]
+  },
+  "score_summaries": []
+}

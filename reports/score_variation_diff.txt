@@ -1,0 +1,254 @@
+﻿diff --git a/main.py b/main.py
+index cf1bf36..87178ea 100644
+--- a/main.py
++++ b/main.py
+@@ -106,6 +106,13 @@ class UpdatePostRequest(BaseModel):
+     title: str = Field(..., min_length=1, max_length=200)
+     content: str = Field(..., min_length=1, max_length=5000)
+ 
++    @field_validator("title")
++    @classmethod
++    def title_not_blank(cls, v: str) -> str:
++        if not v.strip():
++            raise ValueError("title must not be blank")
++        return v
++
+ 
+ class SeedRequest(BaseModel):
+     num_users: int = Field(
+diff --git a/reports/dummy_diff.txt b/reports/dummy_diff.txt
+new file mode 100644
+index 0000000..3d87404
+--- /dev/null
++++ b/reports/dummy_diff.txt
+@@ -0,0 +1 @@
++diff --git a/main.py b/main.py
+diff --git a/reports/generated_test_results.csv b/reports/generated_test_results.csv
+new file mode 100644
+index 0000000..69a9a62
+--- /dev/null
++++ b/reports/generated_test_results.csv
+@@ -0,0 +1 @@
++id,status,duration,message
+diff --git a/reports/test_results.csv b/reports/test_results.csv
+new file mode 100644
+index 0000000..69a9a62
+--- /dev/null
++++ b/reports/test_results.csv
+@@ -0,0 +1 @@
++id,status,duration,message
+diff --git a/test-results.csv b/test-results.csv
+new file mode 100644
+index 0000000..efa41ea
+--- /dev/null
++++ b/test-results.csv
+@@ -0,0 +1,47 @@
++id,status,duration,message
++tests/test.py::test_get_users,passed,0.06951000000026397,
++tests/test.py::test_get_users_paginated,passed,0.12139190000016242,
++tests/test.py::test_get_user_with_posts,passed,0.07100059999993391,
++tests/test.py::test_create_post,passed,0.11405149999973219,
++tests/test.py::test_update_post,passed,0.2193529000005583,
++tests/test.py::test_delete_post,passed,0.22133580000081565,
++tests/test.py::test_get_user_not_found,passed,0.0618162000000666,
++tests/test.py::test_create_post_user_not_found,passed,0.11167680000016844,
++tests/test.py::test_create_post_blank_title,passed,0.0021781000004921225,
++tests/test.py::test_create_post_title_too_long,passed,0.0021122999996805447,
++tests/test.py::test_create_post_content_too_long,passed,0.002161599999453756,
++tests/test.py::test_update_post_not_found,passed,0.11599650000061956,
++tests/test.py::test_delete_post_not_found,passed,0.05609370000001945,
++tests/test.py::test_reset_db_restores_initial_state,passed,0.6635857999999644,
++tests/test.py::test_seed_db_with_custom_number,passed,0.01833269999951881,
++tests/test.py::test_seed_db_max_limit,passed,1.1917677999999796,
++tests/test.py::test_seed_db_invalid_limit,passed,0.004203899999993155,
++tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20],passed,0.001940199999808101,
++tests/test.py::test_get_users_paginated_invalid_values[page=-1&limit=20],passed,0.0021083999999973457,
++tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=0],passed,0.001749500000187254,
++tests/test.py::test_get_users_paginated_invalid_values[page=1&limit=-5],passed,0.0016258999994533951,
++tests/test.py::test_get_user_id_must_be_integer,passed,0.001901200000247627,
++tests/test.py::test_create_post_missing_required_fields[payload0-user_id],passed,0.0023380999991786666,
++tests/test.py::test_create_post_missing_required_fields[payload1-title],passed,0.0020973000000594766,
++tests/test.py::test_create_post_missing_required_fields[payload2-content],passed,0.0028541000001496286,
++tests/test.py::test_create_post_invalid_user_id_type,passed,0.002187699999922188,
++tests/test.py::test_update_post_blank_title_should_fail,passed,0.10613170000033278,
++tests/test.py::test_update_post_content_too_long_should_fail,passed,0.1150487000004432,
++tests/test.py::test_update_post_id_must_be_integer,passed,0.002203999999437656,
++tests/test.py::test_delete_post_id_must_be_integer,passed,0.0016119000001708628,
++tests/test.py::test_delete_post_twice_second_attempt_should_fail,passed,0.2236189999994167,
++tests/test.py::test_deleted_post_cannot_be_updated,passed,0.3002125999992131,
++tests/test.py::test_invalid_seed_request_should_not_change_database,passed,0.003818700000010722,
++tests_generated/generated_test.py::test_get_api_health,passed,0.0018293999992238241,
++tests_generated/generated_test.py::test_post_api_reset,passed,0.5684111999999004,
++tests_generated/generated_test.py::test_post_api_seed,passed,0.019567600000300445,
++tests_generated/generated_test.py::test_post_api_error_injection,passed,0.007226900000205205,
++tests_generated/generated_test.py::test_get_api_users,passed,0.06094590000066091,
++tests_generated/generated_test.py::test_get_api_users_paginated,passed,0.13589419999971142,
++tests_generated/generated_test.py::test_get_api_users_user_id,passed,0.11971080000057555,
++tests_generated/generated_test.py::test_post_api_posts,passed,0.23947580000003654,
++tests_generated/generated_test.py::test_put_api_posts_post_id,passed,0.4081483999998454,
++tests_generated/generated_test.py::test_delete_api_posts_post_id,passed,0.2296158999997715,
++tests_generated/generated_test.py::test_get_api_slow_data,passed,1.528496400000222,
++tests_generated/generated_test.py::test_get_api_large_payload,passed,0.23943380000036996,
++tests_generated/generated_test.py::test_get_api_metrics_db_size,passed,0.0019199999996999395,
+diff --git a/tests_generated/generated_test.py b/tests_generated/generated_test.py
+index 59938b8..04fbea6 100644
+--- a/tests_generated/generated_test.py
++++ b/tests_generated/generated_test.py
+@@ -214,9 +214,7 @@ async def test_put_api_posts_post_id(client: AsyncClient):
+     response = await client.put(
+         f"/api/posts/{post_id}", json={"title": "   ", "content": "valid"}
+     )
+-    assert response.status_code == 200
+-    updated = response.json()["post"]
+-    assert updated["title"] == "   "  # exactly as sent
++    assert response.status_code == 422
+ 
+     # Title too long → 422
+     response = await client.put(
+diff --git a/tests_generated/generator.py b/tests_generated/generator.py
+index 37382ba..9e467f8 100644
+--- a/tests_generated/generator.py
++++ b/tests_generated/generator.py
+@@ -1,5 +1,6 @@
+ import ast
+ import asyncio
++import csv
+ import json
+ import os
+ import re
+@@ -17,21 +18,24 @@ from openai import OpenAI  # Use OpenRouter via OpenAI-compatible SDK
+ load_dotenv()
+ 
+ # OpenRouter utilizes its own API key structure
+-if not os.getenv("OPENROUTER_API_KEY"):
++OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
++
++if not OPENROUTER_API_KEY:
+     print(
+-        "❌ ERROR: No OpenRouter API key found in .env (expected 'OPENROUTER_API_KEY')"
++        "OPENROUTER_API_KEY is not set; LLM test generation will be skipped."
+     )
+-    sys.exit(1)
+ 
+ # Use OpenRouter's identifier for Gemini models
+ # Valid options include: "google/gemini-2.5-flash" or "google/gemini-2.5-pro"
+ MODEL_NAME = os.getenv("GEMINI_MODEL", "google/gemini-2.5-flash")
+-print(f"🧠 Using OpenRouter Gemini model: {MODEL_NAME}")
++if OPENROUTER_API_KEY:
++    print(f"Using OpenRouter Gemini model: {MODEL_NAME}")
+ 
+ # Initialize OpenAI client pointed directly to OpenRouter's endpoint
+-client = OpenAI(
+-    base_url="https://openrouter.ai/api/v1",
+-    api_key=os.getenv("OPENROUTER_API_KEY"),
++client = (
++    OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
++    if OPENROUTER_API_KEY
++    else None
+ )
+ 
+ SERVER_URL = "http://localhost:8000"
+@@ -43,6 +47,15 @@ SERVER_URL = "http://localhost:8000"
+ MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1000"))
+ 
+ 
++def write_empty_csv(path: str) -> None:
++    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
++    with open(path, "w", newline="", encoding="utf-8") as f:
++        writer = csv.DictWriter(
++            f, fieldnames=["id", "status", "duration", "message"]
++        )
++        writer.writeheader()
++
++
+ # ---------------------------------------------------------------------------
+ # Step 1 – Fetch OpenAPI spec
+ # ---------------------------------------------------------------------------
+@@ -312,6 +325,15 @@ async def generate_test(prompt, retries: int = 1):
+ # Step 4 – Write generated tests to file and run them
+ # ---------------------------------------------------------------------------
+ async def main():
++    if client is None:
++        script_dir = os.path.dirname(os.path.abspath(__file__))
++        csv_path = os.path.join(
++            script_dir, "..", "reports", "generated_test_results.csv"
++        )
++        print("OPENROUTER_API_KEY is not set; skipping LLM test generation.")
++        write_empty_csv(csv_path)
++        return
++
+     print("📡 Fetching OpenAPI spec...")
+     spec = await fetch_openapi()
+     print(f"✅ Found {len(spec['paths'])} endpoints.")
+@@ -347,7 +369,7 @@ async def main():
+ 
+     # Dynamically locate the script's directory (tests_generated/)
+     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+-    OUTPUT_PATH = os.path.join(SCRIPT_DIR, "generated_tests.py")
++    OUTPUT_PATH = os.path.join(SCRIPT_DIR, "generated_test.py")
+ 
+     header = (
+         "import pytest\n\n"
+@@ -401,6 +423,7 @@ async def main():
+         text=True,
+     )
+     print(f"📄 Wrote CSV report to {CSV_PATH}")
++    sys.exit(result.returncode)
+ 
+ 
+ # ---------------------------------------------------------------------------
+diff --git a/tests_selecter/selecter.py b/tests_selecter/selecter.py
+index a7a793b..1f62c8d 100644
+--- a/tests_selecter/selecter.py
++++ b/tests_selecter/selecter.py
+@@ -17,16 +17,19 @@ from openai import OpenAI
+ # ---------------------------------------------------------------------------
+ load_dotenv()
+ 
+-if not os.getenv("OPENROUTER_API_KEY"):
+-    print("❌ ERROR: OpenRouter API key missing (expected 'OPENROUTER_API_KEY')")
+-    sys.exit(1)
++OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
++
++if not OPENROUTER_API_KEY:
++    print("OPENROUTER_API_KEY is not set; LLM test selection will be skipped.")
+ 
+ MODEL_NAME = os.getenv("GEMINI_MODEL", "google/gemini-2.5-flash")
+-print(f"🧠 Using OpenRouter Gemini model: {MODEL_NAME}")
++if OPENROUTER_API_KEY:
++    print(f"Using OpenRouter Gemini model: {MODEL_NAME}")
+ 
+-client = OpenAI(
+-    base_url="https://openrouter.ai/api/v1",
+-    api_key=os.getenv("OPENROUTER_API_KEY"),
++client = (
++    OpenAI(base_url="https://openrouter.ai/api/v1", api_key=OPENROUTER_API_KEY)
++    if OPENROUTER_API_KEY
++    else None
+ )
+ 
+ 
+@@ -273,9 +276,9 @@ def _write_csv(path: Optional[str], rows: List[Dict[str, str]]) -> None:
+             writer.writeheader()
+             for row in rows:
+                 writer.writerow(row)
+-        print(f"📄 Wrote CSV report to {path} ({len(rows)} row(s))")
++        print(f"Wrote CSV report to {path} ({len(rows)} row(s))")
+     except Exception as e:
+-        print(f"⚠️  Could not write CSV report to {path}: {e}")
++        print(f"Could not write CSV report to {path}: {e}")
+ 
+ 
+ # ---------------------------------------------------------------------------
+@@ -299,6 +302,11 @@ async def main():
+     )
+     args = parser.parse_args()
+ 
++    if client is None:
++        print("OPENROUTER_API_KEY is not set; skipping LLM test selection.")
++        _write_csv(args.csv_out, [])
++        return
++
+     # Obtain diff
+     if args.diff:
+         diff_text = read_diff_file(args.diff)

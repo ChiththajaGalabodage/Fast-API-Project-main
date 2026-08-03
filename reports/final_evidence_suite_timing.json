@@ -1,0 +1,24 @@
+{
+  "strategy": "final-evidence-suite",
+  "wall_time_sec": 99.366,
+  "test_count": 113,
+  "expected_test_count": 113,
+  "count_gate_passed": true,
+  "pytest_exit_code": 0,
+  "exit_code": 0,
+  "command": [
+    "C:\\Users\\HP\\Desktop\\Fast-API-Project-main\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test.py",
+    "tests/test_extended.py",
+    "tests/test_self_healing.py",
+    "tests/test_selection_policy.py",
+    "tests_generated/generated_test.py",
+    "-v",
+    "-p",
+    "no:cacheprovider",
+    "--csv=reports\\final_evidence_suite.csv",
+    "--csv-columns=id,status,duration,message"
+  ]
+}

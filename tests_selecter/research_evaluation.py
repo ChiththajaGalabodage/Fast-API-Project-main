@@ -119,26 +119,26 @@ MUTANTS = (
     ),
     Mutant(
         "M12_update_wrong_title",
-        'p.title = body.title\n            p.content = body.content',
-        'p.title = body.content\n            p.content = body.content',
+        'p.title = body.title.strip()\n            p.content = body.content.strip()',
+        'p.title = body.content.strip()\n            p.content = body.content.strip()',
         "Write content into the title during update",
     ),
     Mutant(
         "M13_update_wrong_content",
-        'p.title = body.title\n            p.content = body.content',
-        'p.title = body.title\n            p.content = body.title',
+        'p.title = body.title.strip()\n            p.content = body.content.strip()',
+        'p.title = body.title.strip()\n            p.content = body.title.strip()',
         "Write title into the content during update",
     ),
     Mutant(
         "M14_update_not_found_status",
-        'raise HTTPException(status_code=404, detail="Post not found create post")',
-        'raise HTTPException(status_code=200, detail="Post not found create post")',
+        'return {"success": True, "post": p}\n    raise HTTPException(status_code=404, detail="Post not found")',
+        'return {"success": True, "post": p}\n    raise HTTPException(status_code=200, detail="Post not found")',
         "Return success when an update target is missing",
     ),
     Mutant(
         "M15_delete_not_persisted",
-        'posts_db = new_posts\n    return {"success": True, "deleted_id": post_id}',
-        'posts_db = posts_db\n    return {"success": True, "deleted_id": post_id}',
+        'posts_db = new_posts\n    logger.info("post_deleted post_id=%d", post_id)',
+        'posts_db = posts_db\n    logger.info("post_deleted post_id=%d", post_id)',
         "Report deletion without persisting it",
     ),
     Mutant(
@@ -155,8 +155,8 @@ MUTANTS = (
     ),
     Mutant(
         "M18_health_status",
-        '"status": "ok",\n        "uptime_seconds"',
-        '"status": "degraded",\n        "uptime_seconds"',
+        '"status": "ok",\n        "api_version": app.version',
+        '"status": "degraded",\n        "api_version": app.version',
         "Report a degraded service as the health payload",
     ),
     Mutant(
@@ -167,8 +167,8 @@ MUTANTS = (
     ),
     Mutant(
         "M20_metrics_swap",
-        'return {"users": len(users_db), "posts": len(posts_db)}',
-        'return {"users": len(posts_db), "posts": len(users_db)}',
+        '"users": len(users_db),\n        "posts": len(posts_db),\n        "total_records": len(users_db) + len(posts_db),',
+        '"users": len(posts_db),\n        "posts": len(users_db),\n        "total_records": len(users_db) + len(posts_db),',
         "Swap user and post metric counts",
     ),
 )
@@ -393,6 +393,49 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
     print(f"wrote {path}")
 
 
+def _write_summary(
+    path: Path,
+    manifest: dict[str, object],
+    history: dict[str, object],
+    mutation: dict[str, object],
+) -> None:
+    history_summary = history["summary"]
+    mutation_summary = mutation["summary"]
+    lines = [
+        "# Research Evaluation Summary",
+        "",
+        "## Evaluation manifest",
+        "",
+        f"- Commit: `{manifest['head']}`",
+        f"- Application tests: {manifest['application_test_count']}",
+        f"- Historical diffs evaluated: {history['commit_count']}",
+        f"- Source mutants evaluated: {mutation['mutant_count']}",
+        "",
+        "## Historical-diff replay",
+        "",
+        f"- Traditional passing runs: {history_summary['traditional_pass_runs']}/{history['commit_count']}",
+        f"- Selected-suite passing runs: {history_summary['agentic_pass_runs']}/{history['commit_count']}",
+        f"- Mean test reduction: {history_summary['test_reduction_pct']['mean']}%",
+        f"- Mean time reduction: {history_summary['time_reduction_pct']['mean']}%",
+        "",
+        "## Mutation evaluation",
+        "",
+        f"- Full-suite mutants killed: {mutation_summary['full_suite_killed']}/{mutation['mutant_count']}",
+        f"- Full-suite mutation score: {mutation_summary['full_suite_mutation_score_pct']}%",
+        f"- Selected-suite mutants killed: {mutation_summary['selected_suite_killed']}/{mutation_summary['full_suite_killed']}",
+        f"- Selector mutation recall: {mutation_summary['selector_mutation_recall_pct']}%",
+        f"- Selector escapes: {mutation_summary['selector_escapes']}",
+        f"- Full-suite survivors: {mutation_summary['survived_full_suite']}",
+        f"- Mean selected tests: {mutation_summary['mean_selected_tests']}",
+        f"- Mean test reduction: {mutation_summary['mean_test_reduction_pct']}%",
+        "",
+        "The historical experiment replays commit diffs against one fixed current snapshot. "
+        "Mutation trials execute in isolated repository copies.",
+    ]
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"wrote {path}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("history", "mutation", "all"))
@@ -420,10 +463,16 @@ def main() -> int:
         "evaluation_environment": {"NUM_USERS": 100, "BASE_DELAY": 0},
     }
     _write_json(output_dir / "evaluation_manifest.json", manifest)
+    history_path = output_dir / "history_results.json"
+    mutation_path = output_dir / "mutation_results.json"
     if args.mode in {"history", "all"}:
-        _write_json(output_dir / "history_results.json", evaluate_history(args, tests))
+        _write_json(history_path, evaluate_history(args, tests))
     if args.mode in {"mutation", "all"}:
-        _write_json(output_dir / "mutation_results.json", evaluate_mutations(args, tests))
+        _write_json(mutation_path, evaluate_mutations(args, tests))
+    if history_path.exists() and mutation_path.exists():
+        history = json.loads(history_path.read_text(encoding="utf-8"))
+        mutation = json.loads(mutation_path.read_text(encoding="utf-8"))
+        _write_summary(output_dir / "summary.md", manifest, history, mutation)
     return 0
 
 
