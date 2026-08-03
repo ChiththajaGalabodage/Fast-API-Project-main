@@ -455,7 +455,12 @@ async def get_large_payload(
     generated tests avoid brittle length assertions.
     """
     await asyncio.sleep(BASE_DELAY * 2)
-    return {"item_count": size, "items": [fake.paragraph() for _ in range(size)]}
+    items = [fake.paragraph() for _ in range(size)]
+    return {
+        "item_count": size,
+        "generated_count": len(items),
+        "items": items,
+    }
 
 
 # ---------------------------------------------------------------------------
