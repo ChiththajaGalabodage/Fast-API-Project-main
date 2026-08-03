@@ -214,6 +214,7 @@ async def health():
     """
     return {
         "status": "ok",
+        "api_version": app.version,
         "uptime_seconds": round(time.time() - _startup_time, 1),
         "db": {"users": len(users_db), "posts": len(posts_db)},
     }
