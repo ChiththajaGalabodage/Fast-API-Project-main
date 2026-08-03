@@ -195,6 +195,7 @@ async def observability_middleware(request: Request, call_next):
         duration_ms,
         request_id,
     )
+    response.headers["X-Response-Time-Ms"] = f"{duration_ms:.1f}"
     response.headers["X-Request-ID"] = request_id
     return response
 
