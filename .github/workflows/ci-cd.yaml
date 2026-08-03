@@ -12,6 +12,10 @@ jobs:
     name: API CI
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      # Prevent normal imports from creating mutable .pyc files after the
+      # environment integrity snapshot.
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - name: Checkout code changes
         uses: actions/checkout@v4
@@ -61,11 +65,15 @@ jobs:
           mkdir -p reports
           git ls-files -z | while IFS= read -r -d '' file; do
             case "$file" in
-              tests_generated/generated_test.py|reports/*) ;;
+              .coverage|tests_generated/generated_test.py|reports/*) ;;
               *) sha256sum -- "$file" ;;
             esac
           done > reports/pre_agent_protected_files.sha256
-          find .venv -type f -print0 | sort -z | xargs -0 sha256sum > reports/pre_agent_venv_files.sha256
+          find .venv -type f \
+            ! -path '*/__pycache__/*' \
+            ! -name '*.pyc' \
+            ! -name '*.pyo' \
+            -print0 | sort -z | xargs -0 sha256sum > reports/pre_agent_venv_files.sha256
           echo "source_manifest_sha=$(sha256sum reports/pre_agent_protected_files.sha256 | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
           echo "venv_manifest_sha=$(sha256sum reports/pre_agent_venv_files.sha256 | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
@@ -76,7 +84,6 @@ jobs:
           # Never expose an LLM credential to pull-request-controlled code.
           OPENROUTER_API_KEY: ${{ (github.event_name != 'pull_request') && secrets.OPENROUTER_API_KEY || '' }}
           GEMINI_MODEL: google/gemini-2.5-flash
-          PYTHONDONTWRITEBYTECODE: "1"
         run: |
           # The generator fetches OpenAPI spec, calls LLM, writes tests, and runs pytest with coverage
           .venv/bin/python tests_generated/generator.py
@@ -89,9 +96,13 @@ jobs:
           test -f reports/pre_agent_venv_files.sha256
           echo "${{ steps.pre_agent_snapshot.outputs.source_manifest_sha }}  reports/pre_agent_protected_files.sha256" | sha256sum --check --status -
           echo "${{ steps.pre_agent_snapshot.outputs.venv_manifest_sha }}  reports/pre_agent_venv_files.sha256" | sha256sum --check --status -
-          find .venv -type f -print0 | sort -z | xargs -0 sha256sum > reports/post_agent_venv_files.sha256
+          find .venv -type f \
+            ! -path '*/__pycache__/*' \
+            ! -name '*.pyc' \
+            ! -name '*.pyo' \
+            -print0 | sort -z | xargs -0 sha256sum > reports/post_agent_venv_files.sha256
           cmp -s reports/pre_agent_venv_files.sha256 reports/post_agent_venv_files.sha256 || {
-            echo "Generated tests added, removed, or changed Python-environment files."
+            echo "Generated tests added, removed, or changed stable Python-environment files."
             exit 1
           }
           sha256sum --check --status reports/pre_agent_protected_files.sha256 || {
@@ -213,7 +224,7 @@ jobs:
           fi
 
       - name: Verify selector artifact contract
-        if: always()
+        if: always() && steps.generator_integrity.outcome == 'success'
         run: |
           for artifact in \
             reports/agentic_before_heal.csv \
