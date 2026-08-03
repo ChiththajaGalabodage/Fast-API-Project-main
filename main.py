@@ -366,8 +366,8 @@ async def create_post(post: CreatePostRequest):
     new_post = Post(
         id=len(posts_db) + 1,
         user_id=post.user_id,
-        title=post.title,
-        content=post.content,
+        title=post.title.strip(),
+        content=post.content.strip(),
         created_at=fake.iso8601(),
     )
     posts_db.append(new_post)
