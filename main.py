@@ -397,7 +397,7 @@ async def update_post(post_id: int, body: UpdatePostRequest):
                 p.id,
             )
             return {"success": True, "post": p}
-    raise HTTPException(status_code=404, detail="Post not found create post")
+    raise HTTPException(status_code=404, detail="Post not found")
 
 
 @app.delete("/api/posts/{post_id}", tags=["posts"], summary="Delete a post by ID")
