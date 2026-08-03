@@ -434,6 +434,7 @@ async def get_slow_data(
     await asyncio.sleep(delay_seconds)
     return {
         "message": f"Delayed response after {delay_seconds}s",
+        "delay_seconds": delay_seconds,
         "data": [fake.sentence() for _ in range(10)],
     }
 
