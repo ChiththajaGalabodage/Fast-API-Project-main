@@ -473,4 +473,8 @@ async def get_large_payload(
 )
 async def get_db_metrics():
     """Returns user and post counts. Useful for verifying reset/seed operations."""
-    return {"users": len(users_db), "posts": len(posts_db)}
+    return {
+        "users": len(users_db),
+        "posts": len(posts_db),
+        "total_records": len(users_db) + len(posts_db),
+    }
