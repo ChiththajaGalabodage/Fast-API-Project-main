@@ -339,7 +339,10 @@ async def get_user_with_posts(user_id: int):
     user = next((u for u in users_db if u.id == user_id), None)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    posts = [p for p in posts_db if p.user_id == user_id]
+    posts = sorted(
+        (p for p in posts_db if p.user_id == user_id),
+        key=lambda post: post.id,
+    )
     return {
         "user": user,
         "posts": posts,
