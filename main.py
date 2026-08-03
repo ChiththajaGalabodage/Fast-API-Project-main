@@ -409,6 +409,7 @@ async def delete_post(post_id: int):
     if len(new_posts) == len(posts_db):
         raise HTTPException(status_code=404, detail="Post not found")
     posts_db = new_posts
+    logger.info("post_deleted post_id=%d", post_id)
     return {"success": True, "deleted_id": post_id}
 
 
