@@ -251,6 +251,7 @@ jobs:
             tests/test.py \
             tests/test_extended.py \
             tests/test_self_healing.py \
+            tests/test_selection_policy.py \
             tests_generated/generated_test.py
 
       - name: Upload Test Selector Results Artifact
