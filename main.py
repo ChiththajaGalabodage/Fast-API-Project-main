@@ -260,7 +260,12 @@ async def seed_db(body: SeedRequest):
     verify behaviour at known dataset sizes.
     """
     _seed_db(num_users=body.num_users)
-    return {"status": "seeded", "users": len(users_db), "posts": len(posts_db)}
+    return {
+        "status": "seeded",
+        "users": len(users_db),
+        "posts": len(posts_db),
+        "requested_users": body.num_users,
+    }
 
 
 @app.post(
