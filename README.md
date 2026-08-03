@@ -75,9 +75,12 @@ The repository also implements an LLM-enhanced continuous-testing framework:
 - Timed traditional-versus-agentic comparison reports and 18 thesis-ready
   visualizations in `visualizations/output/`.
 
-The current application inventory has 78 tests (65 handwritten and 13
-generated), plus 28 separate tests that validate the self-healing engine. See
-`tests_selecter/README.md` for the full workflow and safety boundaries.
+The current application inventory has 80 tests (67 handwritten and 13
+generated), plus 33 separate tests that validate the selection policy and
+self-healing engine. Reproducible evidence now includes 20 historical-diff
+replays, 20 isolated source mutants, threshold-boundary checks, and a captured
+API server log. See `tests_selecter/README.md` for the protocol and safety
+boundaries.
 
 ## License
 

@@ -1,0 +1,36 @@
+{
+  "configured_policy": {
+    "high_threshold": 0.8,
+    "medium_threshold": 0.6,
+    "uncertainty_margin": 0.05,
+    "selection_repetitions": 3,
+    "aggregation": "maximum-score union; deterministic invariants are independent of scores",
+    "overflow_behavior": "fail closed instead of dropping mandatory tests"
+  },
+  "threshold_rationale": "0.80 is a nominal ranking threshold, not a safety boundary. Values from 0.75 through 0.80 are retained by the uncertainty band, any >=0.80 observation across three runs is retained by union, and critical/impact invariants ignore scores.",
+  "simulated_boundary_checks": {
+    "scores_0.81_0.79_0.77_selected": true,
+    "single_score_0.79_selected": true,
+    "critical_score_0_selected": true,
+    "repeated_score_summary": [
+      {
+        "test_id": "tests/test_extended.py::test_uncertain_noncritical_contract",
+        "observations": 3,
+        "mean": 0.79,
+        "minimum": 0.77,
+        "maximum": 0.81,
+        "stddev": 0.0163,
+        "reasons": [
+          "run 1",
+          "run 2",
+          "run 3"
+        ]
+      }
+    ]
+  },
+  "empirical_cross_check": {
+    "source": "mutation_results.json",
+    "result": "19/19 killable mutants selected; 0 selector escapes at <=16 tests"
+  },
+  "limitation": "Boundary checks are deterministic simulations, not measurements of a model's real score distribution. Run the live workflow to collect external-model variance."
+}

@@ -27,6 +27,7 @@ try:
         snapshot_file,
         write_healing_artifacts,
     )
+    from tests_selecter.selection_policy import build_selection_decision, impacted_tests
 except ModuleNotFoundError:  # Direct execution: python tests_selecter/selecter.py
     from self_healing import (
         RepairResult,
@@ -40,6 +41,7 @@ except ModuleNotFoundError:  # Direct execution: python tests_selecter/selecter.
         snapshot_file,
         write_healing_artifacts,
     )
+    from selection_policy import build_selection_decision, impacted_tests
 
 # ---------------------------------------------------------------------------
 # Load environment and OpenRouter client
@@ -429,6 +431,16 @@ def fallback_selected_tests(diff_text: str, tests: List[str], limit: int = 16) -
         keywords.extend(["seed", "reset"])
     if "health" in lowered_diff or "metrics" in lowered_diff:
         keywords.extend(["health", "metrics"])
+    if "large_payload" in lowered_diff or "large-payload" in lowered_diff:
+        keywords.extend(["large_payload", "large-payload"])
+    if "slow_data" in lowered_diff or "slow-data" in lowered_diff:
+        keywords.extend(["slow_data", "slow-data"])
+    if "error_injection" in lowered_diff or "error-injection" in lowered_diff:
+        keywords.extend(["error_injection", "error-injection"])
+    if "openapi" in lowered_diff:
+        keywords.append("openapi")
+    if "cors" in lowered_diff:
+        keywords.append("cors")
 
     impacted = [
         test_id
@@ -569,6 +581,23 @@ async def main() -> int:
         help="Minimum score for optional tests selected up to --max-tests",
     )
     parser.add_argument(
+        "--selection-repetitions",
+        type=int,
+        default=3,
+        help="Independent LLM rankings combined using a conservative union",
+    )
+    parser.add_argument(
+        "--threshold-margin",
+        type=float,
+        default=0.05,
+        help="Safety band below --high-threshold whose tests remain mandatory",
+    )
+    parser.add_argument(
+        "--selection-report",
+        default="reports/selection_decisions.json",
+        help="JSON audit of repeated scores, uncertainty, and mandatory tests",
+    )
+    parser.add_argument(
         "--max-tests",
         type=int,
         default=16,
@@ -633,6 +662,10 @@ async def main() -> int:
         parser.error("thresholds must satisfy 0.0 <= medium <= high <= 1.0")
     if args.max_tests < 1:
         parser.error("--max-tests must be at least 1")
+    if args.selection_repetitions < 1:
+        parser.error("--selection-repetitions must be at least 1")
+    if not 0.0 <= args.threshold_margin <= 1.0:
+        parser.error("--threshold-margin must be between 0.0 and 1.0")
     agent_started = time.monotonic()
     Path(args.healing_backup_dir).mkdir(parents=True, exist_ok=True)
 
@@ -677,16 +710,56 @@ async def main() -> int:
     print(f"Found {len(tests)} tests.")
 
     # Select tests
-    print("Asking LLM to select relevant tests...")
-    selection = await select_tests(diff_text, tests)
+    score_runs = []
+    if client is not None:
+        print(
+            f"Asking LLM for {args.selection_repetitions} independent "
+            "test rankings..."
+        )
+        for run_number in range(1, args.selection_repetitions + 1):
+            selection = await select_tests(diff_text, tests)
+            if selection is not None:
+                score_runs.append(selection)
+                print(f"   Ranking run {run_number}: {len(selection)} scored test(s)")
+            else:
+                print(f"   Ranking run {run_number}: failed validation")
+    else:
+        print("Using deterministic selection because no LLM credential is available.")
+
     allowed_tests = set(tests)
     known_failures = read_failed_test_ids(args.failure_csv, allowed_tests)
     if known_failures:
         print(f"Prioritizing {len(known_failures)} known baseline failure(s).")
-    if len(known_failures) > args.max_tests:
+    candidates = fallback_selected_tests(diff_text, tests, limit=len(tests))
+    decision = build_selection_decision(
+        test_ids=tests,
+        known_failures=known_failures,
+        deterministic_mandatory=impacted_tests(diff_text, tests),
+        score_runs=score_runs,
+        fallback_candidates=candidates,
+        high_threshold=args.high_threshold,
+        medium_threshold=args.medium_threshold,
+        uncertainty_margin=args.threshold_margin,
+        max_tests=args.max_tests,
+    )
+    selection_report = Path(args.selection_report)
+    selection_report.parent.mkdir(parents=True, exist_ok=True)
+    selection_report.write_text(json.dumps(decision, indent=2) + "\n", encoding="utf-8")
+    print(f"Wrote selection audit report to {selection_report}")
+
+    if decision["score_summaries"]:
+        print("\nAggregated LLM relevance scores:")
+        for item in decision["score_summaries"]:
+            print(
+                f"   mean={item['mean']:.2f} range="
+                f"[{item['minimum']:.2f}, {item['maximum']:.2f}] "
+                f"{item['test_id']}"
+            )
+
+    if decision["mandatory_overflow"]:
         print(
-            "ERROR: Known failures are mandatory, but their count "
-            f"({len(known_failures)}) exceeds --max-tests ({args.max_tests})."
+            "ERROR: Conservative mandatory tests exceed --max-tests; "
+            "failing closed instead of dropping a safety test."
         )
         _write_early_artifacts(
             args,
@@ -696,62 +769,8 @@ async def main() -> int:
             collected_test_count=len(tests),
         )
         return 1
-    to_run = list(known_failures)
 
-    if selection is None:
-        print("Using deterministic keyword selection because the LLM failed.")
-        candidates = fallback_selected_tests(diff_text, tests, limit=len(tests))
-        for test_id in candidates:
-            if test_id not in to_run and len(to_run) < args.max_tests:
-                to_run.append(test_id)
-    else:
-        # Keep the highest score for duplicate IDs, then use test ID as a stable tie-breaker.
-        scored = {}
-        for item in selection:
-            test_id = str(item["id"])
-            if test_id not in scored or float(item["score"]) > float(
-                scored[test_id]["score"]
-            ):
-                scored[test_id] = item
-        ranked = sorted(
-            scored.values(),
-            key=lambda item: (-float(item["score"]), str(item["id"])),
-        )
-
-        print("\nLLM relevance scores:")
-        for item in ranked:
-            print(f"   {float(item['score']):.2f} {item['id']} - {item['reason']}")
-
-        high = [
-            str(item["id"])
-            for item in ranked
-            if float(item["score"]) >= args.high_threshold
-        ]
-        mandatory = list(dict.fromkeys(known_failures + high))
-        if len(mandatory) > args.max_tests:
-            print(
-                "ERROR: Known failures and high-relevance tests are mandatory, "
-                f"but their combined count ({len(mandatory)}) exceeds "
-                f"--max-tests ({args.max_tests})."
-            )
-            _write_early_artifacts(
-                args,
-                exit_code=1,
-                reason="mandatory_tests_exceed_max_tests",
-                final_validation_passed=False,
-                collected_test_count=len(tests),
-            )
-            return 1
-
-        to_run = mandatory
-        medium = [
-            str(item["id"])
-            for item in ranked
-            if args.medium_threshold <= float(item["score"]) < args.high_threshold
-        ]
-        for test_id in medium:
-            if test_id not in to_run and len(to_run) < args.max_tests:
-                to_run.append(test_id)
+    to_run = list(decision["selected_tests"])
 
     if not to_run:
         print("No runnable tests selected.")

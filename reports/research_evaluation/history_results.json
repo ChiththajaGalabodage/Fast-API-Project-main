@@ -1,0 +1,957 @@
+{
+  "design": "fixed-current-snapshot historical-diff replay",
+  "commit_count": 20,
+  "benchmark_test_count": 80,
+  "rows": [
+    {
+      "commit": "5c3c52f99cdaac20133ea37a5e430ec514015aac",
+      "short_sha": "5c3c52f",
+      "date": "2026-08-03",
+      "subject": "3",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml",
+        "b/reports/heal_demo.diff",
+        "b/reports/heal_demo_after.csv",
+        "b/reports/heal_demo_before.csv",
+        "b/reports/heal_demo_failures.csv",
+        "b/reports/heal_demo_report.json",
+        "b/reports/heal_demo_timing.json",
+        "b/tests/test.py",
+        "b/tests/test_self_healing.py",
+        "b/tests_selecter/selecter.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_get_users_paginated_invalid_values[page=0&limit=20]"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.93,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.369,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 72.57
+    },
+    {
+      "commit": "2c5e5a30fda38515ada74c3fb79e734fa69d0268",
+      "short_sha": "2c5e5a3",
+      "date": "2026-08-01",
+      "subject": "08/1",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml",
+        "b/README.md",
+        "b/reports/agentic_before_heal.csv",
+        "b/reports/agentic_timing.json",
+        "b/reports/comparison_report.csv",
+        "b/reports/final_suite_after_heal.csv",
+        "b/reports/final_suite_timing.json",
+        "b/reports/generated_test_results.csv",
+        "b/reports/self_healing_report.json",
+        "b/reports/test_results.csv",
+        "b/reports/traditional_timing.json",
+        "b/server.stderr.log",
+        "b/server.stdout.log",
+        "b/test-results.csv",
+        "b/tests/README.md",
+        "b/tests/test_extended.py",
+        "b/tests/test_self_healing.py",
+        "b/tests_generated/README.md",
+        "b/tests_generated/generator.py",
+        "b/tests_selecter/README.md",
+        "b/tests_selecter/comparison_report.py",
+        "b/tests_selecter/run_test_batch.py",
+        "b/tests_selecter/selecter.py",
+        "b/tests_selecter/self_healing.py",
+        "b/visualizations/README.md",
+        "b/visualizations/generate_visualizations.py",
+        "b/visualizations/output/figure_1_1_research_conceptual_model.pdf",
+        "b/visualizations/output/figure_1_1_research_conceptual_model.svg",
+        "b/visualizations/output/figure_1_2_rq_objective_mapping.pdf",
+        "b/visualizations/output/figure_1_2_rq_objective_mapping.svg",
+        "b/visualizations/output/figure_2_1_evolution_intelligent_testing.pdf",
+        "b/visualizations/output/figure_2_1_evolution_intelligent_testing.svg",
+        "b/visualizations/output/figure_2_2_research_gap_contribution.pdf",
+        "b/visualizations/output/figure_2_2_research_gap_contribution.svg",
+        "b/visualizations/output/figure_3_1_dsr_methodology_cycle.pdf",
+        "b/visualizations/output/figure_3_1_dsr_methodology_cycle.svg",
+        "b/visualizations/output/figure_3_2_llm_ctf_architecture.pdf",
+        "b/visualizations/output/figure_3_2_llm_ctf_architecture.svg",
+        "b/visualizations/output/figure_3_3_cicd_integration_workflow.pdf",
+        "b/visualizations/output/figure_3_3_cicd_integration_workflow.svg",
+        "b/visualizations/output/figure_3_4_testgen_agent_workflow.pdf",
+        "b/visualizations/output/figure_3_4_testgen_agent_workflow.svg",
+        "b/visualizations/output/figure_3_5_testselect_agent_workflow.pdf",
+        "b/visualizations/output/figure_3_5_testselect_agent_workflow.svg",
+        "b/visualizations/output/figure_3_6_self_healing_decision_flow.pdf",
+        "b/visualizations/output/figure_3_6_self_healing_decision_flow.svg",
+        "b/visualizations/output/figure_3_7_experimental_design.pdf",
+        "b/visualizations/output/figure_3_7_experimental_design.svg",
+        "b/visualizations/output/figure_3_8_evaluation_metrics_framework.pdf",
+        "b/visualizations/output/figure_3_8_evaluation_metrics_framework.svg",
+        "b/visualizations/output/figure_4_1_tests_executed_comparison.pdf",
+        "b/visualizations/output/figure_4_1_tests_executed_comparison.svg",
+        "b/visualizations/output/figure_4_2_execution_time_comparison.pdf",
+        "b/visualizations/output/figure_4_2_execution_time_comparison.svg",
+        "b/visualizations/output/figure_4_3_predictive_selection_outcome.pdf",
+        "b/visualizations/output/figure_4_3_predictive_selection_outcome.svg",
+        "b/visualizations/output/figure_4_4_paired_test_durations.pdf",
+        "b/visualizations/output/figure_4_4_paired_test_durations.svg",
+        "b/visualizations/output/figure_4_5_generated_tests_by_capability.pdf",
+        "b/visualizations/output/figure_4_5_generated_tests_by_capability.svg",
+        "b/visualizations/output/figure_4_6_complete_suite_composition.pdf",
+        "b/visualizations/output/figure_4_6_complete_suite_composition.svg"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_large_payload_rejects_size_below_minimum",
+        "tests_generated/generated_test.py::test_get_api_large_payload",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.999,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.177,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 73.89
+    },
+    {
+      "commit": "055a20944ce6c7b22e269d3b7ac908090720ae64",
+      "short_sha": "055a209",
+      "date": "2026-06-26",
+      "subject": "3rd edit",
+      "changed_files": [
+        "b/reports/comparison_report.csv",
+        "b/reports/generated_test_results.csv",
+        "b/reports/test_results.csv",
+        "b/test-results.csv",
+        "b/tests_generated/generator.py",
+        "b/tests_selecter/selecter.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 19.474,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 5.862,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 69.9
+    },
+    {
+      "commit": "f962de94d9255cba8d4d2644220e23bc46d723df",
+      "short_sha": "f962de9",
+      "date": "2026-06-26",
+      "subject": "codex second edit",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml",
+        "b/reports/comparison_report.csv",
+        "b/reports/dummy_diff.txt",
+        "b/reports/generated_test_results.csv",
+        "b/reports/test_results.csv",
+        "b/test-results.csv",
+        "b/tests_generated/generator.py",
+        "b/tests_selecter/comparison_report.py",
+        "b/tests_selecter/selecter.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 19.169,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.953,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.16
+    },
+    {
+      "commit": "88f94b15723f87c53e9017024083233f07be662b",
+      "short_sha": "88f94b1",
+      "date": "2026-06-26",
+      "subject": "codex",
+      "changed_files": [
+        "b/main.py",
+        "b/reports/dummy_diff.txt",
+        "b/reports/generated_test_results.csv",
+        "b/reports/test_results.csv",
+        "b/test-results.csv",
+        "b/tests_generated/generated_test.py",
+        "b/tests_generated/generator.py",
+        "b/tests_selecter/selecter.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests_generated/generated_test.py::test_post_api_seed",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 19.79,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.193,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 78.81
+    },
+    {
+      "commit": "356c2956c2d6280cfa249ae01581fd3802e62a93",
+      "short_sha": "356c295",
+      "date": "2026-06-26",
+      "subject": "Add negative API tests for validation and failure scenarios",
+      "changed_files": [
+        "b/tests/test.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.969,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.791,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 70.0
+    },
+    {
+      "commit": "408120ba1302f976b74609616714fe4717a0c83e",
+      "short_sha": "408120b",
+      "date": "2026-06-24",
+      "subject": "update",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml",
+        "b/README.md",
+        "b/conftest.py",
+        "b/main.py",
+        "b/pyproject.toml",
+        "b/tests/README.md",
+        "b/tests/test.py",
+        "b/tests_generated/README.md",
+        "b/tests_generated/generator.py",
+        "b/tests_selecter/README.md",
+        "b/tests_selecter/comparison_report.py",
+        "b/tests_selecter/selecter.py",
+        "b/uv.lock"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.946,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.406,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 72.37
+    },
+    {
+      "commit": "f698f0854121512306d06bd936fa63354a165e13",
+      "short_sha": "f698f08",
+      "date": "2026-06-24",
+      "subject": "Add comparison evaluation report",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml",
+        "b/scripts/compare_methods.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+        "tests/test_extended.py::test_seed_is_deterministic"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.355,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 5.707,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 62.83
+    },
+    {
+      "commit": "98e42f89de0e6f9a32ccf4dbeedd0b251980695f",
+      "short_sha": "98e42f8",
+      "date": "2026-06-24",
+      "subject": "Remove unsupported csv-out argumen",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.251,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.514,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 79.63
+    },
+    {
+      "commit": "bae05f0f7399b027085f51af720814e60fccc944",
+      "short_sha": "bae05f0",
+      "date": "2026-06-24",
+      "subject": "#",
+      "changed_files": [
+        "b/tests/test.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.652,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 5.343,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 65.86
+    },
+    {
+      "commit": "9ef2994c49154cc4f04c9f0c38e00319da3e1818",
+      "short_sha": "9ef2994",
+      "date": "2026-06-24",
+      "subject": "fix pipeline",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+        "tests/test_extended.py::test_seed_is_deterministic"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 16.112,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 5.283,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 67.21
+    },
+    {
+      "commit": "55854a3c4b2e2538d40d2d5f14016f737fe41daf",
+      "short_sha": "55854a3",
+      "date": "2026-06-24",
+      "subject": "remove",
+      "changed_files": [
+        "b/tests/test.py"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_get_user_not_found",
+        "tests/test.py::test_create_post_user_not_found",
+        "tests/test.py::test_create_post_blank_title",
+        "tests/test.py::test_create_post_title_too_long",
+        "tests/test.py::test_create_post_content_too_long",
+        "tests/test.py::test_update_post_not_found",
+        "tests/test.py::test_delete_post_not_found",
+        "tests/test.py::test_seed_db_with_custom_number"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 16.134,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.088,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 74.66
+    },
+    {
+      "commit": "f68e8d971b60019f9750fa7555e391071aeb1a2b",
+      "short_sha": "f68e8d9",
+      "date": "2026-06-24",
+      "subject": "----",
+      "changed_files": [
+        "b/README.md"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 15.786,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.055,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 80.65
+    },
+    {
+      "commit": "2a0e3adb80c69e0467ff76004c8819b2afa56d57",
+      "short_sha": "2a0e3ad",
+      "date": "2026-06-24",
+      "subject": "Fix workflow YAML file",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.916,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.457,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 80.7
+    },
+    {
+      "commit": "02d73831c3f45ea2de1cf365f46b18d867069c5b",
+      "short_sha": "02d7383",
+      "date": "2026-06-24",
+      "subject": "Resolve CI/CD workflow merge conflict",
+      "changed_files": [],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.338,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.566,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 79.43
+    },
+    {
+      "commit": "69f35a22fc8dd5a732c595d0cf7102a05101425f",
+      "short_sha": "69f35a2",
+      "date": "2026-06-24",
+      "subject": "Fix workflow YAML file",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests/test_extended.py::test_create_post_increments_database_metrics",
+        "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+        "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+        "tests_generated/generated_test.py::test_get_api_health",
+        "tests_generated/generated_test.py::test_get_api_metrics_db_size"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 19.13,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.483,
+        "test_count": 14,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 82.5,
+      "time_reduction_pct": 76.57
+    },
+    {
+      "commit": "f92f411821a366cab16dca033484a10fc14c5a4f",
+      "short_sha": "f92f411",
+      "date": "2026-06-24",
+      "subject": "Replace workflow with fixed YAML",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests/test_extended.py::test_create_post_increments_database_metrics",
+        "tests/test_extended.py::test_delete_post_decrements_database_metrics",
+        "tests/test_extended.py::test_missing_delete_does_not_change_database_metrics",
+        "tests_generated/generated_test.py::test_get_api_health",
+        "tests_generated/generated_test.py::test_get_api_metrics_db_size"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.879,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 4.578,
+        "test_count": 14,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 82.5,
+      "time_reduction_pct": 74.39
+    },
+    {
+      "commit": "13e2d05ad2f8a45d85ad9934f0927ca858b1aa7b",
+      "short_sha": "13e2d05",
+      "date": "2026-06-24",
+      "subject": "Replace workflow with fixed YAML",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+        "tests/test_extended.py::test_seed_is_deterministic"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.405,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 7.3,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 58.06
+    },
+    {
+      "commit": "880631c3a980b96db76f389213c245c3f1a9ee22",
+      "short_sha": "880631c",
+      "date": "2026-06-24",
+      "subject": "Fix workflow YAML syntax",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state",
+        "tests/test.py::test_seed_db_with_custom_number",
+        "tests/test.py::test_seed_db_max_limit",
+        "tests/test.py::test_seed_db_invalid_limit",
+        "tests/test.py::test_invalid_seed_request_should_not_change_database",
+        "tests/test_extended.py::test_health_remains_available_during_error_injection",
+        "tests/test_extended.py::test_reset_disables_error_injection",
+        "tests/test_extended.py::test_seed_accepts_minimum_user_count",
+        "tests/test_extended.py::test_seed_is_deterministic"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.658,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 6.318,
+        "test_count": 16,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 80.0,
+      "time_reduction_pct": 64.22
+    },
+    {
+      "commit": "07d1c67699ecb47476aca7f0d7fd83fd3ed493f7",
+      "short_sha": "07d1c67",
+      "date": "2026-06-24",
+      "subject": "Fix GitHub Actions workflow",
+      "changed_files": [
+        "b/.github/workflows/ci-cd.yaml"
+      ],
+      "selected_tests": [
+        "tests/test_extended.py::test_health_response_has_typed_operational_fields",
+        "tests/test.py::test_get_users",
+        "tests/test.py::test_get_users_paginated",
+        "tests/test.py::test_get_user_with_posts",
+        "tests/test.py::test_create_post",
+        "tests/test.py::test_update_post",
+        "tests/test.py::test_delete_post",
+        "tests/test.py::test_reset_db_restores_initial_state"
+      ],
+      "traditional": {
+        "exit_code": 0,
+        "wall_time_sec": 17.456,
+        "test_count": 80,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "agentic": {
+        "exit_code": 0,
+        "wall_time_sec": 3.475,
+        "test_count": 8,
+        "failing_tests": [],
+        "output_tail": ""
+      },
+      "test_reduction_pct": 90.0,
+      "time_reduction_pct": 80.09
+    }
+  ],
+  "summary": {
+    "test_reduction_pct": {
+      "mean": 82.75,
+      "median": 80.0,
+      "stddev": 4.25,
+      "min": 80.0,
+      "max": 90.0
+    },
+    "time_reduction_pct": {
+      "mean": 72.8,
+      "median": 74.025,
+      "stddev": 6.377,
+      "min": 58.06,
+      "max": 80.7
+    },
+    "traditional_wall_time_sec": {
+      "mean": 17.167,
+      "median": 17.294,
+      "stddev": 1.361,
+      "min": 15.355,
+      "max": 19.79
+    },
+    "agentic_wall_time_sec": {
+      "mean": 4.646,
+      "median": 4.444,
+      "stddev": 1.052,
+      "min": 3.055,
+      "max": 7.3
+    },
+    "traditional_pass_runs": 20,
+    "agentic_pass_runs": 20
+  },
+  "limitation": "Each real commit diff is replayed against one fixed current test/application snapshot. This isolates selection behavior but is not a checkout-and-build study of old dependencies."
+}

@@ -1,0 +1,27 @@
+{
+  "created_at": "2026-08-03T10:00:52.549016+00:00",
+  "capture_success": true,
+  "ready": true,
+  "requests": [
+    {
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "path": "/api/metrics/db-size",
+      "status": 200
+    },
+    {
+      "path": "/openapi.json",
+      "status": 200
+    }
+  ],
+  "server_exit_code": 1,
+  "shutdown_requested_by_capture": true,
+  "capture_wall_time_sec": 2.382,
+  "log_path": "reports/server.log",
+  "log_bytes": 920,
+  "log_lines": 11,
+  "sha256": "dac3e31b305fcb8e3b784ecc8de326875deba3d038f3cd48106938ef11ea0817",
+  "credential_values_recorded": false
+}

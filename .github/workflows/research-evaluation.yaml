@@ -1,0 +1,59 @@
+name: Research Evaluation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout complete history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install locked dependencies
+        run: uv sync --frozen
+
+      - name: Validate threshold safety policy
+        run: uv run pytest tests/test_selection_policy.py -q -p no:cacheprovider
+
+      - name: Generate threshold boundary evidence
+        run: uv run python tests_selecter/threshold_safety_evaluation.py
+
+      - name: Capture real API server log
+        run: uv run python tests_selecter/capture_server_log.py
+
+      - name: Replay 20 commits and execute 20 mutants
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          uv run python tests_selecter/research_evaluation.py all \
+            --commits 20 \
+            --mutants 20 \
+            --max-tests 16 \
+            --timeout 180
+
+      - name: Upload research evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-evidence-${{ github.sha }}
+          path: |
+            reports/research_evaluation/
+            reports/server.log
+            reports/server_log_manifest.json
+          retention-days: 30

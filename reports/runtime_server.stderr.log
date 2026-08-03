@@ -1,0 +1,8 @@
+INFO:     Started server process [16016]
+INFO:     Waiting for application startup.
+2026-08-03 15:40:18,011 INFO llm_ctf_api DB seeded: 500 users, 3719 posts
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.2026-08-03 15:40:59,521 INFO llm_ctf_api method=GET path=/api/health status=200 duration_ms=2.0 request_id=e01c0502-33db-4157-9dcf-2d5c3fe5d507
+2026-08-03 15:41:11,587 INFO llm_ctf_api method=GET path=/ status=404 duration_ms=0.5 request_id=eb4dc9cc-ee5a-4163-987a-572806cd6110
+2026-08-03 15:41:13,157 INFO llm_ctf_api method=GET path=/docs status=200 duration_ms=0.6 request_id=a03ace30-4a98-455a-8516-d7f8915caa8d
+2026-08-03 15:41:13,719 INFO llm_ctf_api method=GET path=/openapi.json status=200 duration_ms=38.9 request_id=f6be01b3-be77-4484-a01c-64b512a784fc

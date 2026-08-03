@@ -1,0 +1,34 @@
+name: Live Repair Evaluation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen
+      - name: Replay actual committed stale test with live model
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_MODEL: google/gemini-2.5-flash
+        run: uv run python tests_selecter/live_repair_replay.py --source-commit HEAD
+      - name: Upload repair audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-repair-evidence-${{ github.sha }}
+          path: reports/live_repair_evaluation/
+          retention-days: 30

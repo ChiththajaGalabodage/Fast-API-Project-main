@@ -115,6 +115,12 @@ async def test_pagination_accepts_maximum_limit(client):
     assert len(data["data"]) == 100
 
 
+async def test_pagination_rejects_limit_above_maximum(client):
+    response = await client.get("/api/users/paginated?page=1&limit=101")
+
+    assert response.status_code == 422
+
+
 async def test_paginated_users_preserve_identifier_order(client):
     response = await client.get("/api/users/paginated?page=1&limit=10")
 
@@ -254,6 +260,12 @@ async def test_large_payload_accepts_minimum_size(client):
 
 async def test_large_payload_rejects_non_integer_size(client):
     response = await client.get("/api/large-payload?size=10.5")
+
+    assert response.status_code == 422
+
+
+async def test_large_payload_rejects_size_below_minimum(client):
+    response = await client.get("/api/large-payload?size=9")
 
     assert response.status_code == 422
 

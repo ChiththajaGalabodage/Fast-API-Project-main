@@ -35,12 +35,13 @@ jobs:
 
       - name: Start API server
         run: |
+          mkdir -p reports
           # Make sure the venv exists and is synced before we background anything.
           uv run python -c "print('venv ready')"
 
           # Run uvicorn directly from the venv (NOT via `uv run`) so there is no
           # long-lived `uv` parent process holding a lock on the uv cache.
-          nohup .venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+          nohup .venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 > reports/server.log 2>&1 &
           echo $! > server.pid
 
           for i in {1..30}; do
@@ -129,7 +130,7 @@ jobs:
             --csv-out test-results.csv \
             --timing-out reports/traditional_timing.json \
             --label traditional-full-suite \
-            --expected-count 78 \
+            --expected-count 80 \
             --verbose \
             tests/test.py \
             tests/test_extended.py \
@@ -177,6 +178,9 @@ jobs:
             --diff /tmp/diff.txt \
             --high-threshold 0.80 \
             --medium-threshold 0.60 \
+            --selection-repetitions 3 \
+            --threshold-margin 0.05 \
+            --selection-report reports/selection_decisions.json \
             --max-tests 16 \
             --max-heal-functions 3 \
             --heal-validation-runs 2 \
@@ -216,7 +220,8 @@ jobs:
             reports/test_results.csv \
             reports/agentic_timing.json \
             reports/self_healing_report.json \
-            reports/self_healing.patch; do
+            reports/self_healing.patch \
+            reports/selection_decisions.json; do
             test -f "$artifact" || {
               echo "Missing mandatory selector artifact: $artifact"
               exit 1
@@ -230,7 +235,7 @@ jobs:
             --csv-out reports/final_suite_after_heal.csv \
             --timing-out reports/final_suite_timing.json \
             --label final-suite-after-healing \
-            --expected-count 106 \
+            --expected-count 113 \
             --verbose \
             tests/test.py \
             tests/test_extended.py \
@@ -248,6 +253,7 @@ jobs:
             reports/agentic_timing.json
             reports/self_healing_report.json
             reports/self_healing.patch
+            reports/selection_decisions.json
             reports/self_healing_backups/
             reports/source_head_before.txt
             reports/source_head_after.txt
@@ -284,7 +290,7 @@ jobs:
         if: always()
         with:
           name: api-server-log
-          path: server.log
+          path: reports/server.log
           retention-days: 7
 
       - name: Stop API server

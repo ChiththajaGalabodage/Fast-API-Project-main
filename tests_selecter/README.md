@@ -1,17 +1,32 @@
 # TestSelectAgent and guarded self-healing
 
-The selector builds a 16-test impacted sample from the current diff and the
-78-test application inventory. An OpenRouter model ranks tests when
+The selector builds an at-most-16-test impacted sample from the current diff and
+the 80-test application inventory. An OpenRouter model ranks tests when
 `OPENROUTER_API_KEY` is available; otherwise a deterministic keyword-based
 fallback keeps the workflow reproducible.
+
+## Probabilistic-score safety
+
+The 0.80 high and 0.60 medium thresholds are ranking parameters, not hard
+safety boundaries. On trusted model-backed runs the selector requests three
+independent rankings and retains the union of tests that reach 0.80 in any run.
+Scores in the 0.75-0.80 uncertainty band are also mandatory. Eight universal
+health/CRUD invariants and diff-mapped contract tests run independently of
+model scores. If mandatory tests exceed the 16-test budget, selection fails
+closed. `selection_decisions.json` records observations, ranges, standard
+deviations, and reasons.
+
+The deterministic cutoff simulation is in
+`reports/research_evaluation/threshold_safety_report.json`. It is not presented
+as a measurement of the external model's real score distribution.
 
 ## Run the agentic workflow
 
 ```pwsh
 uv run python tests_selecter/selecter.py `
   --diff reports/dummy_diff.txt `
-  --run-medium `
-  --min-tests 16 `
+  --selection-repetitions 3 `
+  --threshold-margin 0.05 `
   --max-tests 16 `
   --max-heal-functions 3 `
   --heal-validation-runs 2 `
@@ -66,6 +81,7 @@ files did not change.
   status for every attempted repair.
 - `self_healing.patch`: accepted unified diffs only.
 - `self_healing_backups/`: original source snapshots.
+- `selection_decisions.json`: repeated scores and mandatory-selection reasons.
 
 An empty patch is expected when the selected batch already passes. Missing
 credentials do not affect selection fallback, but failed tests remain
@@ -77,3 +93,40 @@ Autonomous LLM generation and repair receive credentials only on trusted
 push/manual events. Pull-request runs receive no LLM key, run deterministic
 selection, and still execute the secret-free final suite. The final complete
 suite - not the pre-repair baseline - is the authoritative CI gate.
+
+## Research evaluation
+
+```pwsh
+uv run python tests_selecter/research_evaluation.py all --commits 20 --mutants 20
+```
+
+The measured evidence contains 20/20 passing historical replay pairs. Test
+reduction averaged 82.75% (SD 4.25), while wall-time reduction averaged 72.80%
+(SD 6.38). The complete suite killed 19/20 mutants; selection killed all 19
+killable mutants (100% recall, zero escapes) with 80.25% mean test reduction.
+One mutant is behaviorally equivalent because another validator still enforces
+the changed constraint. These results support this benchmark only. Historical
+diffs are replayed against a fixed current snapshot; old dependencies are not
+rebuilt.
+
+Capture the missing server artifact with:
+
+```pwsh
+uv run python tests_selecter/capture_server_log.py
+```
+
+This writes `reports/server.log` plus a checksum manifest. CI uploads the same
+log on every run.
+
+## Live repair evidence and disclosure
+
+The real committed stale-test case expected HTTP 200 for an endpoint whose
+contract returns 201. Its failing complete-suite baseline is retained in
+`reports/live_repair_before.csv`; the corrected passing run is in
+`reports/live_repair_after_manual.csv`.
+
+`tests_selecter/live_repair_replay.py` reconstructs that committed failure in
+an isolated copy and runs the guarded agent. It sends the commit diff, test IDs,
+failing test source, and failure text to OpenRouter. Run it only after explicitly
+authorizing that disclosure, or manually dispatch `Live Repair Evaluation`.
+The script excludes `.env` from the sandbox and never records the credential.

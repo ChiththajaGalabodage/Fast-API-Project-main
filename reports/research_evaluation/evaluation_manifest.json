@@ -1,0 +1,9 @@
+{
+  "python": "3.14.6 (main, Jun 11 2026, 04:05:02) [MSC v.1944 64 bit (AMD64)]",
+  "head": "5c3c52f99cdaac20133ea37a5e430ec514015aac",
+  "application_test_count": 80,
+  "evaluation_environment": {
+    "NUM_USERS": 100,
+    "BASE_DELAY": 0
+  }
+}
