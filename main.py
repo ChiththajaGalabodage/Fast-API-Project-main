@@ -392,6 +392,10 @@ async def update_post(post_id: int, body: UpdatePostRequest):
         if p.id == post_id:
             p.title = body.title
             p.content = body.content
+            logger.info(
+                "post_updated post_id=%d",
+                p.id,
+            )
             return {"success": True, "post": p}
     raise HTTPException(status_code=404, detail="Post not found create post")
 
