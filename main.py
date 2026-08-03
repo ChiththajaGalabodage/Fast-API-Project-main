@@ -240,7 +240,12 @@ async def reset_db():
     global _force_error
     _force_error = False
     _seed_db()
-    return {"status": "reset", "users": len(users_db), "posts": len(posts_db)}
+    return {
+        "status": "reset",
+        "users": len(users_db),
+        "posts": len(posts_db),
+        "error_injection": _force_error,
+    }
 
 
 @app.post(
