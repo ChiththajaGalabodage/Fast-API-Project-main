@@ -164,7 +164,11 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 @app.middleware("http")
 async def observability_middleware(request: Request, call_next):
-    request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+    request_id = request.headers.get("X-Request-ID")
+    if request_id:
+        request_id = request_id.strip()
+    if not request_id:
+        request_id = str(uuid.uuid4())
     start = time.perf_counter()
 
     # Error injection: lets TestSelectAgent verify self-healing behaviour
